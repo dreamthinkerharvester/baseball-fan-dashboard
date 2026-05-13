@@ -1,0 +1,12 @@
+[
+  { "code": "LG", "name": "LG 트윈스", "shortName": "LG", "primaryColor": "#C30452" },
+  { "code": "KT", "name": "KT 위즈", "shortName": "KT", "primaryColor": "#000000" },
+  { "code": "SSG", "name": "SSG 랜더스", "shortName": "SSG", "primaryColor": "#CE0E2D" },
+  { "code": "NC", "name": "NC 다이노스", "shortName": "NC", "primaryColor": "#315288" },
+  { "code": "KIA", "name": "KIA 타이거즈", "shortName": "KIA", "primaryColor": "#EA0029" },
+  { "code": "DOOSAN", "name": "두산 베어스", "shortName": "두산", "primaryColor": "#131230" },
+  { "code": "LOTTE", "name": "롯데 자이언츠", "shortName": "롯데", "primaryColor": "#041E42" },
+  { "code": "SAMSUNG", "name": "삼성 라이온즈", "shortName": "삼성", "primaryColor": "#074CA1" },
+  { "code": "HANWHA", "name": "한화 이글스", "shortName": "한화", "primaryColor": "#FF6600" },
+  { "code": "KIWOOM", "name": "키움 히어로즈", "shortName": "키움", "primaryColor": "#570514" }
+]

@@ -1,0 +1,10 @@
+{
+  "kbo": {
+    "schedule": { "lastSuccess": "2026-05-09T07:00:00+09:00", "lastError": null },
+    "standings": { "lastSuccess": "2026-05-09T08:30:00+09:00", "lastError": null },
+    "lineup": { "lastSuccess": "2026-05-09T17:30:00+09:00", "lastError": null }
+  },
+  "statiz": {
+    "stats": { "lastSuccess": "2026-05-09T06:00:00+09:00", "lastError": null }
+  }
+}

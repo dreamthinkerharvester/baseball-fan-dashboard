@@ -1,0 +1,18 @@
+{
+  "gameId": "20260509-LG-KT-1",
+  "teamCode": "KT",
+  "startingPitcher": {
+    "battingOrder": 0,
+    "playerId": "70200",
+    "position": "P",
+    "grade": "elite",
+    "gradePercentile": 91,
+    "gradeBasis": "최근 10등판 FIP 평균 2.45 (백분위 91)"
+  },
+  "battingOrder": [
+    { "battingOrder": 1, "playerId": "70201", "position": "1B", "grade": "rare", "gradePercentile": 73, "gradeBasis": "최근 10경기 OPS 평균 0.892 (백분위 73)" }
+  ],
+  "status": "confirmed",
+  "fetchedAt": "2026-05-09T17:30:00+09:00",
+  "source": "kbo"
+}

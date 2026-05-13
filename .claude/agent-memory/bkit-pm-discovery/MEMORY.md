@@ -1,0 +1,1 @@
+- [baseball-fan-dashboard project context](project_baseball_fan_dashboard.md) — KBO 팬 대시보드 MVP scope, 크롤링 리스크, IP 정책, Phase 0 실험 결정사항

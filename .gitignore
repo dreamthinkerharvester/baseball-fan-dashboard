@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+.pnpm-debug.log
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Vercel
+.vercel
+
+# Testing
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+.playwright/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# bkit runtime (audit/runtime은 보존, runtime cache만 제외)
+.bkit/runtime/agent-events.jsonl
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Storybook (kia-player-storybook)
+data/storybook/cache/
+public/assets/baseball/

@@ -1,0 +1,41 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "plugins": ["import"],
+  "rules": {
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "type"
+        ],
+        "pathGroups": [
+          { "pattern": "react", "group": "external", "position": "before" },
+          { "pattern": "next/**", "group": "external", "position": "before" },
+          { "pattern": "@/types/**", "group": "internal", "position": "before" },
+          { "pattern": "@/lib/**", "group": "internal" },
+          { "pattern": "@/components/**", "group": "internal" },
+          { "pattern": "@/features/**", "group": "internal" },
+          { "pattern": "@/services/**", "group": "internal" }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "Literal[value=/마구마구|Magumagu|네오위즈|넷마블/i]",
+        "message": "IP-protected term detected. Only the legal disclaimer in Footer is allowed (annotate with // forbidden-words-allow:disclaimer)."
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "react/no-unescaped-entities": "off"
+  }
+}

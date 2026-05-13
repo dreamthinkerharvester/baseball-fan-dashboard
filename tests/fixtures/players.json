@@ -1,0 +1,17 @@
+[
+  { "id": "60100", "name": "손주영", "teamCode": "LG", "position": "P", "uniformNumber": 51, "isPitcher": true },
+  { "id": "60101", "name": "박해민", "teamCode": "LG", "position": "CF", "uniformNumber": 17, "isPitcher": false },
+  { "id": "60102", "name": "홍창기", "teamCode": "LG", "position": "RF", "uniformNumber": 51, "isPitcher": false },
+  { "id": "60103", "name": "오스틴 딘", "teamCode": "LG", "position": "1B", "uniformNumber": 13, "isPitcher": false },
+  { "id": "60104", "name": "문보경", "teamCode": "LG", "position": "3B", "uniformNumber": 6, "isPitcher": false },
+  { "id": "60105", "name": "박동원", "teamCode": "LG", "position": "C", "uniformNumber": 27, "isPitcher": false },
+  { "id": "60106", "name": "신민재", "teamCode": "LG", "position": "2B", "uniformNumber": 3, "isPitcher": false },
+  { "id": "60107", "name": "오지환", "teamCode": "LG", "position": "SS", "uniformNumber": 10, "isPitcher": false },
+  { "id": "60108", "name": "김현수", "teamCode": "LG", "position": "DH", "uniformNumber": 22, "isPitcher": false },
+  { "id": "60109", "name": "문성주", "teamCode": "LG", "position": "LF", "uniformNumber": 31, "isPitcher": false },
+  { "id": "78529", "name": "김도영", "teamCode": "KIA", "position": "3B", "uniformNumber": 7, "isPitcher": false },
+  { "id": "78530", "name": "최원준", "teamCode": "KIA", "position": "CF", "isPitcher": false },
+  { "id": "78531", "name": "양현종", "teamCode": "KIA", "position": "P", "isPitcher": true },
+  { "id": "70200", "name": "고영표", "teamCode": "KT", "position": "P", "isPitcher": true },
+  { "id": "70201", "name": "강백호", "teamCode": "KT", "position": "1B", "isPitcher": false }
+]

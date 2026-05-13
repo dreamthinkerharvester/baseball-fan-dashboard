@@ -1,0 +1,26 @@
+{
+  "gameId": "20260509-LG-KT-1",
+  "teamCode": "LG",
+  "startingPitcher": {
+    "battingOrder": 0,
+    "playerId": "60100",
+    "position": "P",
+    "grade": "rare",
+    "gradePercentile": 78,
+    "gradeBasis": "최근 10등판 FIP 평균 3.21 (백분위 78)"
+  },
+  "battingOrder": [
+    { "battingOrder": 1, "playerId": "60101", "position": "CF", "grade": "special", "gradePercentile": 55, "gradeBasis": "최근 10경기 OPS 평균 0.812 (백분위 55)" },
+    { "battingOrder": 2, "playerId": "60102", "position": "RF", "grade": "rare", "gradePercentile": 75, "gradeBasis": "최근 10경기 wRC+ 평균 145 (백분위 75)" },
+    { "battingOrder": 3, "playerId": "60103", "position": "1B", "grade": "elite", "gradePercentile": 92, "gradeBasis": "최근 10경기 wRC+ 평균 178 (백분위 92)" },
+    { "battingOrder": 4, "playerId": "60104", "position": "3B", "grade": "rare", "gradePercentile": 71, "gradeBasis": "최근 10경기 wRC+ 평균 138 (백분위 71)" },
+    { "battingOrder": 5, "playerId": "60108", "position": "DH", "grade": "special", "gradePercentile": 48, "gradeBasis": "최근 10경기 OPS 평균 0.778 (백분위 48)" },
+    { "battingOrder": 6, "playerId": "60105", "position": "C", "grade": "normal", "gradePercentile": 32, "gradeBasis": "최근 10경기 OPS 평균 0.654 (백분위 32)" },
+    { "battingOrder": 7, "playerId": "60109", "position": "LF", "grade": "special", "gradePercentile": 41, "gradeBasis": "최근 10경기 OPS 평균 0.745 (백분위 41)" },
+    { "battingOrder": 8, "playerId": "60106", "position": "2B", "grade": "normal", "gradePercentile": 28, "gradeBasis": "최근 10경기 OPS 평균 0.612 (백분위 28)" },
+    { "battingOrder": 9, "playerId": "60107", "position": "SS", "grade": "normal", "gradePercentile": 35, "gradeBasis": "최근 10경기 OPS 평균 0.689 (백분위 35)" }
+  ],
+  "status": "confirmed",
+  "fetchedAt": "2026-05-09T17:30:00+09:00",
+  "source": "kbo"
+}

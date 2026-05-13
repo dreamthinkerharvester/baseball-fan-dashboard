@@ -1,0 +1,249 @@
+{
+  "version": "3.0",
+  "lastUpdated": "2026-05-11T15:00:00.000Z",
+  "activeFeatures": [],
+  "primaryFeature": null,
+  "features": {
+    "kia-player-storybook": {
+      "phase": "completed",
+      "startedAt": "2026-05-11T12:00:00.000Z",
+      "completedAt": "2026-05-11T15:00:00.000Z",
+      "lastUpdated": "2026-05-11T15:00:00.000Z",
+      "documents": {
+        "prd": "docs/00-pm/kia-player-storybook.prd.md",
+        "plan": "docs/01-plan/features/kia-player-storybook.plan.md",
+        "design": "docs/02-design/features/kia-player-storybook.design.md",
+        "analysis": "docs/03-analysis/kia-player-storybook.analysis.md",
+        "report": "docs/04-report/kia-player-storybook.report.md"
+      },
+      "architecture": "Pragmatic-3Layer (reuse baseball-fan-dashboard infra)",
+      "scope": "KIA Tigers only · Phase 1 MVP",
+      "estimatedModules": 8,
+      "estimatedSessions": 2,
+      "iterationCount": 0,
+      "assetPool": "docs/02-design/assets/야구 → public/assets/baseball (26 images)",
+      "modulesCompleted": [
+        "M1-domain",
+        "M2-kia-roster",
+        "M3-today",
+        "M4-prime",
+        "M5-news",
+        "M6-narrative",
+        "M7-draft",
+        "M8-ui"
+      ],
+      "modulesPending": [],
+      "filesAdded": 19,
+      "doComplete": true,
+      "matchRate": 92,
+      "matchRateBreakdown": { "structural": 95, "functional": 92, "contract": 89 },
+      "gapCounts": { "critical": 0, "important": 2, "minor": 5 }
+    },
+    "baseball-fan-dashboard": {
+      "phase": "completed",
+      "startedAt": "2026-05-09T10:01:00.000Z",
+      "completedAt": "2026-05-09T17:00:00.000Z",
+      "lastUpdated": "2026-05-09T17:00:00.000Z",
+      "documents": {
+        "discovery": "docs/00-pm/baseball-fan-dashboard.discovery.md",
+        "strategy": "docs/00-pm/baseball-fan-dashboard.strategy.md",
+        "research": "docs/00-pm/baseball-fan-dashboard.research.md",
+        "prd": "docs/00-pm/baseball-fan-dashboard.prd.md",
+        "plan": "docs/01-plan/features/baseball-fan-dashboard.plan.md",
+        "design": "docs/02-design/features/baseball-fan-dashboard.design.md",
+        "analysis": "docs/03-analysis/baseball-fan-dashboard.analysis.md",
+        "report": "docs/04-report/baseball-fan-dashboard.report.md"
+      },
+      "architecture": "Pragmatic-3Layer",
+      "moduleCount": 14,
+      "estimatedSessions": 12,
+      "modulesCompleted": [
+        "module-0-foundation",
+        "module-1-domain",
+        "module-2-data",
+        "module-3-crawler",
+        "module-4-api",
+        "module-5-ui-common",
+        "module-6-team-selection",
+        "module-7-standings-schedule",
+        "module-8-lineup-card",
+        "module-9-player-modal",
+        "module-10-page",
+        "module-12-e2e",
+        "module-13-polish"
+      ],
+      "modulesPending": [],
+      "doComplete": true,
+      "matchRate": 94,
+      "matchRateBreakdown": { "structural": 96, "functional": 92, "contract": 96 },
+      "gapCounts": { "critical": 0, "important": 2, "minor": 5 },
+      "iterationCount": 0
+    }
+  },
+  "pipeline": {
+    "currentPhase": 5,
+    "level": "Dynamic",
+    "phaseHistory": [
+      {
+        "phase": "pm",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T10:17:00.000Z"
+      },
+      {
+        "phase": "plan",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T10:32:00.000Z"
+      },
+      {
+        "phase": "design",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T10:55:00.000Z"
+      },
+      {
+        "phase": "do",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T15:30:00.000Z"
+      },
+      {
+        "phase": "check",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T16:15:00.000Z",
+        "matchRate": 94
+      },
+      {
+        "phase": "report",
+        "feature": "baseball-fan-dashboard",
+        "completedAt": "2026-05-09T17:00:00.000Z",
+        "cycleNumber": 1
+      }
+    ]
+  },
+  "session": {
+    "startedAt": "2026-05-09T09:56:25.936Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-05-09T11:30:00.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-09T10:17:00.000Z",
+      "event": "pm_completed",
+      "feature": "baseball-fan-dashboard",
+      "details": "PRD synthesized from Discovery + Strategy + Research"
+    },
+    {
+      "timestamp": "2026-05-09T10:32:00.000Z",
+      "event": "plan_completed",
+      "feature": "baseball-fan-dashboard",
+      "details": "Plan document generated from PRD with 22 FRs, 8 Risks, Dynamic level + Next.js stack"
+    },
+    {
+      "timestamp": "2026-05-09T17:00:00.000Z",
+      "event": "pdca_complete",
+      "feature": "baseball-fan-dashboard",
+      "cycleNumber": 1,
+      "details": "PDCA Cycle #1 COMPLETE. Phase 1 MVP delivered at code level (114 files, 13/13 modules, 22/22 FRs covered with 19 Full + 3 Partial). Match Rate 94% (Structural 96 / Functional 92 / Contract 96). Decision Record Chain 11/12 followed. Code-level SC 5/5 met. Report saved to docs/04-report/baseball-fan-dashboard.report.md. Carryover: Phase 0 POC (R1 critical), runLineup() (I-1), keyStat enrichment (I-2)."
+    },
+    {
+      "timestamp": "2026-05-09T10:55:00.000Z",
+      "event": "design_completed",
+      "feature": "baseball-fan-dashboard",
+      "details": "Pragmatic 3-Layer architecture selected. 14 modules + 12 session plan. 6 API endpoints. 16 L1 + 20 L2 + 8 L3 test scenarios. Page UI Checklist for gap-detector ready."
+    },
+    {
+      "timestamp": "2026-05-09T11:30:00.000Z",
+      "event": "do_progress",
+      "feature": "baseball-fan-dashboard",
+      "details": "module-0-foundation + module-1-domain implemented. 27 files written: project configs (Next.js 14 + TS strict + Tailwind + ESLint + Prettier + Vitest + Playwright), 6 domain type modules, lib/constants/date/storage, lib/grade.ts (algorithm) + 30+ unit test cases. CI workflow + IP forbidden-words scanner."
+    },
+    {
+      "timestamp": "2026-05-09T12:15:00.000Z",
+      "event": "do_progress",
+      "feature": "baseball-fan-dashboard",
+      "details": "module-2-data + module-3-crawler implemented. ~25 files added: production data/teams.json + tests/fixtures (10 teams, 10 standings, 6 games incl. doubleheader+cancelled, LG confirmed lineup, LG pending lineup, KT lineup, 3 player details), lib/data/cache.ts (mtime-aware read+write+last-crawl), lib/data/normalizer.ts (zod-validated raw→Domain), lib/data/seed.ts (test fixture loader), scripts/crawler/{http,kbo,statiz,index}.ts (retry/backoff/UA + 429/403 fast-fail), scripts/notify-discord.ts, scripts/compute-grades.ts (population-based percentile). 5 GH Actions cron workflows (schedule 07KST, standings 10min, lineup 30min, stats 06KST, grades 06:30KST). Tests: cache.test (12 cases), normalizer.test (20+ cases), crawler-http.test (10+ cases). Note: KBO/statiz selectors are placeholders requiring Phase 0 POC tuning."
+    },
+    {
+      "timestamp": "2026-05-09T13:00:00.000Z",
+      "event": "do_progress",
+      "feature": "baseball-fan-dashboard",
+      "details": "module-4-api + module-5-ui-common implemented. ~15 files added: lib/api-client.ts (SWR fetcher with ApiClientError), lib/api/validation.ts (zod schemas TeamCode/Date/PlayerId/Range + parseQuery), lib/api/response.ts (Cache-Control + SWR header helper), 6 API Routes (/api/health|teams|standings|games|lineup/[team]|player/[id]), 4 service modules (standings/games/lineup/player), components/ui (GradeBadge with WCAG-safe text label, MiniSparkline pure-CSS, Tabs with role/tabindex, Dialog with native HTML <dialog> + 4-way close + swipe, Toast with aria-live), components/layout (Header sticky+myteam badge, Footer with IP-allow disclaimer marker, OfflineBanner). globals.css fadein keyframe added. api-validation.test (10+ cases)."
+    },
+    {
+      "timestamp": "2026-05-09T13:45:00.000Z",
+      "event": "do_progress",
+      "feature": "baseball-fan-dashboard",
+      "details": "module-6-team-selection + module-7-standings-schedule implemented. 8 files added."
+    },
+    {
+      "timestamp": "2026-05-09T14:30:00.000Z",
+      "event": "do_progress",
+      "feature": "baseball-fan-dashboard",
+      "details": "module-8-lineup-card + module-9-player-modal implemented (CORE UX). 11 feature files + /api/players + data/players.json."
+    },
+    {
+      "timestamp": "2026-05-09T15:30:00.000Z",
+      "event": "do_complete",
+      "feature": "baseball-fan-dashboard",
+      "details": "ALL 13 MODULES COMPLETE (114 project files). Ready for /pdca analyze."
+    },
+    {
+      "timestamp": "2026-05-09T16:15:00.000Z",
+      "event": "check_complete",
+      "feature": "baseball-fan-dashboard",
+      "details": "Gap analysis complete. Match Rate 94% (Structural 96% + Functional 92% + Contract 96%) — exceeds 90% threshold. 0 Critical, 2 Important (I-1 runLineup TODO stub, I-2 keyStat percentile vs OPS), 5 Minor. Decision Record Chain 7/7 verified. Strategic alignment 100%. Plan SC: 5 Met + 2 Partial(config-level) + 1 N/A. Recommend /pdca report (skip iterate — Important gaps are intentional Phase 0/M3.5 backlog). Runtime verification plan included for L1-L3 (server gating)."
+    },
+    {
+      "timestamp": "2026-05-11T12:00:00.000Z",
+      "event": "pm_started",
+      "feature": "kia-player-storybook",
+      "details": "New feature PRD drafted. KIA Tigers only Phase 1. 5 functional reqs (today / prime / news / narrative / draft). LLM-free design, reuses existing crawler + player data. Requires Naver News API key before Plan phase."
+    },
+    {
+      "timestamp": "2026-05-11T12:30:00.000Z",
+      "event": "plan_completed",
+      "feature": "kia-player-storybook",
+      "details": "Plan drafted. 8 modules (domain/kia-roster/today/prime/news/narrative/draft/ui) over 2 sessions. Asset pool integrated: 26 jpeg images in docs/02-design/assets/야구 → copy to public/assets/baseball at prebuild. F6 image-slot strategy (Option B): 3 placeholder slots in markdown + gallery UI for user click-to-insert. M4 prime.ts requires 100% test coverage."
+    },
+    {
+      "timestamp": "2026-05-11T13:00:00.000Z",
+      "event": "design_completed",
+      "feature": "kia-player-storybook",
+      "details": "Design drafted. TypeScript interfaces for 8 modules · prime-detection decision tree with 15 test cases · markdown master template with helper functions · Naver News query strategy (primary=playerName+year, fallback=playerName+활약, sim sort, 7 BLOCK_KEYWORDS, 5 PREFERRED_PUBLISHERS) · 나무위키 regex+section-based timeline extraction with KBO fallback · UI wireframe (desktop 2-col + mobile 1-col) · API signature GET /api/storybook/[id]?date with partial-failure 200+errors[] pattern. Build changes: prebuild copies 야구 assets to public/assets/baseball/."
+    },
+    {
+      "timestamp": "2026-05-11T14:00:00.000Z",
+      "event": "do_complete",
+      "feature": "kia-player-storybook",
+      "details": "All 8 modules implemented (19 source files). M1 types/storybook.ts (14 interfaces) · M2 scripts/crawler/kia-roster.ts + KIA roster expanded 1→15 players · M3 services/storybook/today.ts · M4 services/storybook/prime.ts (pure function) + 17 unit tests · M5 services/storybook/news.ts (Naver API + 7d cache + filterClips) · M6 services/storybook/narrative.ts (namu regex + 30d cache) · M7 services/storybook/draft.ts (markdown template) · M8 api/storybook/[id]/route.ts + api/storybook/kia-players/route.ts + storybook/page.tsx + 5 components (PlayerSearchBox, ResultPanel, ImageGallery, DraftPreview, DraftActions). E2E spec storybook.spec.ts (E1+E3). Build: prebuild script copies 26 baseball assets, kia-roster sanity-check passes. tsc --noEmit exits 0 after 7 type fixes (noUncheckedIndexedAccess strict mode)."
+    },
+    {
+      "timestamp": "2026-05-11T14:30:00.000Z",
+      "event": "check_complete",
+      "feature": "kia-player-storybook",
+      "matchRate": 92,
+      "details": "Gap analysis complete. Match Rate 92% (Structural 95 / Functional 92 / Contract 89) — exceeds 90% threshold. 0 Critical, 2 Important (G-3 Naver API key dependency for runtime news verification, G-4 namu cheerio upgrade as Phase 2), 5 Minor (vitest cold-start in iCloud env deferred to local SSD, NOT_KIA_PLAYER error code mapped to INTERNAL+message text, etc). Decision Record Chain 5/5 followed. F-DoD 6/7 met (only manual E2E with real Naver key pending user action). Recommend /pdca report (skip iterate)."
+    },
+    {
+      "timestamp": "2026-05-11T15:00:00.000Z",
+      "event": "pdca_complete",
+      "feature": "kia-player-storybook",
+      "cycleNumber": 2,
+      "details": "PDCA Cycle #2 COMPLETE. KIA Player Storybook Phase 1 MVP delivered at code level. 19 files added across 8 modules + orchestrator. Match Rate 92% (S95/F92/C89). 0 Critical gaps. TypeScript strict + noUncheckedIndexedAccess pass. 17 unit test cases + 2 E2E scenarios written. LLM-free deterministic templates (token cost 0). Reuses baseball-fan-dashboard v1 infra 100%. Asset pipeline: 26 baseball images prebuild-copied from 야구/ to public/assets/baseball/. Decision Record Chain 5/5 followed. Carryover P0 for user: Naver API key issuance + 김도영 manual E2E + vitest run on local SSD. Carryover P2: 9-team expansion + cheerio narrative + auto image matching."
+    }
+  ],
+  "stateMachine": {
+    "defaultWorkflow": "default",
+    "activeWorkflows": {},
+    "totalTransitions": 0
+  },
+  "automation": {
+    "globalLevel": 2,
+    "trustScore": 40,
+    "pendingApprovals": 0,
+    "lastGateResult": null
+  },
+  "team": {
+    "enabled": true,
+    "stateFile": ".bkit/runtime/agent-state.json",
+    "eventsFile": ".bkit/runtime/agent-events.jsonl"
+  }
+}

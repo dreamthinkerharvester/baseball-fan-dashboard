@@ -1,0 +1,35 @@
+{
+  "player": {
+    "id": "60100",
+    "name": "손주영",
+    "teamCode": "LG",
+    "position": "P",
+    "uniformNumber": 51,
+    "isPitcher": true
+  },
+  "currentSeason": {
+    "playerId": "60100",
+    "season": 2026,
+    "games": 8,
+    "ip": 48.2,
+    "era": 3.12,
+    "fip": 3.01,
+    "whip": 1.18,
+    "k9": 8.4,
+    "bb9": 2.1,
+    "updatedAt": "2026-05-09T06:00:00+09:00"
+  },
+  "careerSeasons": [
+    { "playerId": "60100", "season": 2025, "games": 26, "ip": 162.0, "era": 3.45, "fip": 3.22, "whip": 1.21, "k9": 8.1, "bb9": 2.3, "updatedAt": "2025-10-30T20:00:00+09:00" },
+    { "playerId": "60100", "season": 2024, "games": 24, "ip": 144.1, "era": 3.78, "fip": 3.65, "whip": 1.28, "k9": 7.8, "bb9": 2.5, "updatedAt": "2024-10-30T20:00:00+09:00" }
+  ],
+  "recentTen": [
+    { "playerId": "60100", "date": "2026-05-04", "ip": 6.0, "er": 2, "k": 7, "bb": 1, "fip": 2.85, "era": 3.00 },
+    { "playerId": "60100", "date": "2026-04-28", "ip": 6.1, "er": 3, "k": 5, "bb": 2, "fip": 3.40, "era": 4.26 },
+    { "playerId": "60100", "date": "2026-04-22", "ip": 7.0, "er": 1, "k": 8, "bb": 1, "fip": 2.50, "era": 1.29 },
+    { "playerId": "60100", "date": "2026-04-16", "ip": 5.2, "er": 4, "k": 4, "bb": 3, "fip": 4.15, "era": 6.35 },
+    { "playerId": "60100", "date": "2026-04-10", "ip": 6.0, "er": 2, "k": 6, "bb": 2, "fip": 3.20, "era": 3.00 },
+    { "playerId": "60100", "date": "2026-04-04", "ip": 6.2, "er": 1, "k": 7, "bb": 1, "fip": 2.65, "era": 1.35 }
+  ],
+  "currentGrade": { "grade": "rare", "percentile": 78, "basis": "최근 6등판 FIP 평균 3.13 (백분위 78)" }
+}

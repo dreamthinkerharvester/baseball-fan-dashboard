@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Grade tokens — 컴포넌트 레벨에서 var(--grade-color) 형태로 사용 */
+    --grade-elite: #7b2fbe;
+    --grade-elite-glow: rgba(123, 47, 190, 0.5);
+    --grade-rare: #e63946;
+    --grade-rare-glow: rgba(230, 57, 70, 0.4);
+    --grade-special: #f4a261;
+    --grade-special-glow: rgba(244, 162, 97, 0.4);
+    --grade-normal: #457b9d;
+
+    /* Layout tokens */
+    --header-h: 48px;
+    --footer-h: 40px;
+    --card-w-mobile: 100px;
+    --card-h-mobile: 140px;
+    --card-w-desktop: 120px;
+    --card-h-desktop: 170px;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family:
+      'Pretendard Variable',
+      'Pretendard',
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    /* WCAG: 본문 라인 높이 1.5 이상 */
+    line-height: 1.5;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--grade-elite);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@layer base {
+  /* Dialog 자체 fade-in 애니메이션 (open:animate-[fadein_200ms]) */
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer utilities {
+  /* 등급별 카드 보더 + 글로우 — 컴포넌트에서 data-grade 속성으로 토글 */
+  [data-grade='elite'] {
+    border-color: var(--grade-elite);
+    box-shadow: 0 0 14px var(--grade-elite-glow);
+  }
+  [data-grade='rare'] {
+    border-color: var(--grade-rare);
+    box-shadow: 0 0 12px var(--grade-rare-glow);
+  }
+  [data-grade='special'] {
+    border-color: var(--grade-special);
+    box-shadow: 0 0 10px var(--grade-special-glow);
+  }
+  [data-grade='normal'] {
+    border-color: var(--grade-normal);
+    /* normal은 글로우 없음 */
+  }
+
+  /* 가로 스크롤 시 스크롤바 숨김 (Standings Banner collapsed view) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* iOS safe-area for bottom-sheet */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+}

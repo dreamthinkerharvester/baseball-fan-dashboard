@@ -1,0 +1,15 @@
+{
+  "player": { "id": "70200", "name": "고영표", "teamCode": "KT", "position": "P", "isPitcher": true },
+  "currentSeason": { "playerId": "70200", "season": 2026, "games": 8, "ip": 52.0, "era": 2.45, "fip": 2.62, "whip": 1.04, "k9": 8.8, "bb9": 1.8, "updatedAt": "2026-05-09T06:00:00+09:00" },
+  "careerSeasons": [
+    { "playerId": "70200", "season": 2025, "games": 28, "ip": 178.0, "era": 2.95, "fip": 2.88, "whip": 1.10, "k9": 8.5, "bb9": 1.9, "updatedAt": "2025-10-30T20:00:00+09:00" }
+  ],
+  "recentTen": [
+    { "playerId": "70200", "date": "2026-05-05", "ip": 7.0, "er": 1, "k": 9, "bb": 1, "fip": 2.10, "era": 1.29 },
+    { "playerId": "70200", "date": "2026-04-29", "ip": 6.0, "er": 2, "k": 7, "bb": 0, "fip": 2.50, "era": 3.00 },
+    { "playerId": "70200", "date": "2026-04-23", "ip": 7.0, "er": 1, "k": 8, "bb": 1, "fip": 2.30, "era": 1.29 },
+    { "playerId": "70200", "date": "2026-04-17", "ip": 6.1, "er": 3, "k": 6, "bb": 2, "fip": 3.20, "era": 4.26 },
+    { "playerId": "70200", "date": "2026-04-11", "ip": 7.0, "er": 0, "k": 8, "bb": 0, "fip": 1.85, "era": 0.00 }
+  ],
+  "currentGrade": { "grade": "elite", "percentile": 91, "basis": "최근 5등판 FIP 평균 2.39 (백분위 91)" }
+}

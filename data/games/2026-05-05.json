@@ -1,0 +1,57 @@
+[
+  {
+    "id": "20260505-LG-DOOSAN-1",
+    "date": "2026-05-05",
+    "startTime": "14:00",
+    "homeTeam": "LG",
+    "awayTeam": "DOOSAN",
+    "stadium": "잠실",
+    "status": "final",
+    "homeScore": 2,
+    "awayScore": 1
+  },
+  {
+    "id": "20260505-SSG-NC-1",
+    "date": "2026-05-05",
+    "startTime": "14:00",
+    "homeTeam": "SSG",
+    "awayTeam": "NC",
+    "stadium": "문학",
+    "status": "final",
+    "homeScore": 7,
+    "awayScore": 7
+  },
+  {
+    "id": "20260505-SAMSUNG-KIWOOM-1",
+    "date": "2026-05-05",
+    "startTime": "14:00",
+    "homeTeam": "SAMSUNG",
+    "awayTeam": "KIWOOM",
+    "stadium": "대구",
+    "status": "final",
+    "homeScore": 11,
+    "awayScore": 1
+  },
+  {
+    "id": "20260505-KT-LOTTE-1",
+    "date": "2026-05-05",
+    "startTime": "14:00",
+    "homeTeam": "KT",
+    "awayTeam": "LOTTE",
+    "stadium": "수원",
+    "status": "final",
+    "homeScore": 5,
+    "awayScore": 4
+  },
+  {
+    "id": "20260505-KIA-HANWHA-1",
+    "date": "2026-05-05",
+    "startTime": "14:00",
+    "homeTeam": "KIA",
+    "awayTeam": "HANWHA",
+    "stadium": "광주",
+    "status": "final",
+    "homeScore": 12,
+    "awayScore": 7
+  }
+]
