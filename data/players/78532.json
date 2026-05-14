@@ -1,0 +1,149 @@
+{
+  "player": {
+    "id": "78532",
+    "name": "김선빈",
+    "teamCode": "KIA",
+    "position": "2B",
+    "isPitcher": false,
+    "photoUrl": "/assets/baseball/16Eh4Yv6.jpeg"
+  },
+  "currentSeason": {
+    "playerId": "78532",
+    "season": 2026,
+    "games": 33,
+    "ab": 115,
+    "hits": 32,
+    "hr": 1,
+    "rbi": 14,
+    "avg": 0.278,
+    "obp": 0.342,
+    "slg": 0.348,
+    "ops": 0.69,
+    "wrcPlus": 98,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [
+    {
+      "playerId": "78532",
+      "season": 2025,
+      "games": 128,
+      "ab": 450,
+      "hits": 134,
+      "hr": 3,
+      "rbi": 48,
+      "avg": 0.298,
+      "obp": 0.358,
+      "slg": 0.378,
+      "ops": 0.736,
+      "wrcPlus": 107,
+      "updatedAt": "2025-10-30T20:00:00+09:00"
+    }
+  ],
+  "recentTen": [
+    {
+      "date": "2026-05-13",
+      "ab": 5,
+      "hits": 2,
+      "hr": 0,
+      "rbi": 3,
+      "ops": 0.826,
+      "wrcPlus": 140,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-12",
+      "ab": 5,
+      "hits": 0,
+      "hr": 0,
+      "rbi": 1,
+      "ops": 0.802,
+      "wrcPlus": 81,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-11",
+      "ab": 3,
+      "hits": 2,
+      "hr": 0,
+      "rbi": 3,
+      "ops": 0.61,
+      "wrcPlus": 105,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-10",
+      "ab": 3,
+      "hits": 0,
+      "hr": 0,
+      "rbi": 0,
+      "ops": 0.783,
+      "wrcPlus": 114,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-09",
+      "ab": 5,
+      "hits": 2,
+      "hr": 0,
+      "rbi": 3,
+      "ops": 0.996,
+      "wrcPlus": 68,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-08",
+      "ab": 3,
+      "hits": 3,
+      "hr": 0,
+      "rbi": 4,
+      "ops": 0.666,
+      "wrcPlus": 144,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-07",
+      "ab": 5,
+      "hits": 2,
+      "hr": 0,
+      "rbi": 2,
+      "ops": 1.054,
+      "wrcPlus": 108,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-06",
+      "ab": 3,
+      "hits": 1,
+      "hr": 0,
+      "rbi": 2,
+      "ops": 0.789,
+      "wrcPlus": 145,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-05",
+      "ab": 4,
+      "hits": 0,
+      "hr": 0,
+      "rbi": 1,
+      "ops": 0.676,
+      "wrcPlus": 73,
+      "playerId": "78532"
+    },
+    {
+      "date": "2026-05-04",
+      "ab": 5,
+      "hits": 0,
+      "hr": 0,
+      "rbi": 1,
+      "ops": 0.609,
+      "wrcPlus": 104,
+      "playerId": "78532"
+    }
+  ],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 38,
+    "basis": "최근 10경기 wRC+ 백분위 38"
+  }
+}

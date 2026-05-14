@@ -50,78 +50,76 @@ export function PlayerCard({
       }
       title={slot.gradeBasis}
       className={clsx(
-        'group relative flex flex-col items-center justify-between border-2 bg-gradient-to-br from-bg-card to-bg-cardEnd text-text-primary',
+        'group relative flex flex-col items-stretch justify-between overflow-hidden border-2 text-text-primary',
         'rounded-card transition-transform duration-150 hover:scale-[1.04] active:scale-100 focus-visible:outline-grade-elite',
         variant === 'starter'
-          ? 'h-[120px] w-full px-3 py-2 sm:h-[140px]'
-          : 'h-[140px] w-full min-w-[100px] px-2 py-2 sm:h-[170px]',
+          ? 'h-[140px] w-full sm:h-[160px]'
+          : 'h-[180px] w-full min-w-[110px] sm:h-[210px]',
         className,
       )}
     >
-      {/* 헤더: 등급 배지 + 타순 번호 */}
-      <header className="flex w-full items-start justify-between">
+      {/* Background photo (full-bleed, dimmed) */}
+      {player?.photoUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={player.photoUrl}
+          alt=""
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40 transition-opacity group-hover:opacity-55"
+          loading="lazy"
+        />
+      ) : (
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-bg-card to-bg-cardEnd"
+          aria-hidden
+        />
+      )}
+      {/* Gradient overlay for legibility */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30"
+        aria-hidden
+      />
+
+      {/* 헤더: 등급 배지 + 등번호 (uniform number) */}
+      <header className="relative z-10 flex w-full items-start justify-between px-2 pt-2">
         <GradeBadge grade={slot.grade} size="sm" />
         <span
-          className="text-caption font-bold text-text-muted"
+          className="rounded bg-black/50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white/80"
           aria-hidden
         >
-          {orderLabel}
+          #{player?.uniformNumber ?? orderLabel}
         </span>
       </header>
 
-      {/* 중앙: 선수 사진 OR 포지션 아바타 */}
-      <div
-        className={clsx(
-          'flex items-center justify-center',
-          variant === 'starter' ? 'h-12 w-12' : 'h-12 w-12 sm:h-16 sm:w-16',
-        )}
-        aria-hidden
-      >
-        {player?.photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={player.photoUrl}
-            alt=""
-            className="h-full w-full rounded-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <PositionAvatar position={slot.position} />
-        )}
+      {/* 타순 번호 (중앙 큰 글자) */}
+      <div className="relative z-10 flex flex-1 items-center justify-center" aria-hidden>
+        <span className="text-5xl font-black leading-none text-white/95 drop-shadow-lg sm:text-6xl">
+          {orderLabel}
+        </span>
       </div>
 
       {/* 푸터: 선수명 + 포지션 + 스탯 */}
-      <footer className="flex w-full flex-col items-center text-center">
-        <span className="line-clamp-1 text-body font-semibold text-text-primary">
+      <footer className="relative z-10 flex w-full flex-col items-center gap-0.5 bg-black/50 px-2 py-2 text-center backdrop-blur-sm">
+        <span className="line-clamp-1 text-body font-semibold text-white">
           {player?.name ?? '—'}
         </span>
-        <span
-          className="text-caption text-text-muted"
-          style={team ? { color: team.primaryColor } : undefined}
-        >
-          {slot.position}
-        </span>
-        {keyStat ? (
+        <div className="flex items-center gap-2">
           <span
-            className="mt-0.5 text-caption font-bold"
-            style={{ color: `var(--grade-${slot.grade})` }}
+            className="text-caption font-bold"
+            style={team ? { color: team.primaryColor } : undefined}
           >
-            {keyStat}
+            {slot.position}
           </span>
-        ) : null}
+          {keyStat ? (
+            <span
+              className="text-caption font-bold"
+              style={{ color: `var(--grade-${slot.grade})` }}
+            >
+              {keyStat}
+            </span>
+          ) : null}
+        </div>
       </footer>
     </button>
   );
 }
 
-/** SVG-free position icon (글자 기반). 사진 없는 선수의 폴백. */
-function PositionAvatar({ position }: { position: string }) {
-  return (
-    <span
-      className="flex h-full w-full items-center justify-center rounded-full bg-bg-deep text-heading font-bold text-text-muted"
-      aria-hidden
-    >
-      {position}
-    </span>
-  );
-}

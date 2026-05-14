@@ -5,11 +5,17 @@
 
 import { ScheduleList } from '@/features/game-schedule/ScheduleList';
 import { LineupSection } from '@/features/lineup-card/LineupSection';
+import { TeamMatchupPanel } from '@/features/team-header/TeamMatchupPanel';
 
 import type { TeamCode } from '@/types';
 
 export function GameSchedule({ myTeam }: { myTeam: TeamCode | null }) {
   return <ScheduleList myTeam={myTeam} defaultRange="day" />;
+}
+
+export function MatchupHeader({ myTeam }: { myTeam: TeamCode | null }) {
+  if (!myTeam) return null;
+  return <TeamMatchupPanel team={myTeam} />;
 }
 
 export function LineupSectionMaybe({ myTeam }: { myTeam: TeamCode | null }) {

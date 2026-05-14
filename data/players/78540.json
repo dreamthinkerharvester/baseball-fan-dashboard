@@ -1,0 +1,139 @@
+{
+  "player": {
+    "id": "78540",
+    "name": "임기영",
+    "teamCode": "KIA",
+    "position": "P",
+    "isPitcher": true,
+    "photoUrl": "/assets/baseball/JBdXoZRk.jpeg"
+  },
+  "currentSeason": {
+    "playerId": "78540",
+    "season": 2026,
+    "games": 7,
+    "ip": 41.1,
+    "era": 3.78,
+    "fip": 3.95,
+    "whip": 1.31,
+    "k": 32,
+    "bb": 13,
+    "hr": 5,
+    "k9": 6.97,
+    "bb9": 2.83,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [
+    {
+      "playerId": "78540",
+      "season": 2025,
+      "games": 25,
+      "ip": 145,
+      "era": 3.85,
+      "fip": 4.01,
+      "whip": 1.34,
+      "k": 108,
+      "bb": 41,
+      "hr": 18,
+      "k9": 6.7,
+      "bb9": 2.54,
+      "updatedAt": "2025-10-30T20:00:00+09:00"
+    }
+  ],
+  "recentTen": [
+    {
+      "date": "2026-05-11",
+      "ip": 6.7,
+      "er": 0,
+      "k": 1,
+      "era": 4.35,
+      "fip": 3.32,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-05-08",
+      "ip": 6.4,
+      "er": 0,
+      "k": 1,
+      "era": 4.39,
+      "fip": 4.14,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-05-05",
+      "ip": 4.9,
+      "er": 3,
+      "k": 2,
+      "era": 2.72,
+      "fip": 4.16,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-05-02",
+      "ip": 4.8,
+      "er": 1,
+      "k": 6,
+      "era": 3.74,
+      "fip": 4.72,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-29",
+      "ip": 5.1,
+      "er": 2,
+      "k": 3,
+      "era": 3.72,
+      "fip": 4.16,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-26",
+      "ip": 4.5,
+      "er": 1,
+      "k": 3,
+      "era": 3.01,
+      "fip": 4.01,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-23",
+      "ip": 5.4,
+      "er": 1,
+      "k": 0,
+      "era": 4.02,
+      "fip": 4.21,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-20",
+      "ip": 3.1,
+      "er": 0,
+      "k": 0,
+      "era": 3.51,
+      "fip": 3.88,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-17",
+      "ip": 3.2,
+      "er": 2,
+      "k": 1,
+      "era": 3.79,
+      "fip": 4.91,
+      "playerId": "78540"
+    },
+    {
+      "date": "2026-04-14",
+      "ip": 3.7,
+      "er": 0,
+      "k": 7,
+      "era": 3.21,
+      "fip": 4.06,
+      "playerId": "78540"
+    }
+  ],
+  "currentGrade": {
+    "grade": "special",
+    "percentile": 52,
+    "basis": "최근 10경기 FIP 백분위 52"
+  }
+}

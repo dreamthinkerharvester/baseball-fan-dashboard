@@ -17,7 +17,7 @@ import { useMyTeam } from '@/features/team-selection/hooks/useMyTeam';
 import { MyTeamSettings } from '@/features/team-selection/MyTeamSettings';
 import { TeamSelectionScreen } from '@/features/team-selection/TeamSelectionScreen';
 
-import { GameSchedule, LineupSectionMaybe } from './_dashboard';
+import { GameSchedule, LineupSectionMaybe, MatchupHeader } from './_dashboard';
 
 
 export default function HomePage() {
@@ -45,8 +45,9 @@ export default function HomePage() {
       <Header onOpenSettings={() => setSettingsOpen(true)} />
       <OfflineBanner />
       <StandingsBanner myTeam={myTeam} />
-      <GameSchedule myTeam={myTeam} />
+      <MatchupHeader myTeam={myTeam} />
       <LineupSectionMaybe myTeam={myTeam} />
+      <GameSchedule myTeam={myTeam} />
       <Footer />
       <MyTeamSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </main>
