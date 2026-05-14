@@ -35,28 +35,26 @@ export function DraftActions({ markdown, playerName, date, onRegenerate }: Props
   };
 
   return (
-    <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 mt-3">
+    <div className="flex flex-col gap-2 mt-1">
       <button
         type="button"
         onClick={handleCopy}
-        className="col-span-2 sm:col-span-1 px-4 py-3 sm:py-2 bg-[#E63946] text-white rounded font-medium hover:bg-[#d62836] active:bg-[#c0202f] min-h-[44px]"
+        className="m3-btn m3-btn-filled"
+        style={{ width: '100%', height: 48 }}
       >
-        {copied ? '✓ 복사됨' : '📋 마크다운 복사'}
+        <span className="mso" style={{ fontSize: 18 }}>{copied ? 'check' : 'content_copy'}</span>
+        {copied ? '복사됨' : '마크다운 복사'}
       </button>
-      <button
-        type="button"
-        onClick={handleDownload}
-        className="px-3 py-3 sm:py-2 border border-white/20 rounded hover:bg-white/5 active:bg-white/10 text-sm sm:text-base min-h-[44px]"
-      >
-        ⬇ .md 다운로드
-      </button>
-      <button
-        type="button"
-        onClick={onRegenerate}
-        className="px-3 py-3 sm:py-2 border border-white/20 rounded hover:bg-white/5 active:bg-white/10 text-sm sm:text-base min-h-[44px]"
-      >
-        🔄 재생성
-      </button>
+      <div className="grid grid-cols-2 gap-2">
+        <button type="button" onClick={handleDownload} className="m3-btn m3-btn-tonal" style={{ height: 44 }}>
+          <span className="mso" style={{ fontSize: 18 }}>download</span>
+          .md 다운로드
+        </button>
+        <button type="button" onClick={onRegenerate} className="m3-btn m3-btn-tonal" style={{ height: 44 }}>
+          <span className="mso" style={{ fontSize: 18 }}>refresh</span>
+          재생성
+        </button>
+      </div>
     </div>
   );
 }

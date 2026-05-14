@@ -35,9 +35,7 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
   const matches = useMemo(() => {
     if (query.trim().length === 0) return [];
     const q = query.trim().toLowerCase();
-    return roster
-      .filter((p) => p.name.toLowerCase().includes(q))
-      .slice(0, 8);
+    return roster.filter((p) => p.name.toLowerCase().includes(q)).slice(0, 8);
   }, [query, roster]);
 
   const handleSelect = (p: RosterPlayer) => {
@@ -62,13 +60,11 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
       setNotice('선수 이름을 입력해주세요.');
       return;
     }
-    // 1) Exact match (정확히 일치)
     const exact = roster.find((p) => p.name === q);
     if (exact) {
       handleSelect(exact);
       return;
     }
-    // 2) First partial match (첫 부분일치)
     const first = matches[0];
     if (first) {
       handleSelect(first);
@@ -78,9 +74,10 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="relative">
-        <div className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <div className="relative flex items-center gap-2">
+        <div className="m3-search-bar" style={{ flex: 1 }}>
+          <span className="mso" style={{ fontSize: 20 }}>search</span>
           <input
             type="text"
             value={query}
@@ -88,39 +85,92 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
               setQuery(e.target.value);
               setNotice(null);
             }}
-            placeholder="기아 선수명 입력 후 ↵ 또는 → 클릭"
-            className="flex-1 min-w-0 bg-[#1a1a2e] border border-white/10 rounded-md px-4 py-3 text-base focus:outline-none focus:border-[#E63946]"
+            placeholder="기아 선수명 입력 (예: 김도영)"
             autoComplete="off"
             enterKeyHint="search"
             inputMode="search"
           />
-          <button
-            type="submit"
-            className="shrink-0 px-4 py-3 bg-[#E63946] text-white rounded-md font-medium hover:bg-[#d62836] active:bg-[#c0202f] min-h-[44px] min-w-[60px]"
-            aria-label="검색"
-          >
-            검색
-          </button>
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="m3-btn m3-btn-icon"
+              style={{ width: 32, height: 32 }}
+              aria-label="검색어 지우기"
+            >
+              <span className="mso" style={{ fontSize: 18 }}>close</span>
+            </button>
+          )}
         </div>
+        <button
+          type="submit"
+          className="m3-btn m3-btn-filled"
+          style={{ minWidth: 72 }}
+          aria-label="검색"
+        >
+          검색
+        </button>
+
         {matches.length > 0 && (
-          <ul className="absolute z-20 left-0 right-0 mt-1 bg-[#16213e] border border-white/10 rounded-md max-h-64 overflow-auto">
+          <ul
+            style={{
+              position: 'absolute',
+              zIndex: 20,
+              left: 0,
+              right: 80,
+              top: '100%',
+              marginTop: 4,
+              background: 'var(--md-sys-color-surface-container-high)',
+              border: '1px solid var(--md-sys-color-outline-variant)',
+              borderRadius: 'var(--md-sys-shape-corner-medium)',
+              maxHeight: 280,
+              overflow: 'auto',
+              boxShadow: 'var(--md-sys-elevation-2)',
+              listStyle: 'none',
+              padding: 4,
+              margin: 0,
+            }}
+          >
             {matches.map((p, idx) => (
               <li key={p.id}>
                 <button
                   type="button"
                   onClick={() => handleSelect(p)}
-                  className={`w-full text-left px-4 py-3 flex justify-between min-h-[44px] ${
-                    idx === 0 ? 'bg-white/[0.06]' : ''
-                  } hover:bg-white/5 active:bg-white/10`}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    padding: '10px 12px',
+                    minHeight: 44,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 8,
+                    background: idx === 0 ? 'var(--md-sys-color-surface-container-highest)' : 'transparent',
+                    color: 'var(--md-sys-color-on-surface)',
+                    border: 'none',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                  }}
                 >
                   <span>
                     {p.name}
                     {idx === 0 && (
-                      <span className="ml-2 text-[10px] text-[#E63946] font-bold">↵ 엔터</span>
+                      <span
+                        className="tabular"
+                        style={{
+                          marginLeft: 8,
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: 'var(--md-sys-color-primary)',
+                        }}
+                      >
+                        ↵ 엔터
+                      </span>
                     )}
                   </span>
-                  <span className="text-white/50 text-sm">
-                    {p.position}{p.uniformNumber ? ` · #${p.uniformNumber}` : ''}
+                  <span className="tabular" style={{ fontSize: 12, color: 'var(--md-sys-color-on-surface-variant)' }}>
+                    {p.position}
+                    {p.uniformNumber ? ` · #${p.uniformNumber}` : ''}
                   </span>
                 </button>
               </li>
@@ -130,24 +180,39 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
       </div>
 
       {notice && (
-        <p className="text-xs text-yellow-300" role="alert">
+        <p
+          role="alert"
+          style={{
+            margin: 0,
+            padding: '8px 12px',
+            borderRadius: 8,
+            background: 'var(--md-sys-color-error-container)',
+            color: 'var(--md-sys-color-on-error-container)',
+            fontSize: 12,
+          }}
+        >
           {notice}
         </p>
       )}
 
       {recent.length > 0 && (
-        <div className="text-xs sm:text-sm text-white/60 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="shrink-0">최근 사용:</span>
-          {recent.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => handleSelect(p)}
-              className="underline hover:text-white min-h-[32px] px-1"
-            >
-              {p.name}
-            </button>
-          ))}
+        <div className="flex flex-col gap-1.5">
+          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: 0.5, color: 'var(--md-sys-color-on-surface-variant)', textTransform: 'uppercase' }}>
+            최근 사용
+          </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {recent.map((p, i) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => handleSelect(p)}
+                className={`m3-chip m3-chip-sm ${i === 0 ? '' : 'm3-chip-outline'}`}
+                style={{ cursor: 'pointer' }}
+              >
+                {p.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </form>

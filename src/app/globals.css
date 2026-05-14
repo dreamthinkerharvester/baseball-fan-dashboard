@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Pretendard (KR) + Roboto Flex (EN) + Material Symbols
+   ============================================================ */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&family=Roboto+Mono:wght@400;500;700&display=swap");
+
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  src: url('https://fonts.gstatic.com/s/materialsymbolsoutlined/v337/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2') format('woff2-variations');
+}
+
 @layer base {
   :root {
-    /* Grade tokens — 컴포넌트 레벨에서 var(--grade-color) 형태로 사용 */
+    /* ============================================================
+       LEGACY tokens (kept for compatibility)
+       ============================================================ */
     --grade-elite: #7b2fbe;
     --grade-elite-glow: rgba(123, 47, 190, 0.5);
     --grade-rare: #e63946;
@@ -12,14 +27,118 @@
     --grade-special: #f4a261;
     --grade-special-glow: rgba(244, 162, 97, 0.4);
     --grade-normal: #457b9d;
-
-    /* Layout tokens */
     --header-h: 48px;
     --footer-h: 40px;
     --card-w-mobile: 100px;
     --card-h-mobile: 140px;
     --card-w-desktop: 120px;
     --card-h-desktop: 170px;
+
+    /* ============================================================
+       M3 KIA seed — Primary (#EA0029)
+       ============================================================ */
+    --m3-primary-20:  rgb(105,0,17);
+    --m3-primary-30:  rgb(147,0,30);
+    --m3-primary-40:  rgb(186,27,49);
+    --m3-primary-80:  rgb(255,179,173);
+    --m3-primary-90:  rgb(255,218,213);
+
+    /* Secondary — Ground Green (#316B3A) */
+    --m3-secondary-20:  rgb(5,57,18);
+    --m3-secondary-30:  rgb(25,82,38);
+    --m3-secondary-80:  rgb(151,216,156);
+    --m3-secondary-90:  rgb(178,245,182);
+
+    /* Tertiary — Vintage Gold (#C9A961) */
+    --m3-tertiary-20:  rgb(63,46,0);
+    --m3-tertiary-30:  rgb(91,68,0);
+    --m3-tertiary-80:  rgb(245,201,97);
+    --m3-tertiary-90:  rgb(255,223,156);
+
+    --m3-error-20:  rgb(104,0,3);
+    --m3-error-30:  rgb(147,0,6);
+    --m3-error-80:  rgb(242,184,181);
+    --m3-error-90:  rgb(249,222,220);
+
+    /* Neutral — surfaces */
+    --m3-neutral-6:   rgb(18,16,18);
+    --m3-neutral-10:  rgb(28,27,31);
+    --m3-neutral-12:  rgb(33,32,36);
+    --m3-neutral-17:  rgb(43,42,46);
+    --m3-neutral-20:  rgb(50,48,52);
+    --m3-neutral-22:  rgb(55,53,58);
+    --m3-neutral-90:  rgb(230,225,231);
+
+    --m3-nv-30: rgb(73,71,76);
+    --m3-nv-60: rgb(147,143,149);
+    --m3-nv-80: rgb(202,197,204);
+
+    /* Tier semantic — intentional hue-shift away from KIA red */
+    --tier-elite-container:    rgb(76,46,138);
+    --tier-elite-on:           rgb(232,221,255);
+    --tier-rare-container:     rgb(138,33,98);
+    --tier-rare-on:            rgb(255,217,232);
+    --tier-special-container:  rgb(94,71,0);
+    --tier-special-on:         rgb(255,223,156);
+    --tier-normal-container:   rgb(0,72,116);
+    --tier-normal-on:          rgb(195,229,255);
+
+    /* ============================================================
+       M3 SEMANTIC ROLES — Dark
+       ============================================================ */
+    --md-sys-color-primary:                   var(--m3-primary-80);
+    --md-sys-color-on-primary:                var(--m3-primary-20);
+    --md-sys-color-primary-container:         var(--m3-primary-30);
+    --md-sys-color-on-primary-container:      var(--m3-primary-90);
+
+    --md-sys-color-secondary:                 var(--m3-secondary-80);
+    --md-sys-color-on-secondary:              var(--m3-secondary-20);
+    --md-sys-color-secondary-container:       var(--m3-secondary-30);
+    --md-sys-color-on-secondary-container:    var(--m3-secondary-90);
+
+    --md-sys-color-tertiary:                  var(--m3-tertiary-80);
+    --md-sys-color-on-tertiary:               var(--m3-tertiary-20);
+    --md-sys-color-tertiary-container:        var(--m3-tertiary-30);
+    --md-sys-color-on-tertiary-container:     var(--m3-tertiary-90);
+
+    --md-sys-color-error:                     var(--m3-error-80);
+    --md-sys-color-error-container:           var(--m3-error-30);
+    --md-sys-color-on-error-container:        var(--m3-error-90);
+
+    --md-sys-color-surface:                   var(--m3-neutral-10);
+    --md-sys-color-surface-container-lowest:  var(--m3-neutral-6);
+    --md-sys-color-surface-container-low:     var(--m3-neutral-10);
+    --md-sys-color-surface-container:         var(--m3-neutral-12);
+    --md-sys-color-surface-container-high:    var(--m3-neutral-17);
+    --md-sys-color-surface-container-highest: var(--m3-neutral-22);
+
+    --md-sys-color-on-surface:                var(--m3-neutral-90);
+    --md-sys-color-on-surface-variant:        var(--m3-nv-80);
+
+    --md-sys-color-outline:                   var(--m3-nv-60);
+    --md-sys-color-outline-variant:           var(--m3-nv-30);
+
+    /* Elevation */
+    --md-sys-elevation-1: 0 1px 3px 1px rgba(0,0,0,0.15), 0 1px 2px 0 rgba(0,0,0,0.30);
+    --md-sys-elevation-2: 0 2px 6px 2px rgba(0,0,0,0.15), 0 1px 2px 0 rgba(0,0,0,0.30);
+    --md-sys-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px 0 rgba(0,0,0,0.30);
+
+    /* Shape */
+    --md-sys-shape-corner-small:          8px;
+    --md-sys-shape-corner-medium:         12px;
+    --md-sys-shape-corner-large:          16px;
+    --md-sys-shape-corner-extra-large:    28px;
+
+    /* Typography refs */
+    --md-ref-typeface-brand: "Roboto Flex", "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+    --md-ref-typeface-plain: "Pretendard Variable", "Pretendard", "Roboto Flex", system-ui, sans-serif;
+    --md-ref-typeface-mono:  "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* Motion */
+    --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --md-sys-motion-duration-short2: 100ms;
+    --md-sys-motion-duration-short3: 150ms;
+    --md-sys-motion-duration-medium2: 300ms;
   }
 
   html {
@@ -28,27 +147,20 @@
   }
 
   body {
-    font-family:
-      'Pretendard Variable',
-      'Pretendard',
-      system-ui,
-      -apple-system,
-      'Segoe UI',
-      Roboto,
-      sans-serif;
-    /* WCAG: 본문 라인 높이 1.5 이상 */
+    font-family: var(--md-ref-typeface-plain);
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   *:focus-visible {
-    outline: 2px solid var(--grade-elite);
+    outline: 2px solid var(--md-sys-color-primary);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
 @layer base {
-  /* Dialog 자체 fade-in 애니메이션 (open:animate-[fadein_200ms]) */
   @keyframes fadein {
     from {
       opacity: 0;
@@ -61,8 +173,194 @@
   }
 }
 
+@layer components {
+  /* ============================================================
+     Material Symbols
+     ============================================================ */
+  .mso {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    display: inline-block;
+    white-space: nowrap;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .mso.filled { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+  /* ============================================================
+     M3 Component primitives
+     ============================================================ */
+  .m3-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: var(--md-sys-shape-corner-small);
+    font: 500 12px/16px var(--md-ref-typeface-plain);
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    border: 1px solid transparent;
+    transition: background var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  }
+  .m3-chip-sm { height: 22px; padding: 0 8px; font-size: 11px; letter-spacing: 0.5px; gap: 3px; }
+  .m3-chip-outline { background: transparent; border: 1px solid var(--md-sys-color-outline); color: var(--md-sys-color-on-surface-variant); }
+
+  .tier-elite   { background: var(--tier-elite-container);   color: var(--tier-elite-on); }
+  .tier-rare    { background: var(--tier-rare-container);    color: var(--tier-rare-on); }
+  .tier-special { background: var(--tier-special-container); color: var(--tier-special-on); }
+  .tier-normal  { background: var(--tier-normal-container);  color: var(--tier-normal-on); }
+
+  .m3-card {
+    background: var(--md-sys-color-surface-container);
+    border-radius: var(--md-sys-shape-corner-medium);
+    box-shadow: var(--md-sys-elevation-1);
+    transition:
+      transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
+      box-shadow var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+  }
+  .m3-card-elevated { background: var(--md-sys-color-surface-container-low); }
+  .m3-card-outlined { background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); box-shadow: none; }
+  .m3-card:hover { box-shadow: var(--md-sys-elevation-2); }
+
+  .m3-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 9999px;
+    font: 500 14px/20px var(--md-ref-typeface-plain);
+    letter-spacing: 0.1px;
+    border: none;
+    cursor: pointer;
+    transition: background var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
+                box-shadow var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+  }
+  .m3-btn-filled { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
+  .m3-btn-filled:hover { box-shadow: var(--md-sys-elevation-1); filter: brightness(1.05); }
+  .m3-btn-tonal { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+  .m3-btn-outlined { background: transparent; color: var(--md-sys-color-primary); border: 1px solid var(--md-sys-color-outline); }
+  .m3-btn-text { background: transparent; color: var(--md-sys-color-primary); padding: 0 12px; }
+  .m3-btn-icon { width: 40px; height: 40px; padding: 0; border-radius: 9999px; background: transparent; color: var(--md-sys-color-on-surface-variant); }
+
+  .m3-kpi-cell {
+    background: var(--md-sys-color-surface-container-high);
+    border-radius: var(--md-sys-shape-corner-small);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .m3-kpi-cell .m3-kpi-label { font: 500 11px/14px var(--md-ref-typeface-plain); letter-spacing: 0.5px; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; }
+  .m3-kpi-cell .m3-kpi-value { font: 600 20px/24px var(--md-ref-typeface-mono); color: var(--md-sys-color-on-surface); font-variant-numeric: tabular-nums; }
+  .m3-kpi-cell .m3-kpi-sub   { font: 500 11px/14px var(--md-ref-typeface-mono); color: var(--md-sys-color-on-surface-variant); }
+
+  .m3-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 16px;
+    background: var(--md-sys-color-surface-container-high);
+    border-radius: 9999px;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  .m3-search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--md-sys-color-on-surface);
+    font: 400 16px/24px var(--md-ref-typeface-plain);
+  }
+
+  .m3-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in oklab, var(--md-sys-color-surface-container) 92%, transparent);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    backdrop-filter: saturate(140%) blur(8px);
+    box-shadow: var(--md-sys-elevation-2);
+  }
+
+  .m3-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .m3-tabs button {
+    flex: 1;
+    padding: 14px 0 12px;
+    background: transparent;
+    border: none;
+    font: 600 14px/20px var(--md-ref-typeface-plain);
+    letter-spacing: 0.1px;
+    color: var(--md-sys-color-on-surface-variant);
+    cursor: pointer;
+    position: relative;
+    transition: color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  }
+  .m3-tabs button.active { color: var(--md-sys-color-primary); }
+  .m3-tabs button.active::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--md-sys-color-primary);
+  }
+
+  /* Storybook md preview */
+  .m3-md-preview {
+    background: var(--md-sys-color-surface-container-lowest);
+    border-radius: var(--md-sys-shape-corner-medium);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    font: 400 12px/18px var(--md-ref-typeface-mono);
+    color: var(--md-sys-color-on-surface);
+    padding: 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Thumbnail (storybook image pool) */
+  .m3-thumb {
+    position: relative;
+    aspect-ratio: 1/1;
+    border-radius: var(--md-sys-shape-corner-small);
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--md-sys-color-surface-container-high);
+  }
+  .m3-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .m3-thumb.selected { box-shadow: 0 0 0 2px var(--md-sys-color-primary); }
+  .m3-thumb .slot-tag {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font: 700 9px/1 var(--md-ref-typeface-mono);
+    letter-spacing: 0.5px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+}
+
 @layer utilities {
-  /* 등급별 카드 보더 + 글로우 — 컴포넌트에서 data-grade 속성으로 토글 */
+  /* Grade legacy tokens */
   [data-grade='elite'] {
     border-color: var(--grade-elite);
     box-shadow: 0 0 14px var(--grade-elite-glow);
@@ -77,20 +375,21 @@
   }
   [data-grade='normal'] {
     border-color: var(--grade-normal);
-    /* normal은 글로우 없음 */
   }
 
-  /* 가로 스크롤 시 스크롤바 숨김 (Standings Banner collapsed view) */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* iOS safe-area for bottom-sheet */
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom, 0);
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0); }
+
+  .font-mono-tn { font-family: var(--md-ref-typeface-mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1, "lnum" 1; }
+  .font-brand { font-family: var(--md-ref-typeface-brand); }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
   }
 }

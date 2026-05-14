@@ -1,5 +1,7 @@
 'use client';
 
+import { ElevatedCard } from './ElevatedCard';
+
 interface Props {
   images: string[];
   assignments: Record<1 | 2 | 3, string | null>;
@@ -8,41 +10,94 @@ interface Props {
 }
 
 export function ImageGallery({ images, assignments, onImageClick, onClear }: Props) {
+  const slots = [1, 2, 3] as const;
   return (
-    <div className="bg-[#1a1a2e] border border-white/10 rounded-md p-4 space-y-4">
-      <h3 className="font-semibold">🖼️ 이미지 풀 ({images.length}장)</h3>
-
-      <div className="space-y-2 text-sm">
-        {([1, 2, 3] as const).map((slot) => (
-          <div key={slot} className="flex items-center justify-between gap-2">
-            <span className="text-white/70">슬롯 {slot}:</span>
-            {assignments[slot] ? (
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <img
-                  src={assignments[slot] as string}
-                  alt={`slot-${slot}`}
-                  className="w-10 h-10 object-cover rounded border border-white/20"
-                />
-                <span className="truncate text-white/50">
-                  {extractName(assignments[slot] as string)}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onClear(slot)}
-                  className="text-red-400 hover:text-red-300"
-                  aria-label={`슬롯 ${slot} 비우기`}
+    <ElevatedCard overline="⑥ 이미지 풀" headline={`썸네일 ${images.length}장 · 3개 슬롯`}>
+      {/* Slot status row */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        {slots.map((slot) => {
+          const url = assignments[slot];
+          return (
+            <div
+              key={slot}
+              style={{
+                position: 'relative',
+                aspectRatio: '1 / 1',
+                borderRadius: 'var(--md-sys-shape-corner-small)',
+                overflow: 'hidden',
+                background: 'var(--md-sys-color-surface-container-highest)',
+                border: url ? 'none' : '1px dashed var(--md-sys-color-outline-variant)',
+              }}
+            >
+              {url ? (
+                <>
+                  <img src={url} alt={`slot-${slot}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      left: 4,
+                      fontFamily: 'var(--md-ref-typeface-mono)',
+                      fontWeight: 700,
+                      fontSize: 9,
+                      letterSpacing: 0.5,
+                      padding: '4px 6px',
+                      borderRadius: 4,
+                      background: 'var(--md-sys-color-primary-container)',
+                      color: 'var(--md-sys-color-on-primary-container)',
+                    }}
+                  >
+                    SLOT {slot}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onClear(slot)}
+                    aria-label={`슬롯 ${slot} 비우기`}
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      right: 4,
+                      width: 24,
+                      height: 24,
+                      borderRadius: 9999,
+                      background: 'rgba(0,0,0,0.6)',
+                      color: 'white',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <span className="mso" style={{ fontSize: 14 }}>close</span>
+                  </button>
+                </>
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    fontFamily: 'var(--md-ref-typeface-mono)',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: 0.5,
+                    color: 'var(--md-sys-color-on-surface-variant)',
+                  }}
                 >
-                  ✕
-                </button>
-              </div>
-            ) : (
-              <span className="text-white/40">비어있음</span>
-            )}
-          </div>
-        ))}
+                  SLOT {slot}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      <div className="grid grid-cols-4 sm:grid-cols-3 gap-2 max-h-[280px] sm:max-h-[400px] overflow-y-auto">
+      <div
+        className="grid grid-cols-4 sm:grid-cols-4 gap-1.5"
+        style={{ maxHeight: 320, overflowY: 'auto' }}
+      >
         {images.map((url) => {
           const used = (Object.values(assignments) as Array<string | null>).includes(url);
           return (
@@ -51,14 +106,30 @@ export function ImageGallery({ images, assignments, onImageClick, onClear }: Pro
               type="button"
               onClick={() => onImageClick(url)}
               disabled={used}
-              className={`relative aspect-square overflow-hidden rounded border ${
-                used ? 'border-[#E63946] opacity-50' : 'border-white/10 hover:border-white/50 active:border-white/80'
-              }`}
+              className={`m3-thumb ${used ? 'selected' : ''}`}
+              style={{
+                opacity: used ? 0.5 : 1,
+                cursor: used ? 'default' : 'pointer',
+                border: 'none',
+                padding: 0,
+              }}
               aria-label={used ? `${extractName(url)} (사용중)` : `${extractName(url)} 선택`}
             >
-              <img src={url} alt="" loading="lazy" className="w-full h-full object-cover" />
+              <img src={url} alt="" loading="lazy" />
               {used && (
-                <span className="absolute inset-0 flex items-center justify-center text-[10px] sm:text-xs bg-black/50">
+                <span
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 10,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: 'white',
+                    fontWeight: 600,
+                  }}
+                >
                   사용중
                 </span>
               )}
@@ -67,10 +138,10 @@ export function ImageGallery({ images, assignments, onImageClick, onClear }: Pro
         })}
       </div>
 
-      <p className="text-xs text-white/50">
+      <p style={{ marginTop: 10, marginBottom: 0, fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}>
         이미지를 클릭하면 첫 빈 슬롯에 자동 채워집니다.
       </p>
-    </div>
+    </ElevatedCard>
   );
 }
 

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { ElevatedCard } from './ElevatedCard';
+
 interface Props {
   markdown: string;
   charCount: number;
@@ -9,30 +11,47 @@ interface Props {
 
 export function DraftPreview({ markdown, charCount }: Props) {
   const [view, setView] = useState<'rendered' | 'source'>('rendered');
+  const offRange = charCount < 1500 || charCount > 2500;
+
   return (
-    <div className="bg-[#1a1a2e] border border-white/10 rounded-md p-3 sm:p-4">
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <h3 className="font-semibold text-sm sm:text-base">📝 블로그 초안 미리보기</h3>
-        <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-          <span className={`${charCount < 1500 || charCount > 2500 ? 'text-yellow-300' : 'text-white/60'}`}>
-            {charCount}자
-          </span>
-          <button
-            type="button"
-            onClick={() => setView(view === 'rendered' ? 'source' : 'rendered')}
-            className="px-2 py-1 border border-white/20 rounded hover:bg-white/5 min-h-[36px]"
-          >
-            {view === 'rendered' ? 'MD 원문' : '렌더링'}
-          </button>
-        </div>
+    <ElevatedCard overline="⑤ 마크다운 미리보기" headline="블로그 초안" mono>
+      <div className="flex items-center justify-between gap-2 mb-3" style={{ marginTop: -4 }}>
+        <span
+          className="tabular"
+          style={{
+            fontSize: 12,
+            color: offRange ? 'var(--md-sys-color-tertiary)' : 'var(--md-sys-color-on-surface-variant)',
+          }}
+        >
+          {charCount.toLocaleString()}자
+          {offRange && <span style={{ marginLeft: 6 }}>· 권장 1,500~2,500</span>}
+        </span>
+        <button
+          type="button"
+          onClick={() => setView(view === 'rendered' ? 'source' : 'rendered')}
+          className="m3-btn m3-btn-outlined"
+          style={{ height: 32, padding: '0 12px', fontSize: 12 }}
+        >
+          {view === 'rendered' ? 'MD 원문' : '렌더링 보기'}
+        </button>
       </div>
-      <div className="max-h-[60vh] sm:max-h-[600px] overflow-y-auto bg-[#0F1320] border border-white/5 rounded p-3 sm:p-4">
+      <div
+        className="m3-md-preview"
+        style={{
+          maxHeight: '60vh',
+          overflowY: 'auto',
+        }}
+      >
         {view === 'rendered' ? (
-          <pre className="whitespace-pre-wrap text-xs sm:text-sm leading-relaxed font-sans break-words">{markdown}</pre>
+          <pre className="whitespace-pre-wrap" style={{ margin: 0, fontFamily: 'var(--md-ref-typeface-plain)', fontSize: 13, lineHeight: '20px' }}>
+            {markdown}
+          </pre>
         ) : (
-          <pre className="whitespace-pre-wrap text-[11px] sm:text-xs leading-relaxed font-mono text-white/70 break-words">{markdown}</pre>
+          <pre className="whitespace-pre-wrap" style={{ margin: 0, color: 'var(--md-sys-color-on-surface-variant)' }}>
+            {markdown}
+          </pre>
         )}
       </div>
-    </div>
+    </ElevatedCard>
   );
 }
