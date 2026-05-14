@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "51648",
+    "name": "이의리",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/51648.png"
+  },
+  "currentSeason": {
+    "playerId": "51648",
+    "season": 2026,
+    "games": 7,
+    "ip": 72.1,
+    "era": 2.82,
+    "fip": 3.11,
+    "whip": 1.35,
+    "k": 46,
+    "bb": 11,
+    "k9": 8.88,
+    "bb9": 2.37,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 41,
+    "basis": "최근 10경기 백분위 41"
+  }
+}

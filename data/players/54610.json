@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "54610",
+    "name": "성영탁",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/54610.png"
+  },
+  "currentSeason": {
+    "playerId": "54610",
+    "season": 2026,
+    "games": 7,
+    "ip": 59,
+    "era": 2.52,
+    "fip": 3.85,
+    "whip": 1.15,
+    "k": 53,
+    "bb": 7,
+    "k9": 8.09,
+    "bb9": 3.8,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 43,
+    "basis": "최근 10경기 백분위 43"
+  }
+}

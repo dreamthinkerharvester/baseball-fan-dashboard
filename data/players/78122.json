@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "78122",
+    "name": "김태군",
+    "teamCode": "KIA",
+    "position": "C",
+    "uniformNumber": 42,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/78122.png"
+  },
+  "currentSeason": {
+    "playerId": "78122",
+    "season": 2026,
+    "games": 26,
+    "ab": 118,
+    "hits": 28,
+    "hr": 11,
+    "rbi": 25,
+    "avg": 0.327,
+    "obp": 0.392,
+    "slg": 0.562,
+    "ops": 0.807,
+    "wrcPlus": 161,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 32,
+    "basis": "최근 10경기 백분위 32"
+  }
+}

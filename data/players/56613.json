@@ -1,0 +1,32 @@
+{
+  "player": {
+    "id": "56613",
+    "name": "아데를린",
+    "teamCode": "KIA",
+    "position": "1B",
+    "uniformNumber": 24,
+    "isPitcher": false
+  },
+  "currentSeason": {
+    "playerId": "56613",
+    "season": 2026,
+    "games": 30,
+    "ab": 106,
+    "hits": 23,
+    "hr": 1,
+    "rbi": 17,
+    "avg": 0.254,
+    "obp": 0.311,
+    "slg": 0.431,
+    "ops": 0.777,
+    "wrcPlus": 137,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "special",
+    "percentile": 49,
+    "basis": "최근 10경기 백분위 49"
+  }
+}

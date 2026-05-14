@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "65653",
+    "name": "김호령",
+    "teamCode": "KIA",
+    "position": "CF",
+    "uniformNumber": 27,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/65653.png"
+  },
+  "currentSeason": {
+    "playerId": "65653",
+    "season": 2026,
+    "games": 35,
+    "ab": 101,
+    "hits": 27,
+    "hr": 6,
+    "rbi": 24,
+    "avg": 0.243,
+    "obp": 0.365,
+    "slg": 0.542,
+    "ops": 0.785,
+    "wrcPlus": 172,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "rare",
+    "percentile": 74,
+    "basis": "최근 10경기 백분위 74"
+  }
+}

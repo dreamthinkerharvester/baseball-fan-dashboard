@@ -58,13 +58,13 @@ export function PlayerCard({
         className,
       )}
     >
-      {/* Background photo (full-bleed, dimmed) */}
+      {/* Background photo (full-bleed, sharp) */}
       {player?.photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={player.photoUrl}
           alt=""
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40 transition-opacity group-hover:opacity-55"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top opacity-95 transition-transform group-hover:scale-105"
           loading="lazy"
         />
       ) : (
@@ -73,45 +73,53 @@ export function PlayerCard({
           aria-hidden
         />
       )}
-      {/* Gradient overlay for legibility */}
+      {/* Gradient overlay for legibility (bottom-heavy so face stays clear) */}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/85 to-transparent"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-black/70 to-transparent"
         aria-hidden
       />
 
-      {/* 헤더: 등급 배지 + 등번호 (uniform number) */}
-      <header className="relative z-10 flex w-full items-start justify-between px-2 pt-2">
-        <GradeBadge grade={slot.grade} size="sm" />
+      {/* 헤더: 등급 배지 + 타순 + 등번호 (작은 칩) */}
+      <header className="relative z-10 flex w-full items-start justify-between gap-1 px-1.5 pt-1.5">
+        <div className="flex items-center gap-1">
+          <GradeBadge grade={slot.grade} size="sm" />
+          <span
+            className="rounded bg-black/70 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white shadow-lg"
+            aria-hidden
+          >
+            {orderLabel}
+          </span>
+        </div>
         <span
-          className="rounded bg-black/50 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white/80"
+          className="rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white/90 shadow-lg"
           aria-hidden
         >
-          #{player?.uniformNumber ?? orderLabel}
+          #{player?.uniformNumber ?? '?'}
         </span>
       </header>
 
-      {/* 타순 번호 (중앙 큰 글자) */}
-      <div className="relative z-10 flex flex-1 items-center justify-center" aria-hidden>
-        <span className="text-5xl font-black leading-none text-white/95 drop-shadow-lg sm:text-6xl">
-          {orderLabel}
-        </span>
-      </div>
+      {/* Filler — sapphire space so photo dominates */}
+      <div className="relative z-0 flex-1" aria-hidden />
 
       {/* 푸터: 선수명 + 포지션 + 스탯 */}
-      <footer className="relative z-10 flex w-full flex-col items-center gap-0.5 bg-black/50 px-2 py-2 text-center backdrop-blur-sm">
-        <span className="line-clamp-1 text-body font-semibold text-white">
+      <footer className="relative z-10 flex w-full flex-col items-center gap-0.5 px-2 pb-2 text-center">
+        <span className="line-clamp-1 text-base font-bold text-white drop-shadow-md sm:text-lg">
           {player?.name ?? '—'}
         </span>
         <div className="flex items-center gap-2">
           <span
-            className="text-caption font-bold"
-            style={team ? { color: team.primaryColor } : undefined}
+            className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white"
+            style={team ? { backgroundColor: team.primaryColor } : { backgroundColor: '#444' }}
           >
             {slot.position}
           </span>
           {keyStat ? (
             <span
-              className="text-caption font-bold"
+              className="text-xs font-bold drop-shadow-md"
               style={{ color: `var(--grade-${slot.grade})` }}
             >
               {keyStat}

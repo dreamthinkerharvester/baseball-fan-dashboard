@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "55636",
+    "name": "박재현",
+    "teamCode": "KIA",
+    "position": "RF",
+    "uniformNumber": 15,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/55636.png"
+  },
+  "currentSeason": {
+    "playerId": "55636",
+    "season": 2026,
+    "games": 38,
+    "ab": 108,
+    "hits": 45,
+    "hr": 4,
+    "rbi": 31,
+    "avg": 0.25,
+    "obp": 0.314,
+    "slg": 0.325,
+    "ops": 0.781,
+    "wrcPlus": 103,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "elite",
+    "percentile": 89,
+    "basis": "최근 10경기 백분위 89"
+  }
+}

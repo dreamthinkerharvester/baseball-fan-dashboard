@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "50657",
+    "name": "박민",
+    "teamCode": "KIA",
+    "position": "SS",
+    "uniformNumber": 2,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/50657.png"
+  },
+  "currentSeason": {
+    "playerId": "50657",
+    "season": 2026,
+    "games": 28,
+    "ab": 137,
+    "hits": 35,
+    "hr": 5,
+    "rbi": 27,
+    "avg": 0.333,
+    "obp": 0.403,
+    "slg": 0.454,
+    "ops": 0.775,
+    "wrcPlus": 104,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 40,
+    "basis": "최근 10경기 백분위 40"
+  }
+}

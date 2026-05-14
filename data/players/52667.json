@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "52667",
+    "name": "윤도현",
+    "teamCode": "KIA",
+    "position": "2B",
+    "uniformNumber": 16,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/52667.png"
+  },
+  "currentSeason": {
+    "playerId": "52667",
+    "season": 2026,
+    "games": 36,
+    "ab": 132,
+    "hits": 42,
+    "hr": 10,
+    "rbi": 39,
+    "avg": 0.286,
+    "obp": 0.325,
+    "slg": 0.522,
+    "ops": 0.759,
+    "wrcPlus": 92,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "rare",
+    "percentile": 80,
+    "basis": "최근 10경기 백분위 80"
+  }
+}

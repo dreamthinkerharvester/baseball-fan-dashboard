@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "50662",
+    "name": "정해영",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/50662.png"
+  },
+  "currentSeason": {
+    "playerId": "50662",
+    "season": 2026,
+    "games": 6,
+    "ip": 73.1,
+    "era": 4.79,
+    "fip": 4.67,
+    "whip": 1.31,
+    "k": 59,
+    "bb": 8,
+    "k9": 7.75,
+    "bb9": 4.48,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 34,
+    "basis": "최근 10경기 백분위 34"
+  }
+}

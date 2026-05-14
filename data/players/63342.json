@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "63342",
+    "name": "조상우",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/63342.png"
+  },
+  "currentSeason": {
+    "playerId": "63342",
+    "season": 2026,
+    "games": 9,
+    "ip": 65.3,
+    "era": 3.86,
+    "fip": 3.75,
+    "whip": 1.27,
+    "k": 63,
+    "bb": 20,
+    "k9": 8.26,
+    "bb9": 1.8,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "special",
+    "percentile": 55,
+    "basis": "최근 10경기 백분위 55"
+  }
+}

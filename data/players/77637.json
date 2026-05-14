@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "77637",
+    "name": "양현종",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/77637.png"
+  },
+  "currentSeason": {
+    "playerId": "77637",
+    "season": 2026,
+    "games": 6,
+    "ip": 48.3,
+    "era": 2.74,
+    "fip": 2.51,
+    "whip": 1.01,
+    "k": 33,
+    "bb": 15,
+    "k9": 6.21,
+    "bb9": 4.18,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 35,
+    "basis": "최근 10경기 백분위 35"
+  }
+}

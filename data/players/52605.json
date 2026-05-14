@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "52605",
+    "name": "김도영",
+    "teamCode": "KIA",
+    "position": "3B",
+    "uniformNumber": 5,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/52605.png"
+  },
+  "currentSeason": {
+    "playerId": "52605",
+    "season": 2026,
+    "games": 27,
+    "ab": 95,
+    "hits": 47,
+    "hr": 7,
+    "rbi": 30,
+    "avg": 0.233,
+    "obp": 0.386,
+    "slg": 0.523,
+    "ops": 0.672,
+    "wrcPlus": 96,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "normal",
+    "percentile": 38,
+    "basis": "최근 10경기 백분위 38"
+  }
+}

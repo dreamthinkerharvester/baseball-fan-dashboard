@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "78603",
+    "name": "김선빈",
+    "teamCode": "KIA",
+    "position": "DH",
+    "uniformNumber": 3,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/78603.png"
+  },
+  "currentSeason": {
+    "playerId": "78603",
+    "season": 2026,
+    "games": 32,
+    "ab": 108,
+    "hits": 34,
+    "hr": 9,
+    "rbi": 38,
+    "avg": 0.271,
+    "obp": 0.326,
+    "slg": 0.398,
+    "ops": 0.898,
+    "wrcPlus": 130,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "special",
+    "percentile": 61,
+    "basis": "최근 10경기 백분위 61"
+  }
+}

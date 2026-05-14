@@ -1,0 +1,33 @@
+{
+  "player": {
+    "id": "52628",
+    "name": "한승연",
+    "teamCode": "KIA",
+    "position": "LF",
+    "uniformNumber": 31,
+    "isPitcher": false,
+    "photoUrl": "/assets/players/52628.png"
+  },
+  "currentSeason": {
+    "playerId": "52628",
+    "season": 2026,
+    "games": 35,
+    "ab": 114,
+    "hits": 34,
+    "hr": 2,
+    "rbi": 36,
+    "avg": 0.295,
+    "obp": 0.308,
+    "slg": 0.478,
+    "ops": 0.805,
+    "wrcPlus": 145,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "rare",
+    "percentile": 72,
+    "basis": "최근 10경기 백분위 72"
+  }
+}

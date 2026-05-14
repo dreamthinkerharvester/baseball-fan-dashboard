@@ -1,26 +1,89 @@
 {
-  "gameId": "20260514-KIA-DOOSAN-1",
+  "gameId": "20260514OBHT02026",
   "teamCode": "KIA",
   "startingPitcher": {
     "battingOrder": 0,
-    "playerId": "78538",
+    "playerId": "52641",
     "position": "P",
-    "grade": "elite",
-    "gradePercentile": 91,
-    "gradeBasis": "최근 10등판 FIP 평균 2.78 (백분위 91)"
+    "grade": "special",
+    "gradePercentile": 63,
+    "gradeBasis": "최근 등판 백분위 63"
   },
   "battingOrder": [
-    { "battingOrder": 1, "playerId": "78533", "position": "SS", "grade": "rare", "gradePercentile": 74, "gradeBasis": "최근 10경기 OPS 평균 0.871 (백분위 74)" },
-    { "battingOrder": 2, "playerId": "78536", "position": "CF", "grade": "special", "gradePercentile": 58, "gradeBasis": "최근 10경기 OPS 평균 0.812 (백분위 58)" },
-    { "battingOrder": 3, "playerId": "78529", "position": "3B", "grade": "elite", "gradePercentile": 95, "gradeBasis": "최근 10경기 wRC+ 평균 161 (백분위 95)" },
-    { "battingOrder": 4, "playerId": "78530", "position": "RF", "grade": "elite", "gradePercentile": 89, "gradeBasis": "최근 10경기 wRC+ 평균 154 (백분위 89)" },
-    { "battingOrder": 5, "playerId": "78531", "position": "DH", "grade": "rare", "gradePercentile": 72, "gradeBasis": "최근 10경기 wRC+ 평균 138 (백분위 72)" },
-    { "battingOrder": 6, "playerId": "78535", "position": "1B", "grade": "special", "gradePercentile": 51, "gradeBasis": "최근 10경기 OPS 평균 0.768 (백분위 51)" },
-    { "battingOrder": 7, "playerId": "78537", "position": "LF", "grade": "special", "gradePercentile": 47, "gradeBasis": "최근 10경기 OPS 평균 0.741 (백분위 47)" },
-    { "battingOrder": 8, "playerId": "78534", "position": "C", "grade": "normal", "gradePercentile": 33, "gradeBasis": "최근 10경기 OPS 평균 0.668 (백분위 33)" },
-    { "battingOrder": 9, "playerId": "78532", "position": "2B", "grade": "normal", "gradePercentile": 38, "gradeBasis": "최근 10경기 OPS 평균 0.692 (백분위 38)" }
+    {
+      "battingOrder": 1,
+      "playerId": "55636",
+      "position": "RF",
+      "grade": "elite",
+      "gradePercentile": 89,
+      "gradeBasis": "최근 폼 백분위 89"
+    },
+    {
+      "battingOrder": 2,
+      "playerId": "78603",
+      "position": "DH",
+      "grade": "special",
+      "gradePercentile": 61,
+      "gradeBasis": "최근 폼 백분위 61"
+    },
+    {
+      "battingOrder": 3,
+      "playerId": "52605",
+      "position": "3B",
+      "grade": "normal",
+      "gradePercentile": 38,
+      "gradeBasis": "최근 폼 백분위 38"
+    },
+    {
+      "battingOrder": 4,
+      "playerId": "56613",
+      "position": "1B",
+      "grade": "special",
+      "gradePercentile": 49,
+      "gradeBasis": "최근 폼 백분위 49"
+    },
+    {
+      "battingOrder": 5,
+      "playerId": "65653",
+      "position": "CF",
+      "grade": "rare",
+      "gradePercentile": 74,
+      "gradeBasis": "최근 폼 백분위 74"
+    },
+    {
+      "battingOrder": 6,
+      "playerId": "52667",
+      "position": "2B",
+      "grade": "rare",
+      "gradePercentile": 80,
+      "gradeBasis": "최근 폼 백분위 80"
+    },
+    {
+      "battingOrder": 7,
+      "playerId": "52628",
+      "position": "LF",
+      "grade": "rare",
+      "gradePercentile": 72,
+      "gradeBasis": "최근 폼 백분위 72"
+    },
+    {
+      "battingOrder": 8,
+      "playerId": "78122",
+      "position": "C",
+      "grade": "normal",
+      "gradePercentile": 32,
+      "gradeBasis": "최근 폼 백분위 32"
+    },
+    {
+      "battingOrder": 9,
+      "playerId": "50657",
+      "position": "SS",
+      "grade": "normal",
+      "gradePercentile": 40,
+      "gradeBasis": "최근 폼 백분위 40"
+    }
   ],
   "status": "confirmed",
-  "fetchedAt": "2026-05-14T16:30:00+09:00",
-  "source": "kbo"
+  "fetchedAt": "2026-05-14T11:38:08.523Z",
+  "source": "naver-preview-api"
 }

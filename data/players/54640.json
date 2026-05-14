@@ -1,0 +1,31 @@
+{
+  "player": {
+    "id": "54640",
+    "name": "네일",
+    "teamCode": "KIA",
+    "position": "DH",
+    "isPitcher": true,
+    "photoUrl": "/assets/players/54640.png"
+  },
+  "currentSeason": {
+    "playerId": "54640",
+    "season": 2026,
+    "games": 8,
+    "ip": 51.8,
+    "era": 3.63,
+    "fip": 3.59,
+    "whip": 1.35,
+    "k": 36,
+    "bb": 16,
+    "k9": 8.22,
+    "bb9": 2.87,
+    "updatedAt": "2026-05-14T06:00:00+09:00"
+  },
+  "careerSeasons": [],
+  "recentTen": [],
+  "currentGrade": {
+    "grade": "special",
+    "percentile": 52,
+    "basis": "최근 10경기 백분위 52"
+  }
+}
