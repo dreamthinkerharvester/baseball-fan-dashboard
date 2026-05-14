@@ -69,8 +69,9 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
       return;
     }
     // 2) First partial match (첫 부분일치)
-    if (matches.length > 0) {
-      handleSelect(matches[0]);
+    const first = matches[0];
+    if (first) {
+      handleSelect(first);
       return;
     }
     setNotice(`"${q}" — 일치하는 KIA 선수가 없습니다. (전체 ${roster.length}명)`);
