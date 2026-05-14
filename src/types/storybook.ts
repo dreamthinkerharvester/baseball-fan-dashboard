@@ -83,7 +83,7 @@ export interface NewsClip {
 export interface NarrativeEvent {
   year: number;
   text: string;
-  source: 'namu' | 'kbo' | 'user';
+  source: 'namu' | 'kbo' | 'user' | 'naver';
   sourceUrl?: string;
 }
 

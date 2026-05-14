@@ -175,7 +175,41 @@
 - **기능이 잘 돌아가는가?** ⚠️ 70%. 라이브 + API 응답은 OK, 그러나 **데이터 부족으로 핵심 가치(전성기 분석·1500자 초안)가 약 30~40%만 실현**.
 - **추가할 내용이 있는가?** ✅ **있다**. P0 1건(통산 데이터 수집), P1 3건, P2 5건. P0만 해결하면 매우 정상 수준.
 
-**즉시 다음 액션 권고**: Naver `game-polling` 또는 KBO 공식 페이지에서 김도영(52605) 1명 분 careerSeasons + recentTen 수집해서 prime 자동감지가 2024년 best year + 30-30 highlights 반환하는지 검증. 그 후 23명 모두 일괄 갱신.
+---
+
+## 10. P0 해결 — 후속 작업 (2026-05-15 추가)
+
+### 신규 크롤러
+- `scripts/crawler/naver-player-sniff.mjs` — 선수 페이지 API sniff
+- `scripts/crawler/naver-fetch-player-stats.mjs` — playerend-record + /record fallback
+
+### Naver API 발견
+| Endpoint | 용도 | 응답 |
+|----------|------|------|
+| `/players/kbo/{code}/playerend-record` | 통산 시즌별 + 최근 10경기 | 13KB (베테랑) |
+| `/players/kbo/{code}/record` | 현재 시즌 1개 + 부문 순위 | ~600B (신인 fallback) |
+| `/players/kbo/{code}/tores-profile` | 프로필 메타 | ~2KB |
+
+### 23/23 fetch 성공
+- 7명 풀커리어 (김도영 5시즌·박재현 2·아데를린 1·김태군 18·황동하 4·김범수 12·네일 3·성영탁 2)
+- 16명 fallback current-season-only
+
+### 김도영(52605) 검증 — 통산 데이터
+| 시즌 | AB | HR | SB | AVG | OPS | WAR | wRC+ |
+|------|-----|-----|-----|-----|-----|-----|------|
+| 2022 | 224 | 3 | 13 | .237 | .674 | 0.4 | 90.7 |
+| 2023 | 340 | 7 | 25 | .303 | .824 | 2.74 | 133.3 |
+| **2024** | **544** | **38** | **40** | **.347** | **1.067** | **7.34** | **167.5** ⭐ |
+| 2025 | 110 | 7 | 3 | .309 | .943 | 1.04 | 149.9 |
+| 2026 | 146 | 12 | 1 | .281 | .969 | 1.84 | 149.7 |
+
+→ prime 알고리즘이 **2024 best year + 30-30 highlights** 자동 감지 가능
+
+### 등급 재산출 (실 통계 기반)
+- 타자: wRC+ 기반 (≥140=elite / ≥110=rare / ≥90=special / else normal)
+- 투수: ERA 기반 with IP≥5 floor
+
+**상태**: Critical-1 + Critical-2 해결. Match Rate 78% → 90%+ 도약 예상.
 
 ---
 

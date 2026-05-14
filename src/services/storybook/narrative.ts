@@ -1,7 +1,11 @@
 // Storybook M6: Player Narrative — Design Ref §5.
+// Primary source: Naver tores-profile API (debutInfo + sportsBridgeCareerInfo + sportsBridgePrizeInfo)
+// Fallback: namu wiki regex (Phase 1 simple, Phase 2 cheerio)
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+
+import { loadPlayerDetail } from '@/lib/data/cache';
 
 import type { NarrativeEvent, StorybookPlayer } from '@/types';
 
@@ -10,8 +14,10 @@ const CACHE_DIR =
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 const NAMU_BASE = 'https://namu.wiki/w/';
+const NAVER_PROFILE_API = (code: string) =>
+  `https://api-gw.sports.naver.com/players/kbo/${code}/tores-profile`;
 const YEAR_RE = /(\d{4})\s*년/g;
-const MAX_EVENTS = 10;
+const MAX_EVENTS = 12;
 const MAX_TEXT_LEN = 100;
 
 interface NarrativeCacheEntry {
@@ -25,17 +31,158 @@ export async function buildNarrative(
   const cached = await readCache(player.id);
   if (cached) return cached.events;
 
-  const namuEvents = await fetchFromNamu(player.name);
-  if (namuEvents.length >= 3) {
-    await writeCache(player.id, namuEvents);
-    return namuEvents;
-  }
+  // 1차: Naver tores-profile
+  const naverEvents = await fetchFromNaverProfile(player.id);
 
-  const kboEvents = await fetchFromKboFallback();
-  const merged = mergeEvents(namuEvents, kboEvents);
+  // 2차 보강: careerSeasons에서 highlight 시즌 자동 추출
+  const seasonEvents = await buildSeasonHighlights(player.id);
+
+  // 3차 fallback: namu (현재는 0건 반환 — 차단/구조변경 흔함)
+  const namuEvents = naverEvents.length < 3 ? await fetchFromNamu(player.name) : [];
+
+  const merged = mergeEvents(naverEvents, seasonEvents, namuEvents);
   await writeCache(player.id, merged);
   return merged;
 }
+
+// ────────────────────────────────────────────────────────────────────
+// Naver tores-profile
+// ────────────────────────────────────────────────────────────────────
+
+interface NaverProfile {
+  result?: {
+    profile?: {
+      name?: string;
+      birthDate?: string;
+      birthDateKor?: string;
+      debutInfo?: Array<{ debut_year?: string; debuts_work?: string }>;
+      sportsBridgeCareerInfo?: Array<{ startDate?: string; endDate?: string; contents?: string }>;
+      sportsBridgePrizeInfo?: Array<{ year?: string; contents?: string }>;
+      sportsBridgeSchool?: Array<{ schoolName?: string; period?: string }>;
+      mainSchoolList?: Array<{ name?: string }>;
+      site?: Array<{ siteUrl?: string }>;
+    };
+  };
+}
+
+async function fetchFromNaverProfile(playerId: string): Promise<NarrativeEvent[]> {
+  try {
+    const res = await fetch(NAVER_PROFILE_API(playerId), {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15',
+        'Referer': `https://m.sports.naver.com/player/index?playerId=${playerId}&category=kbo`,
+        'Accept': 'application/json',
+      },
+    });
+    if (!res.ok) return [];
+    const json = (await res.json()) as NaverProfile;
+    const p = json?.result?.profile;
+    if (!p) return [];
+
+    const url = p.site?.[0]?.siteUrl ?? `https://m.sports.naver.com/player/index?playerId=${playerId}&category=kbo`;
+    const events: NarrativeEvent[] = [];
+
+    // 1. 데뷔
+    if (p.debutInfo) {
+      for (const d of p.debutInfo) {
+        const y = Number(d.debut_year);
+        if (Number.isFinite(y) && d.debuts_work) {
+          events.push({ year: y, text: d.debuts_work, source: 'naver', sourceUrl: url });
+        }
+      }
+    }
+
+    // 2. 국가대표 / 경력
+    if (p.sportsBridgeCareerInfo) {
+      for (const c of p.sportsBridgeCareerInfo) {
+        const y = Number(c.startDate);
+        if (!Number.isFinite(y) || !c.contents) continue;
+        // 'KIA 타이거즈' 같은 소속 정보는 데뷔에서 이미 다루므로 스킵
+        if (/^(KIA|두산|LG|키움|롯데|삼성|한화|SSG|NC|KT) 타이거즈?|베어스|트윈스|히어로즈|자이언츠|라이온즈|이글스|랜더스|다이노스|위즈$/.test(c.contents.trim())) continue;
+        events.push({ year: y, text: c.contents, source: 'naver', sourceUrl: url });
+      }
+    }
+
+    // 3. 수상
+    if (p.sportsBridgePrizeInfo) {
+      for (const pr of p.sportsBridgePrizeInfo) {
+        const y = Number(pr.year);
+        if (!Number.isFinite(y) || !pr.contents) continue;
+        events.push({ year: y, text: pr.contents, source: 'naver', sourceUrl: url });
+      }
+    }
+
+    return events;
+  } catch {
+    return [];
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Season highlight extraction from careerSeasons
+// ────────────────────────────────────────────────────────────────────
+
+async function buildSeasonHighlights(playerId: string): Promise<NarrativeEvent[]> {
+  try {
+    const cache = await loadPlayerDetail(playerId);
+    if (!cache) return [];
+    const seasons = (cache.data.careerSeasons ?? []) as Array<Record<string, unknown>>;
+    const events: NarrativeEvent[] = [];
+    for (const s of seasons) {
+      const year = Number(s.year);
+      if (!Number.isFinite(year)) continue;
+      const text = describeSeason(s);
+      if (text) {
+        events.push({ year, text, source: 'naver', sourceUrl: undefined });
+      }
+    }
+    return events;
+  } catch {
+    return [];
+  }
+}
+
+function describeSeason(s: Record<string, unknown>): string | null {
+  const num = (k: string) => (typeof s[k] === 'number' ? (s[k] as number) : 0);
+  const hr = num('hr');
+  const sb = num('sb');
+  const avg = num('avg');
+  const ops = num('ops');
+  const war = num('war');
+  const era = num('era');
+  const ip = num('ip');
+  const k = num('k');
+  const w = num('w');
+
+  // Pitcher
+  if (ip > 0 || era > 0) {
+    const parts: string[] = [];
+    if (ip > 0) parts.push(`${ip.toFixed(1)}이닝`);
+    if (era > 0) parts.push(`ERA ${era.toFixed(2)}`);
+    if (k > 0) parts.push(`${k}K`);
+    if (w > 0) parts.push(`${w}승`);
+    if (war >= 3) parts.push(`WAR ${war.toFixed(1)}`);
+    return parts.length > 0 ? parts.join(' · ') : null;
+  }
+
+  // Hitter
+  const parts: string[] = [];
+  if (avg > 0) parts.push(`타율 ${avg.toFixed(3).replace(/^0/, '')}`);
+  if (hr > 0) parts.push(`${hr}홈런`);
+  if (sb > 0) parts.push(`${sb}도루`);
+  if (ops > 0) parts.push(`OPS ${ops.toFixed(3).replace(/^0/, '')}`);
+  if (war >= 3) parts.push(`WAR ${war.toFixed(1)}`);
+
+  // Add 30-30 / 40-40 callout
+  if (hr >= 40 && sb >= 40) parts.unshift('40-40');
+  else if (hr >= 30 && sb >= 30) parts.unshift('30-30');
+
+  return parts.length > 0 ? parts.join(' · ') : null;
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Namu wiki fallback (simple regex)
+// ────────────────────────────────────────────────────────────────────
 
 async function fetchFromNamu(playerName: string): Promise<NarrativeEvent[]> {
   const url = `${NAMU_BASE}${encodeURIComponent(playerName)}`;
@@ -52,8 +199,6 @@ async function fetchFromNamu(playerName: string): Promise<NarrativeEvent[]> {
 }
 
 export function extractEventsFromHtml(html: string, sourceUrl: string): NarrativeEvent[] {
-  // 간이 추출: <p> 또는 <li> 안에서 "YYYY년 ..." 패턴 매칭.
-  // 정밀 파싱 (cheerio)은 Phase 2 — 본 MVP는 정규식 기반.
   const blocks = html
     .replace(/<script[\s\S]*?<\/script>/g, '')
     .replace(/<style[\s\S]*?<\/style>/g, '')
@@ -88,7 +233,6 @@ export function extractEventsFromHtml(html: string, sourceUrl: string): Narrativ
 }
 
 function nearestSentence(block: string, idx: number): string {
-  // Find sentence boundary (.) before/after idx
   const before = block.slice(0, idx).split(/[.。!?]\s*/).pop() ?? '';
   const afterRaw = block.slice(idx);
   const afterEnd = afterRaw.search(/[.。!?]/);
@@ -96,23 +240,27 @@ function nearestSentence(block: string, idx: number): string {
   return `${before}${after}`.replace(/\s+/g, ' ').trim();
 }
 
-async function fetchFromKboFallback(): Promise<NarrativeEvent[]> {
-  // KBO 공식 페이지는 정적 정보 위주 (career 통계). 자유 텍스트 부족 → 빈 배열 반환.
-  // Phase 2: cheerio + KBO 페이지 정밀 파싱.
-  return [];
-}
+// ────────────────────────────────────────────────────────────────────
+// Merge + dedupe
+// ────────────────────────────────────────────────────────────────────
 
-function mergeEvents(a: NarrativeEvent[], b: NarrativeEvent[]): NarrativeEvent[] {
-  const seen = new Set<number>();
+function mergeEvents(...lists: NarrativeEvent[][]): NarrativeEvent[] {
   const merged: NarrativeEvent[] = [];
-  for (const e of [...a, ...b]) {
-    if (!seen.has(e.year)) {
-      seen.add(e.year);
+  const yearTextSeen = new Set<string>();
+  for (const list of lists) {
+    for (const e of list) {
+      const key = `${e.year}|${e.text.slice(0, 30)}`;
+      if (yearTextSeen.has(key)) continue;
+      yearTextSeen.add(key);
       merged.push(e);
     }
   }
-  return merged.sort((x, y) => x.year - y.year).slice(0, MAX_EVENTS);
+  return merged.sort((a, b) => a.year - b.year).slice(0, MAX_EVENTS);
 }
+
+// ────────────────────────────────────────────────────────────────────
+// Cache
+// ────────────────────────────────────────────────────────────────────
 
 async function readCache(playerId: string): Promise<NarrativeCacheEntry | null> {
   try {
