@@ -13,7 +13,7 @@ import { DraftPreview } from '@/components/storybook/DraftPreview';
 import { DraftActions } from '@/components/storybook/DraftActions';
 import { fetcher } from '@/lib/api-client';
 
-import type { ApiResponse, Storybook } from '@/types';
+import type { Storybook } from '@/types';
 
 interface KiaRosterResp {
   players: Array<{
@@ -33,19 +33,18 @@ export default function StorybookPage() {
     3: null,
   });
 
-  const { data: rosterData } = useSWR<ApiResponse<KiaRosterResp>>(
+  const { data: rosterData } = useSWR<KiaRosterResp>(
     '/api/storybook/kia-players',
     fetcher,
   );
 
-  const { data: storyData, error: storyError, isLoading } = useSWR<ApiResponse<Storybook>>(
+  const { data: storybook, error: storyError, isLoading } = useSWR<Storybook>(
     selectedId ? `/api/storybook/${selectedId}` : null,
     fetcher,
     { revalidateOnFocus: false },
   );
 
-  const roster = rosterData?.data?.players ?? [];
-  const storybook = storyData?.data ?? null;
+  const roster = rosterData?.players ?? [];
 
   const handleImageClick = (imageUrl: string) => {
     setImageAssignments((prev) => {
