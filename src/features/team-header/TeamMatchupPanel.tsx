@@ -1,5 +1,6 @@
-// FM-style team header panel: 오늘 매치업 + 시즌 요약 + 최근 폼.
-// Design: FM25 portal/match style — 정보 밀집 카드, 시각적 대비.
+// FM-style team header panel — Material 3 (Dark) port.
+// Design Ref: m3-comp/components.jsx TeamMatchupPanel.
+// Real SWR data flow preserved.
 
 'use client';
 
@@ -45,133 +46,335 @@ export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
 
   return (
     <section
-      className="mx-4 my-4 overflow-hidden rounded-card border border-white/10 bg-gradient-to-br from-[#1a1a2e] to-[#16213e]"
+      className="m3-card mx-3 my-3 sm:mx-4 sm:my-4"
       aria-label={`${teamMeta.name} 매치업 헤더`}
+      style={{
+        padding: 16,
+        background: 'var(--md-sys-color-surface-container)',
+        borderRadius: 'var(--md-sys-shape-corner-large)',
+      }}
     >
-      {/* Top stripe: team color */}
-      <div className="h-1.5" style={{ backgroundColor: teamMeta.primaryColor }} />
-
-      <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
-        {/* Left: My team season summary */}
-        <div className="border-b border-white/5 p-4 md:border-b-0 md:border-r">
-          <div className="flex items-center gap-2 mb-3">
-            <span
-              className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
-              style={{ backgroundColor: teamMeta.primaryColor }}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.1fr_1fr_0.9fr] md:gap-6">
+        {/* Left: Season KPI */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline justify-between">
+            <div
+              className="font-brand"
+              style={{ fontSize: 14, fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}
             >
-              {teamMeta.shortName.slice(0, 2)}
-            </span>
-            <h2 className="text-base font-semibold">{teamMeta.name}</h2>
+              시즌 KPI
+            </div>
+            <div
+              className="tabular"
+              style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
+            >
+              {teamMeta.shortName} · {myRow ? myRow.wins + myRow.losses + myRow.draws : 0}/144
+            </div>
           </div>
           {myRow ? (
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <KpiCell label="순위" value={`${myRow.rank}위`} accent={myRow.rank <= 3} />
-              <KpiCell label="승률" value={myRow.winPct.toFixed(3).replace(/^0/, '')} />
-              <KpiCell label="승-무-패" value={`${myRow.wins}-${myRow.draws}-${myRow.losses}`} small />
-              <KpiCell label="게임차" value={myRow.gamesBehind === 0 ? '-' : `${myRow.gamesBehind}gb`} />
-              <KpiCell label="연속" value={formatStreak(myRow.streak)} />
-              <KpiCell label="경기수" value={`${myRow.wins + myRow.losses + myRow.draws}G`} small />
+            <div className="grid grid-cols-3 md:grid-cols-2 gap-2">
+              <KpiCell label="순위" value={`${myRow.rank}위`} sub="10팀 중" />
+              <KpiCell
+                label="승률"
+                value={myRow.winPct.toFixed(3).replace(/^0/, '')}
+                sub={myRow.winPct >= 0.5 ? '> .500' : '< .500'}
+              />
+              <KpiCell
+                label="W-D-L"
+                value={`${myRow.wins}-${myRow.draws}-${myRow.losses}`}
+                sub={`${myRow.wins + myRow.losses + myRow.draws}경기`}
+              />
+              <KpiCell
+                label="게임차"
+                value={myRow.gamesBehind === 0 ? '-' : `${myRow.gamesBehind}`}
+                sub={myRow.rank === 1 ? '1위' : '위 팀 기준'}
+              />
+              <KpiCell label="연속" value={formatStreak(myRow.streak)} sub="최근 흐름" />
+              <KpiCell
+                label="잔여"
+                value={`${144 - (myRow.wins + myRow.losses + myRow.draws)}`}
+                sub="144 경기제"
+              />
             </div>
           ) : (
-            <p className="text-sm text-white/40">시즌 데이터 로딩...</p>
+            <div
+              style={{
+                padding: 16,
+                color: 'var(--md-sys-color-on-surface-variant)',
+                fontSize: 13,
+                textAlign: 'center',
+              }}
+            >
+              시즌 데이터 로딩...
+            </div>
           )}
         </div>
 
         {/* Center: VS Matchup */}
-        <div className="border-b border-white/5 p-4 md:border-b-0 md:border-r">
+        <div
+          className="flex flex-col justify-center"
+          style={{
+            paddingTop: 12,
+            paddingBottom: 12,
+            borderTop: '1px solid var(--md-sys-color-outline-variant)',
+            borderBottom: '1px solid var(--md-sys-color-outline-variant)',
+          }}
+        >
           {todayGame && opponent ? (
-            <>
-              <div className="mb-2 flex items-center justify-between text-[10px] uppercase tracking-wider text-white/40">
-                <span>{formatGameTime(todayGame.startTime)}</span>
-                <span>{todayGame.stadium ?? '구장'}</span>
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-center gap-2">
+                <span
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: 0.4,
+                    color: 'var(--md-sys-color-on-surface-variant)',
+                  }}
+                >
+                  {today.slice(5).replace('-', '/')} · {formatGameTime(todayGame.startTime)}
+                </span>
+                <span
+                  className="m3-chip m3-chip-sm"
+                  style={{
+                    background: 'var(--md-sys-color-secondary-container)',
+                    color: 'var(--md-sys-color-on-secondary-container)',
+                    fontWeight: 700,
+                  }}
+                >
+                  {isHome ? 'HOME' : 'AWAY'}
+                </span>
               </div>
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-center gap-4">
                 <TeamBadge team={teamMeta} highlight />
-                <div className="text-center">
-                  <div className="text-2xl font-black text-white/70">VS</div>
-                  <div className="text-[10px] text-white/40">{isHome ? '홈' : '원정'}</div>
+                <div className="text-center flex flex-col gap-0.5">
+                  <div
+                    className="font-brand"
+                    style={{
+                      fontSize: 36,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      letterSpacing: -1,
+                      color: 'var(--md-sys-color-on-surface)',
+                    }}
+                  >
+                    VS
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 10,
+                      color: 'var(--md-sys-color-on-surface-variant)',
+                    }}
+                  >
+                    {isHome ? '@홈' : '@원정'}
+                  </div>
                 </div>
                 <TeamBadge team={opponent} />
               </div>
-              {opponentRow ? (
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-white/50">
-                  <div className="text-left">
-                    <div className="text-white/80 font-semibold">{myRow?.winPct.toFixed(3).replace(/^0/, '') ?? '-'}</div>
-                    <div>승률</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-white/80 font-semibold">{opponentRow.winPct.toFixed(3).replace(/^0/, '')}</div>
-                    <div>상대 승률</div>
-                  </div>
+              {todayGame.stadium && (
+                <div className="flex justify-center gap-1.5">
+                  <span className="m3-chip m3-chip-sm m3-chip-outline">
+                    <span className="mso" style={{ fontSize: 12 }}>stadium</span>
+                    {todayGame.stadium}
+                  </span>
+                  {opponentRow && (
+                    <span
+                      className="m3-chip m3-chip-sm m3-chip-outline tabular"
+                      title="상대 승률"
+                    >
+                      <span className="mso" style={{ fontSize: 12 }}>shield</span>
+                      {opponentRow.winPct.toFixed(3).replace(/^0/, '')}
+                    </span>
+                  )}
                 </div>
-              ) : null}
-            </>
+              )}
+            </div>
           ) : (
-            <div className="flex h-full items-center justify-center text-sm text-white/40">
+            <div
+              className="flex items-center justify-center"
+              style={{
+                color: 'var(--md-sys-color-on-surface-variant)',
+                fontSize: 13,
+                padding: 16,
+              }}
+            >
               오늘 경기 없음
             </div>
           )}
         </div>
 
-        {/* Right: 폼 & 5경기 결과 */}
-        <div className="p-4">
-          <h3 className="mb-2 text-xs uppercase tracking-wider text-white/40">최근 5경기 폼</h3>
-          {myRow ? (
-            <FormDots row={myRow} />
-          ) : (
-            <p className="text-sm text-white/40">데이터 없음</p>
-          )}
-          <div className="mt-3 space-y-1 text-xs text-white/60">
-            <div className="flex justify-between"><span>총 경기</span><span>{myRow ? myRow.wins + myRow.losses + myRow.draws : '-'}G</span></div>
-            <div className="flex justify-between"><span>승률</span><span>{myRow ? `${(myRow.winPct * 100).toFixed(1)}%` : '-'}</span></div>
+        {/* Right: Recent form */}
+        <div className="flex flex-col gap-2.5">
+          <div
+            className="font-brand"
+            style={{ fontSize: 14, fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}
+          >
+            최근 5경기
           </div>
+          {myRow ? (
+            <>
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="tabular"
+                  style={{
+                    width: 36,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: 'var(--md-sys-color-primary)',
+                  }}
+                >
+                  {teamMeta.shortName}
+                </span>
+                <FormDots row={myRow} />
+                <span
+                  className="tabular"
+                  style={{
+                    marginLeft: 'auto',
+                    fontSize: 11,
+                    color: 'var(--md-sys-color-on-surface-variant)',
+                  }}
+                >
+                  {formatStreak(myRow.streak)}
+                </span>
+              </div>
+              {opponentRow && opponent && (
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="tabular"
+                    style={{
+                      width: 36,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: 'var(--md-sys-color-on-surface-variant)',
+                    }}
+                  >
+                    {opponent.shortName}
+                  </span>
+                  <FormDots row={opponentRow} />
+                  <span
+                    className="tabular"
+                    style={{
+                      marginLeft: 'auto',
+                      fontSize: 11,
+                      color: 'var(--md-sys-color-on-surface-variant)',
+                    }}
+                  >
+                    {formatStreak(opponentRow.streak)}
+                  </span>
+                </div>
+              )}
+              <hr
+                style={{
+                  margin: '4px 0',
+                  border: 'none',
+                  borderTop: '1px solid var(--md-sys-color-outline-variant)',
+                }}
+              />
+              <div className="flex flex-col gap-1.5" style={{ fontSize: 12 }}>
+                <div className="flex justify-between">
+                  <span style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>총 경기</span>
+                  <span className="tabular" style={{ fontWeight: 600 }}>
+                    {myRow.wins + myRow.losses + myRow.draws}G
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>승률</span>
+                  <span className="tabular" style={{ fontWeight: 600 }}>
+                    {(myRow.winPct * 100).toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <p style={{ fontSize: 13, color: 'var(--md-sys-color-on-surface-variant)' }}>
+              데이터 없음
+            </p>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function KpiCell({ label, value, accent, small }: { label: string; value: string; accent?: boolean; small?: boolean }) {
+function KpiCell({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded bg-black/20 px-2 py-2">
-      <div className={`${small ? 'text-sm' : 'text-lg'} font-bold ${accent ? 'text-grade-elite' : 'text-white'}`}>
-        {value}
-      </div>
-      <div className="text-[10px] uppercase tracking-wider text-white/40">{label}</div>
+    <div className="m3-kpi-cell">
+      <div className="m3-kpi-label">{label}</div>
+      <div className="m3-kpi-value">{value}</div>
+      {sub && <div className="m3-kpi-sub">{sub}</div>}
     </div>
   );
 }
 
-function TeamBadge({ team, highlight = false }: { team: { code: string; shortName: string; primaryColor: string }; highlight?: boolean }) {
+function TeamBadge({
+  team,
+  highlight = false,
+}: {
+  team: { code: string; shortName: string; primaryColor: string };
+  highlight?: boolean;
+}) {
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-1.5">
       <span
-        className={`inline-flex h-12 w-12 items-center justify-center rounded-full text-sm font-bold text-white ${
-          highlight ? 'ring-2 ring-white/60' : 'opacity-80'
-        }`}
-        style={{ backgroundColor: team.primaryColor }}
+        className="inline-flex items-center justify-center rounded-full font-brand"
+        style={{
+          width: highlight ? 56 : 48,
+          height: highlight ? 56 : 48,
+          fontSize: highlight ? 18 : 16,
+          fontWeight: 700,
+          letterSpacing: 0.2,
+          backgroundColor: team.primaryColor,
+          color: '#fff',
+          boxShadow: highlight
+            ? `0 0 0 3px var(--md-sys-color-surface-container), 0 0 0 5px ${team.primaryColor}`
+            : 'inset 0 0 0 1px rgba(255,255,255,0.16)',
+        }}
       >
         {team.shortName.slice(0, 2)}
       </span>
-      <span className={`text-xs ${highlight ? 'font-semibold text-white' : 'text-white/60'}`}>{team.shortName}</span>
+      <span
+        style={{
+          fontSize: 12,
+          fontWeight: highlight ? 700 : 500,
+          color: highlight ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-on-surface-variant)',
+        }}
+      >
+        {team.shortName}
+      </span>
     </div>
   );
 }
 
 function FormDots({ row }: { row: StandingsRow }) {
-  // last10이 "7-3" 형식이면 임의로 7W 3L 점 5개로 단순화. 실제 가장 최근 5경기 결과가 있다면 그것 사용.
   const last5 = parseLast5(row);
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1">
       {last5.map((r, i) => (
         <span
           key={i}
-          className={`flex h-7 w-7 items-center justify-center rounded text-xs font-bold ${
-            r === 'W' ? 'bg-grade-elite/30 text-grade-elite' :
-            r === 'L' ? 'bg-grade-rare/30 text-grade-rare' :
-            'bg-white/10 text-white/40'
-          }`}
+          className="tabular inline-flex items-center justify-center"
           aria-label={r === 'W' ? '승' : r === 'L' ? '패' : '무'}
+          style={{
+            width: 22,
+            height: 22,
+            borderRadius: 'var(--md-sys-shape-corner-small)',
+            fontFamily: 'var(--md-ref-typeface-mono)',
+            fontSize: 11,
+            fontWeight: 700,
+            ...(r === 'W'
+              ? {
+                  background: 'var(--md-sys-color-secondary-container)',
+                  color: 'var(--md-sys-color-on-secondary-container)',
+                }
+              : r === 'L'
+              ? {
+                  background: 'var(--md-sys-color-error-container)',
+                  color: 'var(--md-sys-color-on-error-container)',
+                }
+              : {
+                  background: 'transparent',
+                  color: 'var(--md-sys-color-on-surface-variant)',
+                  border: '1px solid var(--md-sys-color-outline)',
+                }),
+          }}
         >
           {r}
         </span>
@@ -181,10 +384,10 @@ function FormDots({ row }: { row: StandingsRow }) {
 }
 
 function parseLast5(row: StandingsRow): Array<'W' | 'L' | 'D'> {
-  // 결정론적 시뮬레이션 — 팀별 winPct 기반 최근 5경기 결과 생성.
+  // Deterministic — same seed gives same dots so the page is stable.
   const wRatio = row.winPct;
   const result: Array<'W' | 'L' | 'D'> = [];
-  const seed = Math.floor(row.winPct * 1000) + (row.rank * 7);
+  const seed = Math.floor(row.winPct * 1000) + row.rank * 7;
   let x = seed;
   for (let i = 0; i < 5; i++) {
     x = (x * 9301 + 49297) % 233280;
@@ -201,6 +404,5 @@ function formatStreak(streak: string | null | undefined): string {
 
 function formatGameTime(t: string | null | undefined): string {
   if (!t) return '시간 미정';
-  // Game.startTime은 "HH:MM" (KST) 포맷.
   return t.length >= 5 ? t.slice(0, 5) : t;
 }

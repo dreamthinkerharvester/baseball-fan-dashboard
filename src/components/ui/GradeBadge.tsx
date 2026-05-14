@@ -1,4 +1,4 @@
-// Design Ref: §5.4 — 등급 텍스트 배지. 색상 + 텍스트 *둘 다* 표기 (WCAG 색맹 안전).
+// Design Ref: §5.4 + m3-comp tier chips — 색상 + 텍스트 + 아이콘 (WCAG 색맹 안전, Primary↔RARE 충돌 회피).
 
 import clsx from 'clsx';
 
@@ -10,32 +10,50 @@ export interface GradeBadgeProps {
   grade: Grade;
   size?: 'sm' | 'md';
   className?: string;
+  showIcon?: boolean;
 }
 
 const SIZE_MAP: Record<NonNullable<GradeBadgeProps['size']>, string> = {
-  sm: 'text-[9px] px-1 py-[1px] tracking-wide',
-  md: 'text-[11px] px-1.5 py-[2px] tracking-wider',
+  sm: 'text-[9px] px-1 py-[1px] tracking-wide gap-[2px]',
+  md: 'text-[11px] px-2 py-[2px] tracking-wider gap-1',
 };
 
-const GRADE_BG_CLASS: Record<Grade, string> = {
-  elite: 'bg-grade-elite/15 text-grade-elite border-grade-elite/40',
-  rare: 'bg-grade-rare/15 text-grade-rare border-grade-rare/40',
-  special: 'bg-grade-special/15 text-grade-special border-grade-special/40',
-  normal: 'bg-grade-normal/15 text-grade-normal border-grade-normal/40',
+const TIER_CLASS: Record<Grade, string> = {
+  elite: 'tier-elite',
+  rare: 'tier-rare',
+  special: 'tier-special',
+  normal: 'tier-normal',
 };
 
-export function GradeBadge({ grade, size = 'sm', className }: GradeBadgeProps) {
+const TIER_ICON: Record<Grade, string> = {
+  elite: 'star',
+  rare: 'diamond',
+  special: 'bolt',
+  normal: 'circle',
+};
+
+export function GradeBadge({ grade, size = 'sm', className, showIcon = true }: GradeBadgeProps) {
+  const iconSize = size === 'sm' ? 10 : 12;
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-badge border font-bold uppercase',
+        'inline-flex items-center rounded font-bold uppercase',
         SIZE_MAP[size],
-        GRADE_BG_CLASS[grade],
+        TIER_CLASS[grade],
         className,
       )}
       data-grade={grade}
       aria-label={`등급 ${GRADE_LABELS[grade]}`}
     >
+      {showIcon && (
+        <span
+          className="mso filled"
+          aria-hidden
+          style={{ fontSize: iconSize, lineHeight: 1 }}
+        >
+          {TIER_ICON[grade]}
+        </span>
+      )}
       {GRADE_LABELS[grade]}
     </span>
   );

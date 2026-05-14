@@ -36,9 +36,24 @@ const config: Config = {
         sans: [
           'Pretendard Variable',
           'Pretendard',
+          'Roboto Flex',
           'system-ui',
           '-apple-system',
           'sans-serif',
+        ],
+        brand: [
+          'Roboto Flex',
+          'Pretendard Variable',
+          'Pretendard',
+          'system-ui',
+          'sans-serif',
+        ],
+        mono: [
+          'Roboto Mono',
+          'ui-monospace',
+          'SF Mono',
+          'Menlo',
+          'monospace',
         ],
       },
       fontSize: {

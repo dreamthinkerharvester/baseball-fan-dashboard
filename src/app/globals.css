@@ -18,15 +18,16 @@
 @layer base {
   :root {
     /* ============================================================
-       LEGACY tokens (kept for compatibility)
+       LEGACY tokens — re-aligned to M3 tier-edge hues (Primary↔RARE collision fix)
+       Affects: PlayerCard border + glow + keyStat text color.
        ============================================================ */
-    --grade-elite: #7b2fbe;
-    --grade-elite-glow: rgba(123, 47, 190, 0.5);
-    --grade-rare: #e63946;
-    --grade-rare-glow: rgba(230, 57, 70, 0.4);
-    --grade-special: #f4a261;
-    --grade-special-glow: rgba(244, 162, 97, 0.4);
-    --grade-normal: #457b9d;
+    --grade-elite: rgb(178, 151, 255);
+    --grade-elite-glow: rgba(178, 151, 255, 0.45);
+    --grade-rare: rgb(255, 148, 200);
+    --grade-rare-glow: rgba(255, 148, 200, 0.4);
+    --grade-special: rgb(245, 201, 97);
+    --grade-special-glow: rgba(245, 201, 97, 0.35);
+    --grade-normal: rgb(126, 200, 255);
     --header-h: 48px;
     --footer-h: 40px;
     --card-w-mobile: 100px;
