@@ -11,23 +11,27 @@
   "currentSeason": {
     "playerId": "78603",
     "season": 2026,
-    "games": 32,
-    "ab": 108,
-    "hits": 34,
-    "hr": 9,
-    "rbi": 38,
-    "avg": 0.271,
-    "obp": 0.326,
-    "slg": 0.398,
-    "ops": 0.898,
-    "wrcPlus": 130,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ab": 0,
+    "hits": 41,
+    "hr": 1,
+    "rbi": 18,
+    "sb": 0,
+    "run": 0,
+    "avg": 0.299,
+    "obp": 0,
+    "slg": 0,
+    "ops": 0,
+    "wrcPlus": 100,
+    "war": 0,
+    "updatedAt": "2026-05-14T15:17:55.440Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
     "grade": "special",
-    "percentile": 61,
-    "basis": "최근 10경기 백분위 61"
+    "percentile": 45,
+    "basis": "2026 타율 0.299"
   }
 }

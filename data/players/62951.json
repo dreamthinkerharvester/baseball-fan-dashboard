@@ -3,29 +3,36 @@
     "id": "62951",
     "name": "이형범",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/62951.png"
   },
   "currentSeason": {
     "playerId": "62951",
     "season": 2026,
-    "games": 8,
-    "ip": 27,
-    "era": 2.33,
-    "fip": 4.79,
-    "whip": 1.29,
-    "k": 47,
-    "bb": 15,
-    "k9": 8.19,
-    "bb9": 2.7,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 4,
+    "era": 2.25,
+    "fip": 2.25,
+    "whip": 0,
+    "k": 3,
+    "bb": 0,
+    "hr": 0,
+    "w": 0,
+    "l": 0,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:57.774Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
-    "grade": "special",
-    "percentile": 47,
-    "basis": "최근 10경기 백분위 47"
+    "grade": "normal",
+    "percentile": 30,
+    "basis": "2026 ERA 2.25"
   }
 }

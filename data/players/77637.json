@@ -3,29 +3,36 @@
     "id": "77637",
     "name": "양현종",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/77637.png"
   },
   "currentSeason": {
     "playerId": "77637",
     "season": 2026,
-    "games": 6,
-    "ip": 48.3,
-    "era": 2.74,
-    "fip": 2.51,
-    "whip": 1.01,
-    "k": 33,
-    "bb": 15,
-    "k9": 6.21,
-    "bb9": 4.18,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 38.7,
+    "era": 4.66,
+    "fip": 4.66,
+    "whip": 0,
+    "k": 30,
+    "bb": 0,
+    "hr": 0,
+    "w": 3,
+    "l": 3,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:57.253Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
     "grade": "normal",
-    "percentile": 35,
-    "basis": "최근 10경기 백분위 35"
+    "percentile": 30,
+    "basis": "2026 ERA 4.66"
   }
 }

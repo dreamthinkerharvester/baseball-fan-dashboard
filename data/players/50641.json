@@ -3,29 +3,36 @@
     "id": "50641",
     "name": "장재혁",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/50641.png"
   },
   "currentSeason": {
     "playerId": "50641",
     "season": 2026,
-    "games": 7,
-    "ip": 43.8,
-    "era": 4.42,
-    "fip": 4.7,
-    "whip": 1.19,
-    "k": 63,
-    "bb": 14,
-    "k9": 6.51,
-    "bb9": 2.48,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 4,
+    "era": 4.5,
+    "fip": 4.5,
+    "whip": 0,
+    "k": 2,
+    "bb": 0,
+    "hr": 0,
+    "w": 0,
+    "l": 0,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:58.003Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
     "grade": "normal",
-    "percentile": 42,
-    "basis": "최근 10경기 백분위 42"
+    "percentile": 30,
+    "basis": "2026 ERA 4.5"
   }
 }

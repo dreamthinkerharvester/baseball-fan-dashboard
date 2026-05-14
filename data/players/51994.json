@@ -3,29 +3,36 @@
     "id": "51994",
     "name": "한재승",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/51994.png"
   },
   "currentSeason": {
     "playerId": "51994",
     "season": 2026,
-    "games": 14,
-    "ip": 54.4,
-    "era": 3.52,
-    "fip": 3.33,
-    "whip": 1.38,
-    "k": 28,
-    "bb": 8,
-    "k9": 8.66,
-    "bb9": 2.87,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 13,
+    "era": 3.46,
+    "fip": 3.46,
+    "whip": 0,
+    "k": 9,
+    "bb": 0,
+    "hr": 0,
+    "w": 1,
+    "l": 0,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:58.665Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
-    "grade": "elite",
-    "percentile": 92,
-    "basis": "최근 10경기 백분위 92"
+    "grade": "rare",
+    "percentile": 72,
+    "basis": "2026 ERA 3.46"
   }
 }

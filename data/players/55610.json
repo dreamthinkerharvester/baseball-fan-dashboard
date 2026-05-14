@@ -3,29 +3,36 @@
     "id": "55610",
     "name": "김태형",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/55610.png"
   },
   "currentSeason": {
     "playerId": "55610",
     "season": 2026,
-    "games": 10,
-    "ip": 23.6,
-    "era": 4.84,
-    "fip": 4.06,
-    "whip": 1.15,
-    "k": 28,
-    "bb": 17,
-    "k9": 8.3,
-    "bb9": 3.81,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 20.7,
+    "era": 6.97,
+    "fip": 6.97,
+    "whip": 0,
+    "k": 10,
+    "bb": 0,
+    "hr": 0,
+    "w": 0,
+    "l": 1,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:56.800Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
-    "grade": "rare",
-    "percentile": 65,
-    "basis": "최근 10경기 백분위 65"
+    "grade": "normal",
+    "percentile": 30,
+    "basis": "2026 ERA 6.97"
   }
 }

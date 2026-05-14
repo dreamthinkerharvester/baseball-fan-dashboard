@@ -3,29 +3,36 @@
     "id": "52639",
     "name": "최지민",
     "teamCode": "KIA",
-    "position": "DH",
+    "position": "P",
     "isPitcher": true,
     "photoUrl": "/assets/players/52639.png"
   },
   "currentSeason": {
     "playerId": "52639",
     "season": 2026,
-    "games": 11,
-    "ip": 79.5,
-    "era": 4.13,
-    "fip": 4.51,
-    "whip": 1.23,
-    "k": 20,
-    "bb": 20,
-    "k9": 8.65,
-    "bb9": 2.1,
-    "updatedAt": "2026-05-14T06:00:00+09:00"
+    "year": 2026,
+    "games": 0,
+    "ip": 14,
+    "era": 2.57,
+    "fip": 2.57,
+    "whip": 0,
+    "k": 7,
+    "bb": 0,
+    "hr": 0,
+    "w": 0,
+    "l": 0,
+    "sv": 0,
+    "hold": 0,
+    "war": 0,
+    "k9": 0,
+    "bb9": 0,
+    "updatedAt": "2026-05-14T15:17:58.501Z"
   },
   "careerSeasons": [],
   "recentTen": [],
   "currentGrade": {
     "grade": "rare",
-    "percentile": 71,
-    "basis": "최근 10경기 백분위 71"
+    "percentile": 72,
+    "basis": "2026 ERA 2.57"
   }
 }
