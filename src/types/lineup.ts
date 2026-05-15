@@ -15,7 +15,7 @@ export interface LineupSlot {
   gradeBasis: string;
 }
 
-export type LineupStatus = 'confirmed' | 'pending';
+export type LineupStatus = 'confirmed' | 'pending' | 'fallback';
 
 export interface Lineup {
   gameId: string;
@@ -25,4 +25,6 @@ export interface Lineup {
   status: LineupStatus;
   fetchedAt: string; // ISO
   source: 'kbo' | 'statiz' | 'cache';
+  /** fallback 상태일 때 실제 라인업 날짜 */
+  fallbackDate?: string;
 }

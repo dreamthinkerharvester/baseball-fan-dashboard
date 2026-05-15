@@ -24,7 +24,7 @@ export interface PlayerModalProps {
 type TabValue = 'season' | 'career';
 
 export function PlayerModal({ playerId, open, onClose }: PlayerModalProps) {
-  const [tab, setTab] = useState<TabValue>('season');
+  const [tab, setTab] = useState<TabValue>('career');
   const { data, error, isLoading } = usePlayer(open ? playerId : null);
 
   const player = data?.player;

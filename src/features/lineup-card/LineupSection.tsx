@@ -137,7 +137,28 @@ export function LineupSection({ team, date }: LineupSectionProps) {
         <LineupPlaceholder onRefresh={handleRefresh} isRefreshing={refreshing} />
       ) : null}
 
-      {lineup && lineup.status === 'confirmed' ? (
+      {lineup && lineup.status === 'fallback' && lineup.fallbackDate ? (
+        <div
+          style={{
+            margin: '0 0 8px',
+            padding: '6px 10px',
+            borderRadius: 'var(--md-sys-shape-corner-small)',
+            background: 'var(--md-sys-color-tertiary-container)',
+            color: 'var(--md-sys-color-on-tertiary-container)',
+            fontSize: 11,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <span className="mso" style={{ fontSize: 16 }}>history</span>
+          <span>
+            {lineup.fallbackDate.slice(5).replace('-', '/')} 라인업 — 오늘 라인업은 경기 2시간 전 공개 예정
+          </span>
+        </div>
+      ) : null}
+
+      {lineup && (lineup.status === 'confirmed' || lineup.status === 'fallback') ? (
         <div className="space-y-4">
           {/* 선발 투수 — full width 카드 */}
           {lineup.startingPitcher ? (

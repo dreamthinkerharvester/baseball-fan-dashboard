@@ -12,7 +12,7 @@ import { TeamMatchupPanel } from '@/features/team-header/TeamMatchupPanel';
 import type { TeamCode } from '@/types';
 
 export function GameSchedule({ myTeam }: { myTeam: TeamCode | null }) {
-  return <ScheduleList myTeam={myTeam} defaultRange="day" />;
+  return <ScheduleList myTeam={myTeam} defaultRange="week" />;
 }
 
 export function MatchupHeader({ myTeam }: { myTeam: TeamCode | null }) {

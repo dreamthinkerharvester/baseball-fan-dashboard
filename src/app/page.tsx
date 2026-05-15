@@ -47,7 +47,10 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main
+      className="min-h-screen"
+      style={{ background: 'var(--md-sys-color-surface)', color: 'var(--md-sys-color-on-surface)' }}
+    >
       <Header onOpenSettings={() => setSettingsOpen(true)} />
       <OfflineBanner />
       <StandingsBanner myTeam={myTeam} />
