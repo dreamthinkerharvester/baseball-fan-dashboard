@@ -24,8 +24,36 @@ export function SeasonStatTab({
     isPitcher ? num(g.fip ?? g.era) : num(g.ops ?? g.wrcPlus),
   );
 
+  // Hot/Cold: 최근 5경기 타율 vs 시즌 타율
+  const form = computeRecentForm(isPitcher, currentSeason, recentTen);
+
   return (
     <div className="flex flex-col gap-4">
+      {form && (
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 12px',
+            borderRadius: 9999,
+            alignSelf: 'flex-start',
+            background:
+              form.trend === 'hot'
+                ? 'color-mix(in oklab, var(--md-sys-color-tertiary-container) 60%, transparent)'
+                : 'color-mix(in oklab, var(--md-sys-color-surface-container-highest) 80%, transparent)',
+            fontSize: 12,
+            fontWeight: 700,
+            color:
+              form.trend === 'hot'
+                ? 'var(--md-sys-color-on-tertiary-container)'
+                : 'var(--md-sys-color-on-surface-variant)',
+          }}
+        >
+          <span>{form.trend === 'hot' ? '🔥' : form.trend === 'cold' ? '❄️' : '📊'}</span>
+          <span>{form.label}</span>
+        </div>
+      )}
       <dl className="grid grid-cols-3 gap-2 sm:grid-cols-5" style={{ margin: 0 }}>
         {cells.map((c) => (
           <div key={c.label} className="m3-kpi-cell">
@@ -119,6 +147,49 @@ function buildPitcherCells(s: Record<string, unknown>): Cell[] {
 
 function num(v: unknown): number {
   return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+}
+
+interface RecentForm {
+  trend: 'hot' | 'cold' | 'neutral';
+  label: string;
+}
+
+function computeRecentForm(
+  isPitcher: boolean,
+  currentSeason: Record<string, unknown>,
+  recentTen: ReadonlyArray<Record<string, unknown>>,
+): RecentForm | null {
+  const last5 = recentTen.slice(0, 5);
+  if (last5.length < 3) return null;
+
+  if (!isPitcher) {
+    const totalAb = last5.reduce((s, g) => s + num(g.ab), 0);
+    const totalHits = last5.reduce((s, g) => s + num(g.hits), 0);
+    if (totalAb === 0) return null;
+    const last5Avg = totalHits / totalAb;
+    const seasonAvg = num(currentSeason.avg);
+    if (seasonAvg === 0) return null;
+    const delta = last5Avg - seasonAvg;
+    const trend: RecentForm['trend'] = delta >= 0.05 ? 'hot' : delta <= -0.05 ? 'cold' : 'neutral';
+    return {
+      trend,
+      label: `최근 5경기 타율 ${last5Avg.toFixed(3).replace(/^0/, '')} (시즌 ${seasonAvg.toFixed(3).replace(/^0/, '')})`,
+    };
+  } else {
+    // Pitcher: ERA comparison
+    const totalEr = last5.reduce((s, g) => s + num((g as Record<string,unknown>).er), 0);
+    const totalIp = last5.reduce((s, g) => s + num((g as Record<string,unknown>).ip), 0);
+    if (totalIp < 5) return null;
+    const last5Era = (totalEr / totalIp) * 9;
+    const seasonEra = num(currentSeason.era);
+    if (seasonEra === 0) return null;
+    const delta = last5Era - seasonEra;
+    const trend: RecentForm['trend'] = delta <= -0.5 ? 'hot' : delta >= 0.5 ? 'cold' : 'neutral';
+    return {
+      trend,
+      label: `최근 5경기 ERA ${last5Era.toFixed(2)} (시즌 ${seasonEra.toFixed(2)})`,
+    };
+  }
 }
 
 function fmt(v: unknown, decimals: number): string {

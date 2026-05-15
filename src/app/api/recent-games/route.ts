@@ -1,27 +1,15 @@
-// Aggregates KIA's most recent 10 games from local player + game caches.
-// Sources:
-//   - data/players/{id}.json → recentTen (date, opponent, hits, hr, ab, bb, so)
-//   - data/games/{date}.json → score + stadium (when available)
-//   - data/lineups/{date}/KIA.json → starting pitcher (when available)
-// Returns a deterministic last-10 array even when scores/SP missing.
+// Aggregates KIA's most recent 10 games from local game + player caches.
+// Priority: data/games/{date}.json (real scores) → player recentTen (HR/hits agg).
 
-import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { promises as fs } from 'node:fs';
 
 import { jsonResponse } from '@/lib/api/response';
 import { getDataDir, tryReadJsonCache } from '@/lib/data/cache';
 import { TEAMS } from '@/lib/constants';
-import { err, ok } from '@/types';
+import { ok, err } from '@/types';
 
 import type { Game, Player, TeamCode } from '@/types';
-
-interface RecentPlayerLine {
-  date: string;
-  opponent: string;
-  hits: number;
-  hr: number;
-  ab: number;
-}
 
 interface KiaGameSummary {
   date: string;
@@ -33,119 +21,95 @@ interface KiaGameSummary {
   score: { kia: number; opp: number } | null;
   startingPitcher: { id: string; name: string } | null;
   homers: Array<{ id: string; name: string; count: number }>;
-  totalAb: number;
-  totalHits: number;
 }
 
-const KIA_TEAM: TeamCode = 'KIA';
-const TEAM_KO_TO_CODE: Record<string, TeamCode> = {
-  두산: 'DOOSAN',
-  LG: 'LG',
-  키움: 'KIWOOM',
-  롯데: 'LOTTE',
-  삼성: 'SAMSUNG',
-  한화: 'HANWHA',
-  SSG: 'SSG',
-  NC: 'NC',
-  KT: 'KT',
-};
+const KIA: TeamCode = 'KIA';
 
 export async function GET(): Promise<Response> {
   try {
-    const playersR = await tryReadJsonCache<Player[]>('players.json');
-    if (!playersR) {
-      return jsonResponse(err('STALE_CACHE', '선수 마스터 데이터가 없습니다.'), { status: 503 });
+    const dataDir = getDataDir();
+
+    // ── 1. Collect all game dates from data/games/ ────────────────────────
+    const gamesDir = path.join(dataDir, 'games');
+    let gameDates: string[] = [];
+    try {
+      const files = await fs.readdir(gamesDir);
+      gameDates = files
+        .filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f))
+        .map((f) => f.replace('.json', ''))
+        .sort()
+        .reverse();
+    } catch {
+      return jsonResponse(err('STALE_CACHE', 'games 폴더 없음'), { status: 503 });
     }
-    const allPlayers = playersR.data;
-    const kiaPlayers = allPlayers.filter((p) => p.teamCode === KIA_TEAM);
+
+    // ── 2. Find last 10 KIA final games ───────────────────────────────────
+    const kiaGames: Array<{ date: string; game: Game }> = [];
+    for (const d of gameDates) {
+      if (kiaGames.length >= 10) break;
+      const r = await tryReadJsonCache<Game[]>(path.join('games', `${d}.json`));
+      if (!r) continue;
+      const g = r.data.find(
+        (g) => (g.homeTeam === KIA || g.awayTeam === KIA) && g.status === 'final',
+      );
+      if (g) kiaGames.push({ date: d, game: g });
+    }
+
+    if (kiaGames.length === 0) {
+      return jsonResponse(ok({ team: KIA, games: [] }, {}));
+    }
+
+    // ── 3. Load KIA player master + detail for HR agg ────────────────────
+    const playersR = await tryReadJsonCache<Player[]>('players.json');
+    const allPlayers = playersR?.data ?? [];
+    const kiaPlayers = allPlayers.filter((p) => p.teamCode === KIA);
     const playerById = new Map(allPlayers.map((p) => [p.id, p]));
 
-    // Aggregate per-game lines from each KIA player's recentTen
-    const byDate = new Map<string, { lines: Array<RecentPlayerLine & { playerId: string }>; opponent: string }>();
+    // Build date→HR map from player recentTen
+    const dateHrMap = new Map<string, Map<string, number>>(); // date → playerId → count
+    const dateAbMap = new Map<string, Map<string, number>>();
     for (const p of kiaPlayers) {
       const detail = await tryReadJsonCache<{
         recentTen?: Array<Record<string, unknown>>;
       }>(path.join('players', `${p.id}.json`));
       if (!detail) continue;
-      const recent = detail.data.recentTen ?? [];
-      for (const r of recent) {
-        const date = String(r.date ?? '');
-        const opponent = String(r.opponent ?? '');
-        if (!date || !opponent) continue;
-        const entry = byDate.get(date) ?? { lines: [], opponent };
-        entry.lines.push({
-          playerId: p.id,
-          date,
-          opponent,
-          hits: numOr(r.hits, 0),
-          hr: numOr(r.hr, 0),
-          ab: numOr(r.ab, 0),
-        });
-        entry.opponent = opponent;
-        byDate.set(date, entry);
+      for (const row of detail.data.recentTen ?? []) {
+        const date = String(row.date ?? '');
+        const hr = typeof row.hr === 'number' ? row.hr : 0;
+        const ab = typeof row.ab === 'number' ? row.ab : 0;
+        if (!date) continue;
+        if (!dateHrMap.has(date)) dateHrMap.set(date, new Map());
+        if (!dateAbMap.has(date)) dateAbMap.set(date, new Map());
+        if (hr > 0) dateHrMap.get(date)!.set(p.id, (dateHrMap.get(date)!.get(p.id) ?? 0) + hr);
+        dateAbMap.get(date)!.set(p.id, (dateAbMap.get(date)!.get(p.id) ?? 0) + ab);
       }
     }
 
-    // Sort by date desc, take 10
-    const dates = [...byDate.keys()].sort((a, b) => (a < b ? 1 : -1)).slice(0, 10);
-
-    // Build summaries
+    // ── 4. Build summaries ────────────────────────────────────────────────
     const summaries: KiaGameSummary[] = [];
-    for (const date of dates) {
-      const entry = byDate.get(date)!;
-      const oppCode = (TEAM_KO_TO_CODE[entry.opponent] ?? null) as TeamCode | null;
-      const oppName = oppCode ? TEAMS[oppCode].name : entry.opponent;
-
-      // Game metadata (stadium, score)
-      const gameR = await tryReadJsonCache<Game[]>(path.join('games', `${date}.json`));
-      const games = gameR?.data ?? [];
-      const game = games.find(
-        (g) => g.homeTeam === KIA_TEAM || g.awayTeam === KIA_TEAM,
-      );
-      const isHome = game ? game.homeTeam === KIA_TEAM : null;
-      const stadium = game?.stadium ?? null;
-
-      // Real or simulated score
-      let score: KiaGameSummary['score'] = null;
-      let result: KiaGameSummary['result'] = null;
-      if (
-        game &&
-        typeof game.homeScore === 'number' &&
-        typeof game.awayScore === 'number'
-      ) {
-        score = {
-          kia: isHome ? game.homeScore : game.awayScore,
-          opp: isHome ? game.awayScore : game.homeScore,
-        };
-      } else {
-        // Simulate from player line aggregate
-        const totalHits = entry.lines.reduce((s, l) => s + l.hits, 0);
-        const totalHr = entry.lines.reduce((s, l) => s + l.hr, 0);
-        const kiaScore = Math.max(0, Math.min(15, Math.round(totalHr * 1.6 + totalHits / 3)));
-        // Deterministic opp score from date hash
-        const seed = hash(date + entry.opponent);
-        const oppScore = Math.max(0, Math.min(12, Math.round(((seed % 100) / 100) * 9)));
-        score = { kia: kiaScore, opp: oppScore };
-      }
-      result = score.kia > score.opp ? 'W' : score.kia < score.opp ? 'L' : 'D';
+    for (const { date, game } of kiaGames) {
+      const isHome = game.homeTeam === KIA;
+      const oppCode = (isHome ? game.awayTeam : game.homeTeam) as TeamCode;
+      const opp = TEAMS[oppCode];
+      const kiaScore = isHome ? (game.homeScore ?? 0) : (game.awayScore ?? 0);
+      const oppScore = isHome ? (game.awayScore ?? 0) : (game.homeScore ?? 0);
+      const result: 'W' | 'L' | 'D' =
+        kiaScore > oppScore ? 'W' : kiaScore < oppScore ? 'L' : 'D';
 
       // Starting pitcher from lineup
       let sp: KiaGameSummary['startingPitcher'] = null;
-      const lineupR = await tryReadJsonCache<{
-        startingPitcher?: { playerId?: string };
-      }>(path.join('lineups', date, 'KIA.json'));
+      const lineupR = await tryReadJsonCache<{ startingPitcher?: { playerId?: string } }>(
+        path.join('lineups', date, 'KIA.json'),
+      );
       const spId = lineupR?.data.startingPitcher?.playerId;
       if (spId) {
-        const sp2 = playerById.get(spId);
-        if (sp2) sp = { id: sp2.id, name: sp2.name };
+        const spPlayer = playerById.get(spId);
+        if (spPlayer) sp = { id: spPlayer.id, name: spPlayer.name };
       }
 
-      // Home runs by player
-      const hrMap = new Map<string, number>();
-      for (const line of entry.lines) {
-        if (line.hr > 0) hrMap.set(line.playerId, (hrMap.get(line.playerId) ?? 0) + line.hr);
-      }
-      const homers = [...hrMap.entries()]
+      // HR hitters for this date
+      const hrDateMap = dateHrMap.get(date) ?? new Map<string, number>();
+      const homers = [...hrDateMap.entries()]
         .map(([id, count]) => {
           const p = playerById.get(id);
           return p ? { id, name: p.name, count } : null;
@@ -153,45 +117,28 @@ export async function GET(): Promise<Response> {
         .filter((x): x is { id: string; name: string; count: number } => x !== null)
         .sort((a, b) => b.count - a.count);
 
-      const totalAb = entry.lines.reduce((s, l) => s + l.ab, 0);
-      const totalHits = entry.lines.reduce((s, l) => s + l.hits, 0);
-
       summaries.push({
         date,
         opponent: oppCode,
-        opponentName: oppName,
+        opponentName: opp?.name ?? oppCode,
         isHome,
-        stadium,
+        stadium: game.stadium ?? null,
         result,
-        score,
+        score: { kia: kiaScore, opp: oppScore },
         startingPitcher: sp,
         homers,
-        totalAb,
-        totalHits,
       });
     }
 
-    return jsonResponse(ok({ team: KIA_TEAM, games: summaries }, { generatedAt: new Date().toISOString() }), {
-      cacheSeconds: 60,
-    });
-  } catch (e) {
     return jsonResponse(
-      err('INTERNAL', `recent-games failed: ${(e as Error).message}`),
-      { status: 500 },
+      ok({ team: KIA, games: summaries }, { generatedAt: new Date().toISOString() }),
+      { cacheSeconds: 120 },
     );
+  } catch (e) {
+    return jsonResponse(err('INTERNAL', `recent-games failed: ${(e as Error).message}`), { status: 500 });
   }
 }
 
-function numOr(v: unknown, fallback: number): number {
-  return typeof v === 'number' && Number.isFinite(v) ? v : fallback;
-}
-
-function hash(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
-  return Math.abs(h);
-}
-
-// Workaround — fs imported only to keep getDataDir consistent in build (no direct usage).
+// Keep fs import used
 void fs;
 void getDataDir;

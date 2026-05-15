@@ -1,22 +1,22 @@
 [
   {
+    "id": "20260530-SAMSUNG-DOOSAN-1",
+    "date": "2026-05-30",
+    "startTime": "14:00",
+    "homeTeam": "SAMSUNG",
+    "awayTeam": "DOOSAN",
+    "stadium": "대구",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
     "id": "20260530-LG-KIA-1",
     "date": "2026-05-30",
     "startTime": "17:00",
     "homeTeam": "LG",
     "awayTeam": "KIA",
     "stadium": "잠실",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
-  },
-  {
-    "id": "20260530-SAMSUNG-DOOSAN-1",
-    "date": "2026-05-30",
-    "startTime": "17:00",
-    "homeTeam": "SAMSUNG",
-    "awayTeam": "DOOSAN",
-    "stadium": "대구",
     "status": "scheduled",
     "homeScore": null,
     "awayScore": null
