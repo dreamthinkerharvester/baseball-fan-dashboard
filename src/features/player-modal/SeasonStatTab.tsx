@@ -1,4 +1,4 @@
-// Design Ref: §5.4 PlayerModal Season Tab — 5개 지표 + 최근 10경기 sparkline.
+// Design Ref: §5.4 PlayerModal Season Tab + m3-comp Screen2 stats grid.
 
 'use client';
 
@@ -25,17 +25,14 @@ export function SeasonStatTab({
   );
 
   return (
-    <div className="space-y-4">
-      <dl className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+    <div className="flex flex-col gap-4">
+      <dl className="grid grid-cols-3 gap-2 sm:grid-cols-5" style={{ margin: 0 }}>
         {cells.map((c) => (
-          <div
-            key={c.label}
-            className="rounded-card border border-text-dim/20 bg-bg-card p-2 text-center"
-          >
-            <dt className="text-caption text-text-muted">{c.label}</dt>
+          <div key={c.label} className="m3-kpi-cell">
+            <dt className="m3-kpi-label">{c.label}</dt>
             <dd
-              className="text-heading font-bold"
-              style={{ color: `var(--grade-${grade})` }}
+              className="m3-kpi-value"
+              style={{ margin: 0, color: `var(--grade-${grade})` }}
             >
               {c.value}
             </dd>
@@ -43,17 +40,54 @@ export function SeasonStatTab({
         ))}
       </dl>
 
-      <div>
-        <h4 className="mb-2 text-caption text-text-muted">
-          최근 {recentTen.length}경기 트렌드
-        </h4>
-        <MiniSparkline
-          values={sparkValues}
-          grade={grade}
-          ariaLabel={`최근 ${recentTen.length}경기 ${isPitcher ? 'FIP/ERA' : 'OPS/wRC+'} 추이`}
-          height={40}
-        />
-      </div>
+      {sparkValues.length > 0 && (
+        <div
+          className="m3-card"
+          style={{
+            padding: 14,
+            background: 'var(--md-sys-color-surface-container-highest)',
+            borderRadius: 'var(--md-sys-shape-corner-medium)',
+          }}
+        >
+          <div
+            className="flex items-baseline justify-between"
+            style={{ marginBottom: 8 }}
+          >
+            <span
+              className="font-brand"
+              style={{ fontSize: 13, fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}
+            >
+              최근 {recentTen.length}경기 트렌드
+            </span>
+            <span
+              className="tabular"
+              style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
+            >
+              {isPitcher ? 'FIP/ERA' : 'OPS/wRC+'}
+            </span>
+          </div>
+          <MiniSparkline
+            values={sparkValues}
+            grade={grade}
+            ariaLabel={`최근 ${recentTen.length}경기 ${isPitcher ? 'FIP/ERA' : 'OPS/wRC+'} 추이`}
+            height={42}
+          />
+          <div className="flex justify-between" style={{ paddingTop: 6 }}>
+            <span
+              className="tabular"
+              style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
+            >
+              {recentTen.length}G ago
+            </span>
+            <span
+              className="tabular"
+              style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
+            >
+              오늘
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

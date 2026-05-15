@@ -154,6 +154,12 @@
     text-rendering: optimizeLegibility;
   }
 
+  h1, h2, h3 {
+    font-family: var(--md-ref-typeface-brand);
+    letter-spacing: -0.2px;
+  }
+  h1 { letter-spacing: -0.5px; }
+
   *:focus-visible {
     outline: 2px solid var(--md-sys-color-primary);
     outline-offset: 2px;

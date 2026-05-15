@@ -1,5 +1,5 @@
-// Design Ref: §5.4 Page 3 — Player detail modal. 4-way close + ARIA dialog (Dialog 컴포넌트가 처리).
-// Tabs: 시즌 성적 / 역대 기록.
+// Design Ref: §5.4 PlayerModal + m3-comp Screen2.
+// Hero header (photo + tier chip + #num pill + name) + M3 tabs + 4-way close.
 
 'use client';
 
@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 import { Dialog } from '@/components/ui/Dialog';
 import { GradeBadge } from '@/components/ui/GradeBadge';
-import { Tabs } from '@/components/ui/Tabs';
 import { TEAMS } from '@/lib/constants';
 
 import { CareerStatTab } from './CareerStatTab';
@@ -39,90 +38,261 @@ export function PlayerModal({ playerId, open, onClose }: PlayerModalProps) {
       ariaLabelledby="player-modal-title"
       variant="bottom-sheet"
     >
-      <div className="flex flex-col gap-4 p-4">
-        <header className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2">
-            {player && team ? (
-              <>
-                <span
-                  className="text-heading"
-                  style={{ color: team.primaryColor }}
-                >
-                  {team.shortName}
-                </span>
-                <h2 id="player-modal-title" className="text-display">
-                  {player.name}
-                </h2>
-                <span className="text-body text-text-muted">{player.position}</span>
-                <GradeBadge grade={grade} size="md" />
-              </>
-            ) : (
-              <h2 id="player-modal-title" className="text-display">
-                선수 정보
-              </h2>
+      {/* Hero header */}
+      <div style={{ padding: '12px 16px 0' }}>
+        <div
+          style={{
+            position: 'relative',
+            aspectRatio: '16 / 9',
+            borderRadius: 'var(--md-sys-shape-corner-large)',
+            overflow: 'hidden',
+            background: 'var(--md-sys-color-surface-container-highest)',
+          }}
+        >
+          {player?.photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={player.photoUrl}
+              alt=""
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top center',
+              }}
+            />
+          ) : (
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                className="mso filled"
+                style={{
+                  fontSize: 96,
+                  color: 'var(--md-sys-color-outline)',
+                  opacity: 0.45,
+                }}
+              >
+                {player?.isPitcher ? 'sports_baseball' : 'person'}
+              </span>
+            </div>
+          )}
+          {/* bottom gradient for legibility */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: '60%',
+              background: 'linear-gradient(0deg, rgba(0,0,0,0.85), rgba(0,0,0,0))',
+            }}
+          />
+
+          {/* top-left chips */}
+          <div
+            style={{
+              position: 'absolute',
+              left: 12,
+              top: 12,
+              display: 'flex',
+              gap: 6,
+              alignItems: 'center',
+            }}
+          >
+            <GradeBadge grade={grade} size="md" />
+            {player?.uniformNumber != null && (
+              <span
+                className="tabular"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  height: 24,
+                  padding: '0 8px',
+                  fontFamily: 'var(--md-ref-typeface-mono)',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  borderRadius: 6,
+                  background: 'rgba(255,255,255,0.16)',
+                  color: '#fff',
+                  backdropFilter: 'blur(2px)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                }}
+              >
+                #{player.uniformNumber}
+              </span>
             )}
           </div>
+
+          {/* close button */}
           <button
             type="button"
             aria-label="닫기"
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-button text-text-muted hover:bg-bg-card"
+            style={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              width: 36,
+              height: 36,
+              borderRadius: 9999,
+              background: 'rgba(0,0,0,0.4)',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            ✕
+            <span className="mso" style={{ fontSize: 22 }}>close</span>
           </button>
-        </header>
 
-        {isLoading ? (
-          <p className="py-8 text-center text-body text-text-muted" aria-live="polite">
-            선수 정보 불러오는 중…
+          {/* name overlay */}
+          {player && (
+            <div
+              style={{
+                position: 'absolute',
+                left: 14,
+                bottom: 12,
+                color: '#fff',
+                right: 14,
+              }}
+            >
+              <h2
+                id="player-modal-title"
+                className="font-brand"
+                style={{
+                  margin: 0,
+                  fontSize: 26,
+                  fontWeight: 700,
+                  letterSpacing: -0.5,
+                  lineHeight: '30px',
+                  textShadow: '0 2px 6px rgba(0,0,0,0.5)',
+                }}
+              >
+                {player.name}
+              </h2>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 6,
+                  alignItems: 'center',
+                  marginTop: 4,
+                  fontSize: 11,
+                  color: 'rgba(255,255,255,0.85)',
+                }}
+              >
+                {team && <span style={{ color: team.primaryColor, fontWeight: 700 }}>{team.shortName}</span>}
+                {team && <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)' }} />}
+                <span>{player.position}</span>
+                {player.isPitcher !== undefined && (
+                  <>
+                    <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)' }} />
+                    <span>{player.isPitcher ? '투수' : '타자'}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Meta row — grade basis */}
+        {data?.currentGrade?.basis ? (
+          <p
+            style={{
+              margin: '10px 0 0',
+              padding: '8px 10px',
+              borderRadius: 'var(--md-sys-shape-corner-small)',
+              background: 'var(--md-sys-color-surface-container-highest)',
+              border: `1px solid var(--grade-${grade})`,
+              fontSize: 12,
+              color: 'var(--md-sys-color-on-surface-variant)',
+            }}
+          >
+            <span style={{ fontWeight: 700, color: `var(--grade-${grade})` }}>등급 산출:</span>{' '}
+            {data.currentGrade.basis}
           </p>
         ) : null}
-
-        {error ? (
-          <div className="rounded-card border border-grade-rare/40 bg-grade-rare/10 p-3 text-body text-grade-rare">
-            선수 정보를 불러오지 못했습니다.
-          </div>
-        ) : null}
-
-        {data && player ? (
-          <>
-            {data.currentGrade?.basis ? (
-              <p
-                className="rounded-card border bg-bg-card p-2 text-caption text-text-muted"
-                style={{ borderColor: `var(--grade-${grade})` }}
-              >
-                <span className="font-semibold">등급 산출:</span> {data.currentGrade.basis}
-              </p>
-            ) : null}
-
-            <Tabs
-              items={[
-                { value: 'season' as const, label: '시즌 성적' },
-                { value: 'career' as const, label: '역대 기록' },
-              ]}
-              value={tab}
-              onChange={setTab}
-              ariaLabel="기록 종류"
-            />
-
-            <div role="tabpanel" aria-label={tab === 'season' ? '시즌 성적' : '역대 기록'}>
-              {tab === 'season' ? (
-                <SeasonStatTab
-                  isPitcher={player.isPitcher}
-                  currentSeason={(data.currentSeason as Record<string, unknown>) ?? {}}
-                  recentTen={(data.recentTen as Record<string, unknown>[]) ?? []}
-                  grade={grade}
-                />
-              ) : (
-                <CareerStatTab
-                  isPitcher={player.isPitcher}
-                  careerSeasons={(data.careerSeasons as Record<string, unknown>[]) ?? []}
-                />
-              )}
-            </div>
-          </>
-        ) : null}
       </div>
+
+      {/* Loading / error */}
+      {isLoading ? (
+        <p
+          className="py-8 text-center"
+          aria-live="polite"
+          style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: 13 }}
+        >
+          선수 정보 불러오는 중…
+        </p>
+      ) : null}
+      {error ? (
+        <div
+          style={{
+            margin: '12px 16px',
+            padding: 12,
+            borderRadius: 'var(--md-sys-shape-corner-medium)',
+            background: 'var(--md-sys-color-error-container)',
+            color: 'var(--md-sys-color-on-error-container)',
+            fontSize: 13,
+          }}
+        >
+          선수 정보를 불러오지 못했습니다.
+        </div>
+      ) : null}
+
+      {/* Tabs + body */}
+      {data && player ? (
+        <>
+          <div className="m3-tabs" style={{ marginTop: 14 }}>
+            <button
+              type="button"
+              className={tab === 'season' ? 'active' : ''}
+              onClick={() => setTab('season')}
+              aria-selected={tab === 'season'}
+            >
+              시즌 성적
+            </button>
+            <button
+              type="button"
+              className={tab === 'career' ? 'active' : ''}
+              onClick={() => setTab('career')}
+              aria-selected={tab === 'career'}
+            >
+              역대 기록
+            </button>
+          </div>
+          <div
+            role="tabpanel"
+            aria-label={tab === 'season' ? '시즌 성적' : '역대 기록'}
+            style={{ padding: '16px', maxHeight: '50vh', overflowY: 'auto' }}
+          >
+            {tab === 'season' ? (
+              <SeasonStatTab
+                isPitcher={player.isPitcher}
+                currentSeason={(data.currentSeason as Record<string, unknown>) ?? {}}
+                recentTen={(data.recentTen as Record<string, unknown>[]) ?? []}
+                grade={grade}
+              />
+            ) : (
+              <CareerStatTab
+                isPitcher={player.isPitcher}
+                careerSeasons={(data.careerSeasons as Record<string, unknown>[]) ?? []}
+              />
+            )}
+          </div>
+        </>
+      ) : null}
     </Dialog>
   );
 }

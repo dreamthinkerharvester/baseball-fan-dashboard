@@ -1,5 +1,5 @@
-// Design Ref: §5.4 PlayerModal — 4-way 닫기 + focus trap + ARIA dialog.
-// HTML <dialog> element 활용 — 브라우저 기본 focus trap + Escape를 활용.
+// Design Ref: §5.4 PlayerModal + m3-comp Screen2 bottom-sheet.
+// HTML <dialog> for native focus trap + Escape, M3 surface tokens.
 
 'use client';
 
@@ -10,7 +10,6 @@ import clsx from 'clsx';
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
-  /** Bottom-sheet (모바일) vs center (데스크탑). responsive로 자동 결정 가능. */
   variant?: 'bottom-sheet' | 'center';
   ariaLabelledby?: string;
   ariaDescribedby?: string;
@@ -28,7 +27,6 @@ export function Dialog({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const dragStartY = useRef<number | null>(null);
 
-  // open prop ↔ <dialog> showModal/close 동기화
   useEffect(() => {
     const el = dialogRef.current;
     if (!el) return;
@@ -39,7 +37,6 @@ export function Dialog({
     }
   }, [open]);
 
-  // <dialog> close 이벤트 → onClose
   useEffect(() => {
     const el = dialogRef.current;
     if (!el) return;
@@ -48,7 +45,6 @@ export function Dialog({
     return () => el.removeEventListener('close', handler);
   }, [onClose]);
 
-  // 배경 클릭 닫기 (dialog 자체 클릭 시 onClick 발생 — outside만 필터)
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent<HTMLDialogElement>) => {
       const el = e.currentTarget;
@@ -63,7 +59,6 @@ export function Dialog({
     [onClose],
   );
 
-  // 모바일 스와이프 다운 닫기 (bottom-sheet 한정)
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     dragStartY.current = e.touches[0]?.clientY ?? null;
   };
@@ -73,6 +68,8 @@ export function Dialog({
     if (endY - dragStartY.current > 80) onClose();
     dragStartY.current = null;
   };
+
+  const isSheet = variant === 'bottom-sheet';
 
   return (
     <dialog
@@ -85,18 +82,42 @@ export function Dialog({
         'border-0 bg-transparent p-0 backdrop:bg-black/60 backdrop:backdrop-blur-sm',
         'open:animate-[fadein_200ms_ease-out]',
       )}
+      style={isSheet ? { marginBottom: 0, marginTop: 'auto' } : undefined}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        onTouchStart={variant === 'bottom-sheet' ? handleTouchStart : undefined}
-        onTouchEnd={variant === 'bottom-sheet' ? handleTouchEnd : undefined}
-        className={clsx(
-          'mx-auto w-full max-w-screen-md bg-bg-panel text-text-primary shadow-2xl',
-          variant === 'bottom-sheet'
-            ? 'rounded-t-modal pb-safe min-h-[60vh] mt-auto'
-            : 'rounded-modal my-8',
-        )}
+        onTouchStart={isSheet ? handleTouchStart : undefined}
+        onTouchEnd={isSheet ? handleTouchEnd : undefined}
+        className="mx-auto w-full max-w-screen-md pb-safe"
+        style={{
+          background: 'var(--md-sys-color-surface-container-high)',
+          color: 'var(--md-sys-color-on-surface)',
+          borderTopLeftRadius: isSheet
+            ? 'var(--md-sys-shape-corner-extra-large)'
+            : 'var(--md-sys-shape-corner-large)',
+          borderTopRightRadius: isSheet
+            ? 'var(--md-sys-shape-corner-extra-large)'
+            : 'var(--md-sys-shape-corner-large)',
+          borderBottomLeftRadius: isSheet ? 0 : 'var(--md-sys-shape-corner-large)',
+          borderBottomRightRadius: isSheet ? 0 : 'var(--md-sys-shape-corner-large)',
+          minHeight: isSheet ? '60vh' : 'auto',
+          marginTop: isSheet ? 'auto' : '32px',
+          boxShadow: 'var(--md-sys-elevation-3)',
+          overflow: 'hidden',
+        }}
       >
+        {isSheet && (
+          <div
+            aria-hidden
+            style={{
+              width: 32,
+              height: 4,
+              borderRadius: 2,
+              background: 'var(--md-sys-color-outline-variant)',
+              margin: '12px auto 0',
+            }}
+          />
+        )}
         {children}
       </div>
     </dialog>
