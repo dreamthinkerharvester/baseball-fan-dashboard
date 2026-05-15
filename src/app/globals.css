@@ -4,16 +4,10 @@
 
 /* ============================================================
    Pretendard (KR) + Roboto Flex (EN) + Material Symbols
+   Material Symbols loaded via <link> in layout.tsx for reliability.
    ============================================================ */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&family=Roboto+Mono:wght@400;500;700&display=swap");
-
-@font-face {
-  font-family: 'Material Symbols Outlined';
-  font-style: normal;
-  font-weight: 100 700;
-  src: url('https://fonts.gstatic.com/s/materialsymbolsoutlined/v337/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2') format('woff2-variations');
-}
 
 @layer base {
   :root {

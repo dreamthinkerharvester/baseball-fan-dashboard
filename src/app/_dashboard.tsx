@@ -1,10 +1,12 @@
 // Page composition helpers — keep page.tsx terse.
-// Design Ref: §5.1 layout sections.
+// Design Ref: §5.1 layout sections + 사용자 피드백 (KiaRecent10 + MetroAlert).
 
 'use client';
 
 import { ScheduleList } from '@/features/game-schedule/ScheduleList';
 import { LineupSection } from '@/features/lineup-card/LineupSection';
+import { KiaRecent10 } from '@/features/recent-games/KiaRecent10';
+import { MetroGameAlert } from '@/features/recent-games/MetroGameAlert';
 import { TeamMatchupPanel } from '@/features/team-header/TeamMatchupPanel';
 
 import type { TeamCode } from '@/types';
@@ -16,6 +18,15 @@ export function GameSchedule({ myTeam }: { myTeam: TeamCode | null }) {
 export function MatchupHeader({ myTeam }: { myTeam: TeamCode | null }) {
   if (!myTeam) return null;
   return <TeamMatchupPanel team={myTeam} />;
+}
+
+export function MetroAlertSection({ myTeam }: { myTeam: TeamCode | null }) {
+  return <MetroGameAlert myTeam={myTeam} />;
+}
+
+export function RecentTenSection({ myTeam }: { myTeam: TeamCode | null }) {
+  if (myTeam !== 'KIA') return null;
+  return <KiaRecent10 />;
 }
 
 export function LineupSectionMaybe({ myTeam }: { myTeam: TeamCode | null }) {
