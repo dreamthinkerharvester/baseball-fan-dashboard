@@ -1,5 +1,5 @@
-// Design Ref: §5.4 — 탭 컴포넌트 (Schedule range, PlayerModal Season/Career).
-// 자체 구현 (shadcn/ui dependency 없이) — 단순한 접근성 보장.
+// Design Ref: §5.4 + m3-comp tabs primary indicator.
+// 자체 구현 (shadcn/ui dependency 없이) — 접근성 보장 + M3 active 언더라인.
 
 'use client';
 
@@ -19,6 +19,8 @@ export interface TabsProps<TValue extends string = string> {
   onChange?: (value: TValue) => void;
   className?: string;
   ariaLabel?: string;
+  /** "primary" = M3 underline tabs (default), "segmented" = pill segmented control. */
+  variant?: 'primary' | 'segmented';
 }
 
 export function Tabs<TValue extends string = string>({
@@ -28,6 +30,7 @@ export function Tabs<TValue extends string = string>({
   onChange,
   className,
   ariaLabel,
+  variant = 'segmented',
 }: TabsProps<TValue>) {
   const id = useId();
   const isControlled = value !== undefined;
@@ -41,11 +44,42 @@ export function Tabs<TValue extends string = string>({
     onChange?.(v);
   }
 
+  if (variant === 'primary') {
+    return (
+      <div role="tablist" aria-label={ariaLabel} className={clsx('m3-tabs', className)}>
+        {items.map((item) => {
+          const active = item.value === current;
+          return (
+            <button
+              key={item.value}
+              type="button"
+              role="tab"
+              id={`${id}-${item.value}`}
+              aria-selected={active}
+              tabIndex={active ? 0 : -1}
+              onClick={() => select(item.value)}
+              className={active ? 'active' : ''}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Segmented variant — small inline control (use for Schedule range, Career filter)
   return (
     <div
       role="tablist"
       aria-label={ariaLabel}
-      className={clsx('inline-flex gap-1 rounded-button bg-bg-panel p-1', className)}
+      className={clsx('inline-flex', className)}
+      style={{
+        gap: 2,
+        padding: 3,
+        borderRadius: 9999,
+        background: 'var(--md-sys-color-surface-container-high)',
+      }}
     >
       {items.map((item) => {
         const active = item.value === current;
@@ -58,12 +92,21 @@ export function Tabs<TValue extends string = string>({
             aria-selected={active}
             tabIndex={active ? 0 : -1}
             onClick={() => select(item.value)}
-            className={clsx(
-              'min-h-[36px] rounded-button px-3 text-body font-medium transition-colors',
-              active
-                ? 'bg-grade-elite text-text-primary'
-                : 'text-text-muted hover:text-text-primary',
-            )}
+            style={{
+              minHeight: 32,
+              padding: '0 12px',
+              borderRadius: 9999,
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: 0.1,
+              transition: 'background var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard)',
+              background: active ? 'var(--md-sys-color-primary-container)' : 'transparent',
+              color: active
+                ? 'var(--md-sys-color-on-primary-container)'
+                : 'var(--md-sys-color-on-surface-variant)',
+            }}
           >
             {item.label}
           </button>

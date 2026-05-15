@@ -30,7 +30,18 @@ export function PlayerSearchPanel() {
 
   return (
     <section className="flex flex-col gap-4 px-4 py-4">
-      <h2 className="text-display">선수 검색</h2>
+      <h2
+        className="font-brand"
+        style={{
+          margin: 0,
+          fontSize: 26,
+          fontWeight: 700,
+          letterSpacing: -0.5,
+          color: 'var(--md-sys-color-on-surface)',
+        }}
+      >
+        선수 검색
+      </h2>
       <SearchInput value={filters.q} onChange={handleQueryChange} />
       <FilterChips filters={filters} onChange={setFilters} />
       <ResultsList

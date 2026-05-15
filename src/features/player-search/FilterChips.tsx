@@ -72,9 +72,19 @@ export function FilterChips({ filters, onChange, className }: FilterChipsProps) 
 
 function ChipRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-caption font-bold uppercase text-text-muted">{label}</span>
-      <div className="flex flex-wrap gap-2">{children}</div>
+    <div className="flex flex-col gap-1.5">
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: 0.5,
+          textTransform: 'uppercase',
+          color: 'var(--md-sys-color-on-surface-variant)',
+        }}
+      >
+        {label}
+      </span>
+      <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );
 }
@@ -82,7 +92,7 @@ function ChipRow({ label, children }: { label: string; children: React.ReactNode
 interface ChipProps {
   active: boolean;
   onClick: () => void;
-  /** active일 때 사용할 강조 색. 미지정 시 grade-elite. */
+  /** active일 때 사용할 강조 색. 미지정 시 primary-container. */
   color?: string;
   children: React.ReactNode;
 }
@@ -93,19 +103,17 @@ function Chip({ active, onClick, color, children }: ChipProps) {
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={clsx(
-        'inline-flex h-8 items-center rounded-button border px-3 text-caption font-semibold transition',
-        active
-          ? 'text-text-primary'
-          : 'border-text-dim/30 text-text-muted hover:border-text-dim/60',
-      )}
+      className={clsx('m3-chip', !active && 'm3-chip-outline')}
       style={
         active
           ? {
-              backgroundColor: color ?? '#7B2FBE',
-              borderColor: color ?? '#7B2FBE',
+              backgroundColor: color ?? 'var(--md-sys-color-primary-container)',
+              color: color ? '#fff' : 'var(--md-sys-color-on-primary-container)',
+              border: 'none',
+              fontWeight: 700,
+              cursor: 'pointer',
             }
-          : undefined
+          : { cursor: 'pointer' }
       }
     >
       {children}
