@@ -6,6 +6,7 @@
 
 import useSWR from 'swr';
 
+import { useStandings } from '@/features/league-standings/hooks/useStandings';
 import { fetcher } from '@/lib/api-client';
 import { TEAMS } from '@/lib/constants';
 import { todayKstString } from '@/lib/date';
@@ -19,15 +20,13 @@ export interface TeamMatchupPanelProps {
 export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
   const teamMeta = TEAMS[team];
   const today = todayKstString();
-  const { data: standings } = useSWR<StandingsRow[]>(
-    '/api/standings',
-    fetcher,
-  );
+  const { data: standingsData } = useStandings();
   const { data: games } = useSWR<Game[]>(
     `/api/games?range=day&date=${today}`,
     fetcher,
   );
 
+  const standings = standingsData?.rows;
   const myRow = standings?.find((r) => r.teamCode === team) ?? null;
   const todayGame = (games ?? []).find(
     (g) => g.homeTeam === team || g.awayTeam === team,
@@ -38,7 +37,7 @@ export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
       : TEAMS[todayGame.homeTeam]
     : null;
   const opponentRow = standings && opponent
-    ? (standings as StandingsRow[]).find((r) => r.teamCode === opponent.code)
+    ? standings.find((r) => r.teamCode === opponent.code)
     : null;
   const isHome = todayGame ? todayGame.homeTeam === team : false;
 
