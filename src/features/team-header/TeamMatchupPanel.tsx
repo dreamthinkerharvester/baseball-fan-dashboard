@@ -10,7 +10,7 @@ import { fetcher } from '@/lib/api-client';
 import { TEAMS } from '@/lib/constants';
 import { todayKstString } from '@/lib/date';
 
-import type { ApiResponse, Game, StandingsRow, TeamCode } from '@/types';
+import type { Game, StandingsRow, TeamCode } from '@/types';
 
 export interface TeamMatchupPanelProps {
   team: TeamCode;
@@ -19,19 +19,17 @@ export interface TeamMatchupPanelProps {
 export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
   const teamMeta = TEAMS[team];
   const today = todayKstString();
-  const { data: standingsResp } = useSWR<ApiResponse<StandingsRow[]>>(
+  const { data: standings } = useSWR<StandingsRow[]>(
     '/api/standings',
     fetcher,
   );
-  const { data: gamesResp } = useSWR<ApiResponse<Game[]>>(
+  const { data: games } = useSWR<Game[]>(
     `/api/games?range=day&date=${today}`,
     fetcher,
   );
 
-  const standings = standingsResp?.data ?? null;
   const myRow = standings?.find((r) => r.teamCode === team) ?? null;
-  const games = gamesResp?.data ?? [];
-  const todayGame = games.find(
+  const todayGame = (games ?? []).find(
     (g) => g.homeTeam === team || g.awayTeam === team,
   );
   const opponent = todayGame
@@ -40,7 +38,7 @@ export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
       : TEAMS[todayGame.homeTeam]
     : null;
   const opponentRow = standings && opponent
-    ? standings.find((r) => r.teamCode === opponent.code)
+    ? (standings as StandingsRow[]).find((r) => r.teamCode === opponent.code)
     : null;
   const isHome = todayGame ? todayGame.homeTeam === team : false;
 
