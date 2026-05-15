@@ -4,8 +4,6 @@
 
 import { useEffect, useState } from 'react';
 
-import clsx from 'clsx';
-
 import { isStorageAvailable } from '@/lib/storage';
 
 export interface OfflineBannerProps {
@@ -26,17 +24,31 @@ export function OfflineBanner({ staleHours = 0, className }: OfflineBannerProps)
   return (
     <div
       role="status"
-      className={clsx(
-        'border-b border-grade-special/40 bg-grade-special/10 px-4 py-2 text-caption text-grade-special',
-        className,
-      )}
+      className={className}
+      style={{
+        background: 'var(--md-sys-color-tertiary-container)',
+        color: 'var(--md-sys-color-on-tertiary-container)',
+        borderBottom: '1px solid var(--md-sys-color-outline-variant)',
+        padding: '8px 12px',
+        fontSize: 12,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+      }}
     >
-      {!storageOk ? (
-        <p>시크릿 모드: 마이팀 설정이 탭을 닫으면 사라집니다.</p>
-      ) : null}
-      {staleHours > 0 ? (
-        <p>데이터 갱신이 약 {staleHours}시간 지연되고 있습니다.</p>
-      ) : null}
+      <span className="mso" style={{ fontSize: 16 }} aria-hidden>
+        info
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {!storageOk ? (
+          <p style={{ margin: 0 }}>시크릿 모드: 마이팀 설정이 탭을 닫으면 사라집니다.</p>
+        ) : null}
+        {staleHours > 0 ? (
+          <p style={{ margin: 0 }} className="tabular">
+            데이터 갱신이 약 {staleHours}시간 지연되고 있습니다.
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

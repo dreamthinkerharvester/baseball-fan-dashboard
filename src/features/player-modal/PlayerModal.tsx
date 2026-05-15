@@ -186,19 +186,21 @@ export function PlayerModal({ playerId, open, onClose }: PlayerModalProps) {
               <div
                 style={{
                   display: 'flex',
+                  flexWrap: 'wrap',
                   gap: 6,
                   alignItems: 'center',
                   marginTop: 4,
                   fontSize: 11,
                   color: 'rgba(255,255,255,0.85)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {team && <span style={{ color: team.primaryColor, fontWeight: 700 }}>{team.shortName}</span>}
-                {team && <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)' }} />}
+                {team && <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)', flexShrink: 0 }} />}
                 <span>{player.position}</span>
                 {player.isPitcher !== undefined && (
                   <>
-                    <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)' }} />
+                    <span style={{ width: 3, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.4)', flexShrink: 0 }} />
                     <span>{player.isPitcher ? '투수' : '타자'}</span>
                   </>
                 )}

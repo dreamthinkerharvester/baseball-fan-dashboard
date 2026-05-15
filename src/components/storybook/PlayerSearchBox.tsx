@@ -117,7 +117,7 @@ export function PlayerSearchBox({ roster, onSelect }: Props) {
               position: 'absolute',
               zIndex: 20,
               left: 0,
-              right: 80,
+              right: 0,
               top: '100%',
               marginTop: 4,
               background: 'var(--md-sys-color-surface-container-high)',

@@ -1,4 +1,5 @@
 // Design Ref: §5.1 + m3-comp Screen1 MobileHeader.
+// Mobile-first: 375px 폭에 맞춰 아이콘 40px + 자동 truncate.
 
 'use client';
 
@@ -28,8 +29,8 @@ export function Header({ onOpenSettings }: HeaderProps) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 8,
-        padding: '10px 12px',
+        gap: 4,
+        padding: '8px 10px',
         minHeight: 56,
       }}
     >
@@ -37,7 +38,7 @@ export function Header({ onOpenSettings }: HeaderProps) {
         <span
           aria-hidden
           className="mso filled"
-          style={{ fontSize: 24, color: 'var(--md-sys-color-primary)' }}
+          style={{ fontSize: 22, color: 'var(--md-sys-color-primary)', flexShrink: 0 }}
         >
           sports_baseball
         </span>
@@ -46,7 +47,7 @@ export function Header({ onOpenSettings }: HeaderProps) {
             className="font-brand"
             style={{
               margin: 0,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: 700,
               letterSpacing: -0.2,
               color: 'var(--md-sys-color-on-surface)',
@@ -57,7 +58,16 @@ export function Header({ onOpenSettings }: HeaderProps) {
           >
             KBO 카드 대시보드
           </h1>
-          <span style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <span
+            className="hidden sm:inline"
+            style={{
+              fontSize: 11,
+              color: 'var(--md-sys-color-on-surface-variant)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             Material 3 · KIA Seed
           </span>
         </div>
@@ -66,8 +76,8 @@ export function Header({ onOpenSettings }: HeaderProps) {
       <Link
         href="/storybook"
         aria-label="스토리북"
-        className="m3-btn m3-btn-icon"
-        style={{ width: 44, height: 44 }}
+        className="m3-btn m3-btn-icon hidden sm:inline-flex"
+        style={{ width: 40, height: 40, flexShrink: 0 }}
       >
         <span className="mso filled" style={{ fontSize: 22, color: 'var(--md-sys-color-tertiary)' }}>
           auto_stories
@@ -77,7 +87,7 @@ export function Header({ onOpenSettings }: HeaderProps) {
         href="/players"
         aria-label="선수 검색"
         className="m3-btn m3-btn-icon"
-        style={{ width: 44, height: 44 }}
+        style={{ width: 40, height: 40, flexShrink: 0 }}
       >
         <span className="mso" style={{ fontSize: 22 }}>search</span>
       </Link>
@@ -89,20 +99,26 @@ export function Header({ onOpenSettings }: HeaderProps) {
             background: 'var(--md-sys-color-primary-container)',
             color: 'var(--md-sys-color-on-primary-container)',
             fontWeight: 700,
-            height: 32,
-            padding: '0 10px',
+            height: 28,
+            padding: '0 8px',
+            flexShrink: 0,
+            maxWidth: 80,
+            overflow: 'hidden',
           }}
           aria-label={`마이팀: ${TEAMS[myTeam].name}`}
         >
           <span
             style={{
-              width: 10,
-              height: 10,
+              width: 8,
+              height: 8,
               borderRadius: 99,
               background: TEAMS[myTeam].primaryColor,
+              flexShrink: 0,
             }}
           />
-          {TEAMS[myTeam].shortName}
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {TEAMS[myTeam].shortName}
+          </span>
         </span>
       ) : null}
 
@@ -111,7 +127,7 @@ export function Header({ onOpenSettings }: HeaderProps) {
         aria-label="설정"
         onClick={onOpenSettings}
         className="m3-btn m3-btn-icon"
-        style={{ width: 44, height: 44 }}
+        style={{ width: 40, height: 40, flexShrink: 0 }}
       >
         <span className="mso" style={{ fontSize: 22 }}>settings</span>
       </button>

@@ -123,13 +123,21 @@ export function ResultsList({
               >
                 {player.position}
               </span>
-              <span className="flex-1 truncate" style={{ minWidth: 0 }}>
+              <span
+                className="flex-1"
+                style={{
+                  minWidth: 0,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
                 <span style={{ fontWeight: 600, fontSize: 14 }}>{player.name}</span>
                 {player.uniformNumber ? (
                   <span
                     className="tabular"
                     style={{
-                      marginLeft: 8,
+                      marginLeft: 6,
                       fontSize: 11,
                       color: 'var(--md-sys-color-on-surface-variant)',
                       fontFamily: 'var(--md-ref-typeface-mono)',
@@ -142,9 +150,13 @@ export function ResultsList({
               <span
                 className="font-mono-tn"
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
                   color: 'var(--md-sys-color-on-surface-variant)',
                   flexShrink: 0,
+                  maxWidth: 80,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
                 {keyStat ?? '—'}
@@ -152,7 +164,11 @@ export function ResultsList({
               <span
                 className="mso"
                 aria-hidden
-                style={{ fontSize: 18, color: 'var(--md-sys-color-on-surface-variant)' }}
+                style={{
+                  fontSize: 18,
+                  color: 'var(--md-sys-color-on-surface-variant)',
+                  flexShrink: 0,
+                }}
               >
                 chevron_right
               </span>

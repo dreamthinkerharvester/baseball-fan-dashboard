@@ -162,9 +162,9 @@ function ScheduleRow({ game, myTeam }: RowProps) {
   return (
     <li
       aria-current={isMyTeam ? 'true' : undefined}
-      className="flex items-center gap-3"
+      className="flex items-center gap-2 sm:gap-3"
       style={{
-        padding: '10px 12px',
+        padding: '10px 10px 10px 12px',
         borderRadius: 'var(--md-sys-shape-corner-medium)',
         background: isMyTeam
           ? 'var(--md-sys-color-surface-container-high)'
@@ -173,7 +173,7 @@ function ScheduleRow({ game, myTeam }: RowProps) {
         listStyle: 'none',
       }}
     >
-      <div className="flex flex-col items-start" style={{ width: 50, flexShrink: 0 }}>
+      <div className="flex flex-col items-start" style={{ width: 44, flexShrink: 0 }}>
         <span
           className="tabular"
           style={{
@@ -194,15 +194,15 @@ function ScheduleRow({ game, myTeam }: RowProps) {
         </span>
       </div>
 
-      <div className="flex flex-1 items-center gap-2 min-w-0">
+      <div className="flex flex-1 items-center gap-1.5 min-w-0">
         <TeamCell team={away} highlight={isMyTeam && game.awayTeam === myTeam} />
-        <span style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}>@</span>
+        <span style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)', flexShrink: 0 }}>@</span>
         <TeamCell team={home} highlight={isMyTeam && game.homeTeam === myTeam} />
       </div>
 
       <div
-        className="flex flex-col items-end gap-1"
-        style={{ width: 84, flexShrink: 0 }}
+        className="flex flex-col items-end gap-0.5"
+        style={{ width: 64, flexShrink: 0 }}
       >
         <span
           style={{
@@ -232,11 +232,30 @@ function ScheduleRow({ game, myTeam }: RowProps) {
           </span>
         )}
         {game.status === 'cancelled' && game.cancelReason ? (
-          <span style={{ fontSize: 10, color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <span
+            style={{
+              fontSize: 10,
+              color: 'var(--md-sys-color-on-surface-variant)',
+              maxWidth: 64,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             {game.cancelReason}
           </span>
         ) : null}
-        <span style={{ fontSize: 10, color: 'var(--md-sys-color-on-surface-variant)' }}>
+        <span
+          style={{
+            fontSize: 10,
+            color: 'var(--md-sys-color-on-surface-variant)',
+            maxWidth: 64,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+          title={game.stadium}
+        >
           {game.stadium}
         </span>
       </div>
@@ -254,7 +273,7 @@ function TeamCell({
   return (
     <span
       className="flex items-center gap-1.5"
-      style={{ minWidth: 0 }}
+      style={{ minWidth: 0, flex: 1 }}
     >
       <span
         style={{
@@ -275,7 +294,7 @@ function TeamCell({
       </span>
       <span
         style={{
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: highlight ? 700 : 500,
           color: highlight
             ? 'var(--md-sys-color-primary)'
@@ -283,6 +302,7 @@ function TeamCell({
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          minWidth: 0,
         }}
       >
         {team.shortName}

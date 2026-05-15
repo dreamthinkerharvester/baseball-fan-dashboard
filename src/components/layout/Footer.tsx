@@ -4,25 +4,35 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="mt-12 border-t border-text-dim/20 bg-bg-panel px-4 py-4 text-caption text-text-muted">
-      <div className="mx-auto flex max-w-screen-lg flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p>© 2026 KBO 카드 대시보드 · 비상업적 팬 프로젝트</p>
+    <footer
+      style={{
+        marginTop: 48,
+        borderTop: '1px solid var(--md-sys-color-outline-variant)',
+        background: 'var(--md-sys-color-surface-container-low)',
+        padding: '16px 16px 32px',
+        color: 'var(--md-sys-color-on-surface-variant)',
+        fontSize: 11,
+      }}
+    >
+      <div className="mx-auto flex max-w-screen-lg flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+          <p style={{ margin: 0, fontWeight: 500 }}>© 2026 KBO 카드 대시보드 · 비상업적 팬 프로젝트</p>
           {/* forbidden-words-allow:disclaimer */}
-          <p className="text-text-dim">
+          <p style={{ margin: 0, fontSize: 10, color: 'var(--md-sys-color-on-surface-variant)' }}>
             이 서비스는 KBO 공식 서비스가 아니며, 네오위즈/넷마블의 마구마구와 무관한 독립 프로젝트입니다.
           </p>
         </div>
-        <nav className="flex gap-3">
-          <Link href="/about" className="hover:text-text-primary">
+        <nav className="flex gap-2 flex-wrap" aria-label="푸터 메뉴">
+          <Link href="/about" className="m3-btn m3-btn-text" style={{ height: 32, padding: '0 12px', fontSize: 12 }}>
             소개
           </Link>
-          <Link href="/grades" className="hover:text-text-primary">
+          <Link href="/grades" className="m3-btn m3-btn-text" style={{ height: 32, padding: '0 12px', fontSize: 12 }}>
             등급 산출
           </Link>
           <a
             href="https://github.com/baseball-fan-dashboard"
-            className="hover:text-text-primary"
+            className="m3-btn m3-btn-text"
+            style={{ height: 32, padding: '0 12px', fontSize: 12 }}
             target="_blank"
             rel="noreferrer noopener"
           >

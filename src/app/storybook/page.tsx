@@ -101,6 +101,10 @@ export default function StorybookPage() {
               background: 'var(--md-sys-color-primary-container)',
               color: 'var(--md-sys-color-on-primary-container)',
               fontWeight: 700,
+              flexShrink: 0,
+              maxWidth: 120,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
             }}
           >
             <span
@@ -109,9 +113,12 @@ export default function StorybookPage() {
                 height: 10,
                 borderRadius: 99,
                 background: '#EA0029',
+                flexShrink: 0,
               }}
             />
-            {storybook.player.name}
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {storybook.player.name}
+            </span>
           </span>
         )}
       </header>
