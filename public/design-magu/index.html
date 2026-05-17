@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+<title>KBO 카드 대시보드 · 마구마구 풍 시안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* === 마구마구 풍 컬러 팔레트 === */
+    --bg-deep:        #0F1421;   /* 야간 야구장 하늘 */
+    --bg-mid:         #1A2236;
+    --panel:          #243152;   /* 패널 베이스 */
+    --panel-deep:     #1B2440;
+    --panel-light:    #314178;
+    --kia-red:        #E83A3F;   /* KIA 시그니처 */
+    --kia-red-deep:   #B82428;
+    --field-green:    #2EA45A;
+    --field-green-dk: #1F7A41;
+    --gold:           #FFC93C;
+    --gold-deep:      #E0A30A;
+    --silver:         #C8D0E0;
+    --bronze:         #D88848;
+    --sky:            #56AAFF;
+    --pink:           #FF6F91;
+    --text-1:         #FFFFFF;
+    --text-2:         #D6DCEE;
+    --text-3:         #8B95B0;
+    --text-dim:       #5D6786;
+    --line:           #3A4570;
+    --line-light:     #4D5A8A;
+    --hp-bg:          #1A1F33;
+    --shadow-out:     0 2px 0 0 #0A0F1C, 0 4px 12px rgba(0,0,0,.4);
+    --shadow-card:    0 3px 0 0 #0A0F1C, 0 6px 0 0 rgba(255,255,255,.04) inset, 0 8px 16px rgba(0,0,0,.5);
+    --shadow-chip:    0 1px 0 0 #0A0F1C, 0 -1px 0 0 rgba(255,255,255,.08) inset;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg-deep); color: var(--text-1); }
+  body {
+    font-family: 'Noto Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(232,58,63,.18), transparent 60%),
+      radial-gradient(900px 500px at 100% 30%, rgba(46,164,90,.12), transparent 60%),
+      var(--bg-deep);
+  }
+  .brand { font-family: 'Black Han Sans', 'Noto Sans KR', sans-serif; font-weight: 400; letter-spacing: 0; }
+  .digit { font-family: 'DotGothic16', 'Press Start 2P', monospace; font-weight: 400; }
+  .pixel { font-family: 'Press Start 2P', 'DotGothic16', monospace; font-weight: 400; image-rendering: pixelated; }
+
+  /* === 메인 컨테이너 (모바일 우선) === */
+  main {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0 0 24px;
+    position: relative;
+  }
+
+  /* === 헤더: 게임 HUD === */
+  .hud {
+    position: sticky; top: 0; z-index: 50;
+    padding: 6px 8px 6px;
+    background: linear-gradient(180deg, rgba(15,20,33,.92), rgba(15,20,33,.7));
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .hud-row { display: flex; align-items: center; gap: 6px; }
+  .hud-brand {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 8px 4px 4px; flex: 1;
+  }
+  .hud-logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(160deg, var(--kia-red), var(--kia-red-deep));
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-out);
+    flex-shrink: 0;
+  }
+  .hud-logo .ball {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, #e8e8e8 70%, #999);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.3);
+    position: relative;
+  }
+  .hud-logo .ball::before, .hud-logo .ball::after {
+    content: ''; position: absolute; inset: 2px;
+    border: 1.5px solid var(--kia-red); border-radius: 50%;
+    border-top-color: transparent; border-left-color: transparent;
+  }
+  .hud-logo .ball::after { transform: rotate(180deg); }
+  .hud-title { display: flex; flex-direction: column; line-height: 1; min-width: 0; }
+  .hud-title .name { font-size: 16px; line-height: 1; color: #fff; }
+  .hud-title .sub { font-size: 9px; letter-spacing: .5px; color: var(--gold); margin-top: 3px; }
+
+  .hud-team-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 28px; padding: 0 8px 0 4px;
+    background: linear-gradient(180deg, var(--kia-red), var(--kia-red-deep));
+    border-radius: 14px;
+    box-shadow: var(--shadow-chip);
+    font-size: 11px; font-weight: 900;
+  }
+  .hud-team-chip .emblem {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="%23E83A3F"/><text x="11" y="15" font-size="11" font-weight="900" text-anchor="middle" fill="white" font-family="Arial">K</text></svg>') no-repeat center/contain;
+    flex-shrink: 0;
+    /* TODO: 실제 KIA 픽셀 엠블럼 PNG (24x24) 로 교체 */
+  }
+  .hud-btn {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(180deg, var(--panel-light), var(--panel));
+    border: none; cursor: pointer; flex-shrink: 0;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-out);
+    color: var(--text-1); font-size: 14px;
+    transition: transform .08s;
+  }
+  .hud-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 #0A0F1C; }
+  .hud-btn .ico { line-height: 1; }
+  .hud-coins {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 28px; padding: 0 8px;
+    background: linear-gradient(180deg, var(--panel-deep), #0F1933);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    font-size: 11px; font-weight: 700;
+    color: var(--gold);
+  }
+  .hud-coins .ico {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FFE890, var(--gold) 60%, var(--gold-deep));
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,.3);
+  }
+
+  /* === 라이브 스코어 보드 (게임 전광판) === */
+  .scoreboard {
+    margin: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px),
+      linear-gradient(160deg, #1F2A4A, #0F1730);
+    border: 1px solid var(--line-light);
+    box-shadow: var(--shadow-card);
+    position: relative; overflow: hidden;
+  }
+  .scoreboard::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,201,60,.2), transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(86,170,255,.18), transparent 40%);
+    pointer-events: none;
+  }
+  .sb-head { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; position: relative; }
+  .sb-live {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 6px; border-radius: 4px;
+    background: var(--kia-red); color: #fff;
+    font-size: 9px; font-weight: 900; letter-spacing: .5px;
+  }
+  .sb-live .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .sb-meta { font-size: 10px; color: var(--text-3); }
+  .sb-stadium { margin-left: auto; font-size: 10px; color: var(--text-2); display: flex; align-items: center; gap: 3px; }
+  .sb-stadium .ico { font-size: 11px; }
+
+  .sb-grid {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;
+    position: relative;
+  }
+  .sb-team { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .sb-team.left { align-items: flex-start; }
+  .sb-team.right { align-items: flex-end; }
+  .sb-team .badge {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: grid; place-items: center;
+    box-shadow: 0 2px 0 #000, 0 0 0 2px rgba(255,255,255,.06) inset;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 20px;
+    /* TODO: 64x64 팀 엠블럼 PNG slot */
+  }
+  .sb-team .badge.kia { background: linear-gradient(160deg, var(--kia-red), var(--kia-red-deep)); color: #fff; }
+  .sb-team .badge.lg  { background: linear-gradient(160deg, #C30E2E, #8A0A20); color: #fff; }
+  .sb-team .row { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-2); }
+  .sb-team .rank {
+    background: var(--gold); color: #2A1A00;
+    padding: 0 5px; border-radius: 4px; font-weight: 900; font-size: 9px;
+  }
+  .sb-team .pct { font-family: 'DotGothic16', monospace; font-size: 11px; color: var(--text-2); }
+
+  .sb-score {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 4px 10px;
+    background: #000; border-radius: 10px;
+    border: 2px solid #333;
+    min-width: 88px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 4px 0 #000;
+  }
+  .sb-score .nums {
+    display: flex; align-items: baseline; gap: 4px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 28px; line-height: 1; color: var(--gold);
+    text-shadow: 0 0 6px rgba(255,201,60,.6), 0 0 12px rgba(255,201,60,.3);
+  }
+  .sb-score .vs { font-size: 14px; color: var(--text-3); }
+  .sb-score .inning { font-size: 9px; color: var(--sky); letter-spacing: .5px; margin-top: 2px; }
+
+  /* === 4-칸 빠른 통계 (게임 HP/MP 패널 풍) === */
+  .quick-stats {
+    margin: 8px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  }
+  .qs-cell {
+    padding: 6px 4px 8px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 0 #0A0F1C;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .qs-cell .lbl { font-size: 9px; color: var(--text-3); letter-spacing: .3px; }
+  .qs-cell .val {
+    font-family: 'DotGothic16', monospace;
+    font-size: 18px; line-height: 1; margin-top: 3px;
+    color: var(--text-1);
+  }
+  .qs-cell .sub { font-size: 8px; color: var(--gold); margin-top: 2px; letter-spacing: .3px; }
+  .qs-cell.gold .val { color: var(--gold); }
+  .qs-cell.green .val { color: #6EE890; }
+  .qs-cell.red .val { color: #FF7A7E; }
+
+  /* === 승률 HP바 (메이플 풍) === */
+  .winrate {
+    margin: 0 8px 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+  }
+  .winrate .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .winrate .label { font-size: 11px; color: var(--text-2); font-weight: 700; }
+  .winrate .val { font-family: 'DotGothic16', monospace; font-size: 14px; color: var(--gold); }
+  .hpbar {
+    height: 14px; border-radius: 7px;
+    background: var(--hp-bg);
+    border: 1px solid #000;
+    overflow: hidden; position: relative;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.6);
+  }
+  .hpbar > .fill {
+    height: 100%;
+    background: linear-gradient(180deg, #66E58A 0%, var(--field-green) 50%, var(--field-green-dk) 100%);
+    box-shadow: 0 0 6px rgba(110,232,144,.5);
+    position: relative;
+    transition: width .4s;
+  }
+  .hpbar > .fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,.12) 0 6px, transparent 6px 12px);
+  }
+  .hpbar .ticks { position: absolute; inset: 0; pointer-events: none; }
+  .hpbar .ticks span { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,.3); }
+
+  /* === 섹션 헤더 (퀘스트 풍) === */
+  .sec-h {
+    margin: 14px 8px 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sec-h .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px 3px 6px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-deep));
+    color: #2A1A00;
+    font-size: 11px; font-weight: 900;
+    box-shadow: 0 2px 0 #5C3D00;
+  }
+  .sec-h .tag .ico { font-size: 12px; }
+  .sec-h .title { font-family: 'Black Han Sans', sans-serif; font-size: 18px; }
+  .sec-h .more { margin-left: auto; font-size: 10px; color: var(--text-3); }
+
+  /* === 라인업 카드 그리드 (트레이딩 카드 풍) === */
+  .lineup { margin: 0 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .pcard {
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 2px solid var(--line);
+    box-shadow: var(--shadow-card);
+    overflow: hidden; position: relative;
+    cursor: pointer;
+  }
+  .pcard.elite { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(255,201,60,.3) inset, 0 0 12px rgba(255,201,60,.2), var(--shadow-card); }
+  .pcard.gold  { border-color: #BB9020; }
+  .pcard.silver { border-color: #8C97B5; }
+  .pcard.bronze { border-color: #6B4525; }
+
+  .pcard .top {
+    display: flex; align-items: center; gap: 4px;
+    padding: 4px 6px;
+    background: linear-gradient(180deg, rgba(0,0,0,.3), transparent);
+    font-size: 9px;
+  }
+  .pcard .pos {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 4px;
+    background: var(--kia-red); color: #fff;
+    font-weight: 900; font-size: 10px;
+  }
+  .pcard .order { font-family: 'DotGothic16', monospace; color: var(--gold); font-size: 12px; }
+  .pcard .stars { margin-left: auto; color: var(--gold); font-size: 9px; letter-spacing: -1px; }
+
+  .pcard .face {
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(circle at 50% 30%, #4A5878, #2A3458 70%);
+    display: grid; place-items: center;
+    position: relative;
+  }
+  /* TODO: SD 일러스트 (64x64 PNG) — face 영역에 background-image 로 삽입 */
+  .pcard .face::before {
+    /* placeholder silhouette */
+    content: ''; width: 38px; height: 38px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, #C8B295, #8B7355);
+    box-shadow: 0 4px 0 -1px var(--kia-red);
+  }
+  .pcard .face .helmet {
+    position: absolute; top: 14%; left: 22%; right: 22%; height: 30%;
+    background: var(--kia-red); border-radius: 50% 50% 30% 30%;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,.3);
+  }
+
+  .pcard .body {
+    padding: 4px 6px 6px;
+    display: flex; flex-direction: column; gap: 2px;
+    background: rgba(0,0,0,.2);
+  }
+  .pcard .pname {
+    font-size: 12px; font-weight: 900;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-align: center;
+  }
+  .pcard .pstat {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'DotGothic16', monospace;
+    font-size: 10px; color: var(--text-2);
+  }
+  .pcard .pstat .num { color: var(--gold); }
+
+  .pcard .grade-tag {
+    position: absolute; top: 0; right: 0;
+    padding: 1px 5px 2px;
+    font-size: 9px; font-weight: 900;
+    border-radius: 0 0 0 6px;
+  }
+  .pcard.elite .grade-tag { background: linear-gradient(180deg, var(--gold), var(--gold-deep)); color: #2A1A00; }
+  .pcard.gold .grade-tag { background: #BB9020; color: #fff; }
+  .pcard.silver .grade-tag { background: #8C97B5; color: #1A1F33; }
+  .pcard.bronze .grade-tag { background: #6B4525; color: #fff; }
+
+  /* === 일정 미니 카드 (촘촘) === */
+  .sched { margin: 0 8px; display: flex; flex-direction: column; gap: 4px; }
+  .day-row {
+    display: grid; grid-template-columns: 36px 1fr auto; gap: 8px; align-items: center;
+    padding: 8px 10px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 2px 0 #0A0F1C;
+  }
+  .day-row.win { border-left: 3px solid var(--field-green); }
+  .day-row.lose { border-left: 3px solid var(--kia-red); }
+  .day-row.draw { border-left: 3px solid var(--gold); }
+  .day-row.upcoming { border-left: 3px solid var(--sky); }
+  .day-cell { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+  .day-cell .d { font-family: 'DotGothic16', monospace; font-size: 16px; color: var(--text-1); }
+  .day-cell .wd { font-size: 8px; color: var(--text-3); margin-top: 2px; }
+
+  .match-cell {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px;
+  }
+  .match-cell .vs { color: var(--text-3); font-size: 9px; }
+  .match-cell .opp { font-weight: 700; color: var(--text-1); }
+  .match-cell .ha { font-size: 8px; padding: 1px 4px; border-radius: 3px; font-weight: 900; }
+  .match-cell .ha.h { background: var(--field-green); color: #fff; }
+  .match-cell .ha.a { background: var(--panel-light); color: var(--text-2); }
+  .match-cell .stadium { font-size: 9px; color: var(--text-3); }
+
+  .res-cell {
+    display: flex; align-items: center; gap: 4px;
+    font-family: 'DotGothic16', monospace;
+  }
+  .res-cell .badge {
+    width: 18px; height: 18px; border-radius: 4px;
+    display: grid; place-items: center;
+    font-size: 9px; font-weight: 900; color: #fff;
+  }
+  .res-cell .badge.w { background: var(--field-green); }
+  .res-cell .badge.l { background: var(--kia-red); }
+  .res-cell .badge.d { background: var(--gold); color: #2A1A00; }
+  .res-cell .score { font-size: 13px; color: var(--gold); }
+  .res-cell .time { font-size: 11px; color: var(--text-2); }
+
+  /* === 순위표 (랭킹 패널) === */
+  .rank-panel {
+    margin: 0 8px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .rank-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto auto;
+    align-items: center; gap: 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    font-size: 11px;
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row.mine { background: linear-gradient(90deg, rgba(232,58,63,.18), transparent 80%); }
+  .rank-medal {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: 'DotGothic16', monospace; font-size: 13px; font-weight: 900;
+  }
+  .rank-medal.r1 { background: linear-gradient(160deg, #FFE07A, var(--gold-deep)); color: #2A1A00; box-shadow: 0 2px 0 #5C3D00; }
+  .rank-medal.r2 { background: linear-gradient(160deg, #E8EEFC, #98A3BD); color: #1A1F33; box-shadow: 0 2px 0 #4D5570; }
+  .rank-medal.r3 { background: linear-gradient(160deg, #E8A878, var(--bronze)); color: #fff; box-shadow: 0 2px 0 #7A4523; }
+  .rank-medal.rN { background: var(--panel-light); color: var(--text-2); }
+  .rank-row .tname { font-weight: 700; color: var(--text-1); }
+  .rank-row .tdot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+  .rank-row .wdl { font-family: 'DotGothic16', monospace; font-size: 11px; color: var(--text-2); }
+  .rank-row .pct { font-family: 'DotGothic16', monospace; font-size: 11px; color: var(--gold); }
+  .rank-row .gb { font-family: 'DotGothic16', monospace; font-size: 11px; color: var(--text-3); }
+  .rank-row .form { display: flex; gap: 2px; }
+  .rank-row .form span {
+    width: 8px; height: 8px; border-radius: 2px;
+  }
+  .rank-row .form .w { background: var(--field-green); }
+  .rank-row .form .l { background: var(--kia-red); }
+  .rank-row .form .d { background: var(--gold); }
+
+  /* === 최근 10경기 + 메트로 알람 (게임 미션처럼) === */
+  .mission {
+    margin: 0 8px 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(86,170,255,.12), rgba(36,49,82,.6));
+    border: 1px solid var(--sky);
+    box-shadow: 0 2px 0 #0A0F1C, 0 0 16px rgba(86,170,255,.15);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mission .icon-box {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--sky);
+    display: grid; place-items: center;
+    font-family: 'Black Han Sans', sans-serif;
+    color: #fff; font-size: 20px;
+    box-shadow: 0 2px 0 #1A6FB8;
+    flex-shrink: 0;
+  }
+  .mission .meta { flex: 1; min-width: 0; }
+  .mission .title { font-size: 13px; font-weight: 900; color: #fff; }
+  .mission .desc { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+  .mission .cta {
+    font-size: 11px; font-weight: 900; color: var(--sky);
+    padding: 4px 8px; border-radius: 6px;
+    background: rgba(86,170,255,.15); border: 1px solid var(--sky);
+  }
+
+  /* === 최근10 게이지 (별 카운트) === */
+  .recent10 {
+    margin: 0 8px 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+  }
+  .recent10 .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .recent10 .title { font-size: 12px; font-weight: 900; }
+  .recent10 .summary { font-family: 'DotGothic16', monospace; font-size: 12px; color: var(--gold); }
+  .pips { display: flex; gap: 3px; }
+  .pip {
+    flex: 1;
+    height: 16px; border-radius: 4px;
+    display: grid; place-items: center;
+    font-size: 9px; font-weight: 900;
+    box-shadow: 0 1px 0 rgba(0,0,0,.4);
+  }
+  .pip.w { background: var(--field-green); color: #fff; }
+  .pip.l { background: var(--kia-red); color: #fff; }
+  .pip.d { background: var(--gold); color: #2A1A00; }
+
+  /* === 하단 액션 도크 (메이플 퀵슬롯 풍) === */
+  .dock {
+    position: sticky; bottom: 0; left: 0; right: 0; z-index: 40;
+    margin-top: 12px; padding: 6px 8px 10px;
+    background: linear-gradient(0deg, var(--bg-deep) 60%, transparent);
+  }
+  .dock-row {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  }
+  .dock-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px 0;
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 2px 0 #0A0F1C;
+    cursor: pointer; color: var(--text-2);
+  }
+  .dock-btn.active { background: linear-gradient(180deg, var(--kia-red), var(--kia-red-deep)); border-color: var(--kia-red-deep); color: #fff; }
+  .dock-btn .ico { font-size: 18px; line-height: 1; font-family: 'Black Han Sans', sans-serif; }
+  .dock-btn .lbl { font-size: 10px; font-weight: 700; }
+
+  /* === 디자인 노트 (사용자 검토용) === */
+  .design-note {
+    margin: 16px 8px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,201,60,.08);
+    border: 1px dashed var(--gold);
+    color: var(--text-2);
+    font-size: 11px; line-height: 1.5;
+  }
+  .design-note h4 { margin: 0 0 6px; color: var(--gold); font-size: 12px; font-weight: 900; }
+  .design-note ul { margin: 4px 0 0; padding-left: 18px; }
+  .design-note li { margin-bottom: 3px; }
+
+  /* placeholder helper */
+  .ph { outline: 1px dashed rgba(255,201,60,.4); }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- 1. HUD 헤더 -->
+  <header class="hud">
+    <div class="hud-row">
+      <div class="hud-brand">
+        <div class="hud-logo" aria-hidden="true"><div class="ball"></div></div>
+        <div class="hud-title">
+          <span class="name brand">마구마구 카드</span>
+          <span class="sub">KIA · 2026 시즌</span>
+        </div>
+      </div>
+      <span class="hud-coins" title="시즌 잔여 경기"><span class="ico"></span>잔여 105</span>
+      <button class="hud-btn" aria-label="새로고침"><span class="ico">↻</span></button>
+      <button class="hud-btn" aria-label="검색"><span class="ico">🔍</span></button>
+      <button class="hud-btn" aria-label="설정"><span class="ico">⚙</span></button>
+    </div>
+  </header>
+
+  <!-- 2. 라이브 스코어 전광판 -->
+  <section class="scoreboard" aria-label="오늘의 경기">
+    <div class="sb-head">
+      <span class="sb-live"><span class="dot"></span>LIVE</span>
+      <span class="sb-meta digit">5월 17일(토) · 18:00</span>
+      <span class="sb-stadium">⚾ 광주-기아 챔피언스필드</span>
+    </div>
+    <div class="sb-grid">
+      <div class="sb-team left">
+        <div class="badge kia brand">기아</div>
+        <div class="row"><span class="rank">5위</span><span class="pct">.487</span></div>
+      </div>
+      <div class="sb-score">
+        <div class="nums">
+          <span>3</span><span class="vs">:</span><span>2</span>
+        </div>
+        <div class="inning">▶ 7회 말 · 1사 1·3루</div>
+      </div>
+      <div class="sb-team right">
+        <div class="badge lg brand">LG</div>
+        <div class="row"><span class="pct">.512</span><span class="rank" style="background:#C8D0E0">3위</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 빠른 통계 4칸 -->
+  <section class="quick-stats" aria-label="시즌 핵심 지표">
+    <div class="qs-cell">
+      <div class="lbl">순위</div>
+      <div class="val gold">5</div>
+      <div class="sub">10팀중</div>
+    </div>
+    <div class="qs-cell">
+      <div class="lbl">승률</div>
+      <div class="val">.487</div>
+      <div class="sub">＞ .500 0.6</div>
+    </div>
+    <div class="qs-cell">
+      <div class="lbl">연속</div>
+      <div class="val green">3연승</div>
+      <div class="sub">🔥 화끈</div>
+    </div>
+    <div class="qs-cell">
+      <div class="lbl">게임차</div>
+      <div class="val">5.5</div>
+      <div class="sub">위팀 기준</div>
+    </div>
+  </section>
+
+  <!-- 4. 승률 HP바 -->
+  <section class="winrate" aria-label="시즌 진행 게이지">
+    <div class="head">
+      <span class="label">⚾ 시즌 진행 39 / 144 경기</span>
+      <span class="val">19승 1무 19패</span>
+    </div>
+    <div class="hpbar">
+      <div class="fill" style="width: 27%;"></div>
+      <div class="ticks">
+        <span style="left:25%"></span><span style="left:50%"></span><span style="left:75%"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 최근 10경기 -->
+  <section class="recent10" aria-label="최근 10경기">
+    <div class="row">
+      <span class="title">📊 최근 10경기</span>
+      <span class="summary">6승 1무 3패</span>
+    </div>
+    <div class="pips">
+      <span class="pip w">승</span>
+      <span class="pip w">승</span>
+      <span class="pip l">패</span>
+      <span class="pip w">승</span>
+      <span class="pip d">무</span>
+      <span class="pip l">패</span>
+      <span class="pip w">승</span>
+      <span class="pip w">승</span>
+      <span class="pip l">패</span>
+      <span class="pip w">승</span>
+    </div>
+  </section>
+
+  <!-- 6. 메트로 알람 (퀘스트 풍) -->
+  <section class="mission" aria-label="잠실 원정 알림">
+    <div class="icon-box">🚇</div>
+    <div class="meta">
+      <div class="title">잠실로 출정!</div>
+      <div class="desc">5/22 LG전 · 9호선 종합운동장역 도보 5분</div>
+    </div>
+    <button class="cta">길찾기</button>
+  </section>
+
+  <!-- 7. 선발 라인업 (카드 그리드) -->
+  <div class="sec-h">
+    <span class="tag"><span class="ico">⚾</span>오늘의 라인업</span>
+    <span class="title brand">선발 9인</span>
+    <span class="more">탭하여 상세 →</span>
+  </div>
+  <section class="lineup" aria-label="선발 라인업 9인">
+    <article class="pcard elite">
+      <span class="grade-tag">레전드</span>
+      <div class="top"><span class="pos">CF</span><span class="order">1</span><span class="stars">★★★★★</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">김도영</div>
+        <div class="pstat"><span>타율</span><span class="num">.367</span></div>
+      </div>
+    </article>
+    <article class="pcard gold">
+      <span class="grade-tag">A</span>
+      <div class="top"><span class="pos">SS</span><span class="order">2</span><span class="stars">★★★★☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">박찬호</div>
+        <div class="pstat"><span>타율</span><span class="num">.298</span></div>
+      </div>
+    </article>
+    <article class="pcard gold">
+      <span class="grade-tag">A</span>
+      <div class="top"><span class="pos">3B</span><span class="order">3</span><span class="stars">★★★★☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">최형우</div>
+        <div class="pstat"><span>타율</span><span class="num">.312</span></div>
+      </div>
+    </article>
+    <article class="pcard elite">
+      <span class="grade-tag">레전드</span>
+      <div class="top"><span class="pos">DH</span><span class="order">4</span><span class="stars">★★★★★</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">최정</div>
+        <div class="pstat"><span>홈런</span><span class="num">12</span></div>
+      </div>
+    </article>
+    <article class="pcard silver">
+      <span class="grade-tag">B</span>
+      <div class="top"><span class="pos">1B</span><span class="order">5</span><span class="stars">★★★☆☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">변우혁</div>
+        <div class="pstat"><span>타율</span><span class="num">.276</span></div>
+      </div>
+    </article>
+    <article class="pcard silver">
+      <span class="grade-tag">B</span>
+      <div class="top"><span class="pos">LF</span><span class="order">6</span><span class="stars">★★★☆☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">소크라테스</div>
+        <div class="pstat"><span>타율</span><span class="num">.281</span></div>
+      </div>
+    </article>
+    <article class="pcard silver">
+      <span class="grade-tag">B</span>
+      <div class="top"><span class="pos">RF</span><span class="order">7</span><span class="stars">★★★☆☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">나성범</div>
+        <div class="pstat"><span>타율</span><span class="num">.265</span></div>
+      </div>
+    </article>
+    <article class="pcard bronze">
+      <span class="grade-tag">C</span>
+      <div class="top"><span class="pos">C</span><span class="order">8</span><span class="stars">★★☆☆☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">한승택</div>
+        <div class="pstat"><span>타율</span><span class="num">.238</span></div>
+      </div>
+    </article>
+    <article class="pcard bronze">
+      <span class="grade-tag">C</span>
+      <div class="top"><span class="pos">2B</span><span class="order">9</span><span class="stars">★★☆☆☆</span></div>
+      <div class="face"><div class="helmet"></div></div>
+      <div class="body">
+        <div class="pname">윤도현</div>
+        <div class="pstat"><span>타율</span><span class="num">.241</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 8. 일정 (촘촘) -->
+  <div class="sec-h">
+    <span class="tag"><span class="ico">📅</span>이번 주</span>
+    <span class="title brand">경기 일정</span>
+    <span class="more">월간 →</span>
+  </div>
+  <section class="sched" aria-label="이번주 일정">
+    <div class="day-row win">
+      <div class="day-cell"><span class="d">15</span><span class="wd">목</span></div>
+      <div class="match-cell"><span class="vs">vs</span><span class="opp">두산</span><span class="ha h">홈</span><span class="stadium">광주</span></div>
+      <div class="res-cell"><span class="badge w">승</span><span class="score">6:3</span></div>
+    </div>
+    <div class="day-row lose">
+      <div class="day-cell"><span class="d">16</span><span class="wd">금</span></div>
+      <div class="match-cell"><span class="vs">vs</span><span class="opp">두산</span><span class="ha h">홈</span><span class="stadium">광주</span></div>
+      <div class="res-cell"><span class="badge l">패</span><span class="score">2:5</span></div>
+    </div>
+    <div class="day-row upcoming">
+      <div class="day-cell"><span class="d">17</span><span class="wd">토</span></div>
+      <div class="match-cell"><span class="vs">vs</span><span class="opp">LG</span><span class="ha h">홈</span><span class="stadium">광주</span></div>
+      <div class="res-cell"><span class="time">18:00</span></div>
+    </div>
+    <div class="day-row upcoming">
+      <div class="day-cell"><span class="d">18</span><span class="wd">일</span></div>
+      <div class="match-cell"><span class="vs">vs</span><span class="opp">LG</span><span class="ha h">홈</span><span class="stadium">광주</span></div>
+      <div class="res-cell"><span class="time">17:00</span></div>
+    </div>
+    <div class="day-row">
+      <div class="day-cell"><span class="d">19</span><span class="wd">월</span></div>
+      <div class="match-cell" style="color:var(--text-3)">휴식일</div>
+      <div class="res-cell"><span style="font-size:14px">🌙</span></div>
+    </div>
+    <div class="day-row upcoming">
+      <div class="day-cell"><span class="d">20</span><span class="wd">화</span></div>
+      <div class="match-cell"><span class="vs">at</span><span class="opp">한화</span><span class="ha a">원정</span><span class="stadium">대전</span></div>
+      <div class="res-cell"><span class="time">18:30</span></div>
+    </div>
+    <div class="day-row upcoming">
+      <div class="day-cell"><span class="d">21</span><span class="wd">수</span></div>
+      <div class="match-cell"><span class="vs">at</span><span class="opp">한화</span><span class="ha a">원정</span><span class="stadium">대전</span></div>
+      <div class="res-cell"><span class="time">18:30</span></div>
+    </div>
+  </section>
+
+  <!-- 9. 순위표 -->
+  <div class="sec-h">
+    <span class="tag"><span class="ico">🏆</span>리그 순위</span>
+    <span class="title brand">2026 KBO</span>
+    <span class="more">전체 →</span>
+  </div>
+  <section class="rank-panel" aria-label="2026 KBO 순위">
+    <div class="rank-row">
+      <div class="rank-medal r1">1</div>
+      <div class="tname"><span class="tdot" style="background:#FF6F00"></span>한화</div>
+      <span class="wdl">23-1-15</span>
+      <span class="pct">.605</span>
+      <span class="form"><span class="w"></span><span class="w"></span><span class="w"></span><span class="l"></span><span class="w"></span></span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-medal r2">2</div>
+      <div class="tname"><span class="tdot" style="background:#073687"></span>두산</div>
+      <span class="wdl">22-0-17</span>
+      <span class="pct">.564</span>
+      <span class="form"><span class="w"></span><span class="l"></span><span class="w"></span><span class="w"></span><span class="d"></span></span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-medal r3">3</div>
+      <div class="tname"><span class="tdot" style="background:#C30E2E"></span>LG</div>
+      <span class="wdl">21-1-19</span>
+      <span class="pct">.525</span>
+      <span class="form"><span class="w"></span><span class="w"></span><span class="l"></span><span class="w"></span><span class="w"></span></span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-medal rN">4</div>
+      <div class="tname"><span class="tdot" style="background:#053973"></span>삼성</div>
+      <span class="wdl">20-2-18</span>
+      <span class="pct">.526</span>
+      <span class="form"><span class="l"></span><span class="w"></span><span class="w"></span><span class="l"></span><span class="w"></span></span>
+    </div>
+    <div class="rank-row mine">
+      <div class="rank-medal rN">5</div>
+      <div class="tname"><span class="tdot" style="background:#E83A3F"></span><b>KIA</b></div>
+      <span class="wdl">19-1-19</span>
+      <span class="pct">.487</span>
+      <span class="form"><span class="w"></span><span class="w"></span><span class="l"></span><span class="w"></span><span class="d"></span></span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-medal rN">6</div>
+      <div class="tname"><span class="tdot" style="background:#000000;border:1px solid #555"></span>SSG</div>
+      <span class="wdl">18-0-20</span>
+      <span class="pct">.474</span>
+      <span class="form"><span class="l"></span><span class="l"></span><span class="w"></span><span class="w"></span><span class="l"></span></span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-medal rN">7</div>
+      <div class="tname"><span class="tdot" style="background:#1A4F8C"></span>롯데</div>
+      <span class="wdl">17-2-20</span>
+      <span class="pct">.459</span>
+      <span class="form"><span class="w"></span><span class="l"></span><span class="l"></span><span class="w"></span><span class="l"></span></span>
+    </div>
+  </section>
+
+  <!-- 디자인 노트 -->
+  <section class="design-note">
+    <h4>📝 시안 노트 — 검토용</h4>
+    <ul>
+      <li><b>컬러</b>: 야구장 네이비 + KIA 레드 + 골드 강조 (메이플 골드, 마구마구 비비드)</li>
+      <li><b>타이포</b>: 제목 = Black Han Sans (배민 한나체 풍, 둥글고 굵음) / 숫자 = DotGothic16 (도트 픽셀)</li>
+      <li><b>패널</b>: 9-slice 풍 (1px 라이트 outline + 깊은 그림자 2-3px down + glow)</li>
+      <li><b>아이콘</b>: 임시 이모지. 본 빌드 시 픽셀 PNG로 교체 권장</li>
+      <li><b>밀도</b>: 모바일 375px 기준 padding 8-10, gap 4-6 (현재 16-24px에서 ↓)</li>
+    </ul>
+  </section>
+
+  <section class="design-note" style="border-color:var(--sky); background:rgba(86,170,255,.08);">
+    <h4 style="color:var(--sky)">🎨 필요한 에셋 (만들어주실 항목)</h4>
+    <ul>
+      <li><b>팀 엠블럼 픽셀 PNG · 64×64</b> — 10팀 (KIA·LG·두산·삼성·롯데·한화·SSG·키움·NC·KT) · 도트풍 32-bit color</li>
+      <li><b>SD 선수 일러스트 · 96×96 PNG</b> — KIA 주전 9명 (헬멧+유니폼 차림 흉상, 마구마구 SD 캐릭터 톤). 우선 김도영·박찬호·최정·최형우 4명만이라도 가능</li>
+      <li><b>순위 메달 픽셀 · 32×32</b> — 1위 금메달, 2위 은메달, 3위 동메달 (이미 CSS gradient로 임시 구현 — 실제 일러스트로 교체 가능)</li>
+      <li><b>섹션 아이콘 픽셀 · 24×24</b> — ⚾배트, 🏆트로피, 📅달력, 🚇지하철, 🔥불꽃, ★별 (이모지 대체용)</li>
+      <li><b>홈/원정 뱃지 픽셀 · 36×16</b> — "홈" / "원정" 글자 박힌 미니 라벨 PNG (현재 CSS로 임시 구현)</li>
+      <li><b>(선택) 야구장 배경 패턴 타일</b> — 잔디 점선 / 모래 점선 / 펜스 텍스처 16×16 타일 (배경 장식용)</li>
+      <li><b>(선택) 효과 스프라이트</b> — 홈런/안타/삼진 텍스트 이펙트, 별 반짝이</li>
+    </ul>
+    <p style="margin-top:8px; color:var(--text-3);">에셋 없이도 동작 — 모든 영역에 CSS placeholder가 있어 단계적 교체 가능. 마구마구 SD 일러스트가 1순위.</p>
+  </section>
+
+  <!-- 10. 하단 도크 -->
+  <nav class="dock" aria-label="주요 메뉴">
+    <div class="dock-row">
+      <button class="dock-btn active"><span class="ico">⚾</span><span class="lbl">홈</span></button>
+      <button class="dock-btn"><span class="ico">📊</span><span class="lbl">순위</span></button>
+      <button class="dock-btn"><span class="ico">📖</span><span class="lbl">스토리</span></button>
+      <button class="dock-btn"><span class="ico">👥</span><span class="lbl">선수</span></button>
+      <button class="dock-btn"><span class="ico">⚙</span><span class="lbl">설정</span></button>
+    </div>
+  </nav>
+
+</main>
+</body>
+</html>
