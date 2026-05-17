@@ -10,6 +10,10 @@ import { err, ok } from '@/types';
 
 import type { ApiResponse } from '@/types';
 
+// API route는 KV 환경 변수 런타임 평가 → 정적 prerender 비활성
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 const KV_KEY = 'comments:v1';
 const MAX_ITEMS = 30;
 const MAX_TEXT = 60;
