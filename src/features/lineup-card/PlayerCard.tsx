@@ -59,6 +59,102 @@ export function PlayerCard({
   const sdImage = isKiaBatter ? playerByLineupSlot(slot.battingOrder - 1) : null;
   const faceImage = sdImage ?? player?.photoUrl ?? null;
 
+  // Starter 카드는 가로형 — 작은 face + 풍부한 우측 정보.
+  if (variant === 'starter') {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        data-grade={slot.grade}
+        aria-label={player ? `선발 투수 ${player.name}, 등급 ${label}` : '선발 투수 슬롯'}
+        title={slot.gradeBasis}
+        className={clsx(`magu-card grade-${tier}`, 'group relative w-full text-left cursor-pointer transition-transform duration-150 hover:scale-[1.01] active:scale-100', className)}
+        style={{ padding: 0 }}
+      >
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute', top: 0, right: 0,
+            padding: '1px 6px 2px', fontSize: 9, fontWeight: 900, borderRadius: '0 0 0 6px', zIndex: 3,
+            background: tier === 'elite' ? 'linear-gradient(180deg, var(--magu-gold), var(--magu-gold-deep))'
+              : tier === 'gold' ? '#BB9020' : tier === 'silver' ? '#8C97B5' : '#6B4525',
+            color: tier === 'elite' || tier === 'silver' ? '#2A1A00' : '#fff',
+          }}
+        >
+          {label}
+        </span>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '80px 1fr',
+            gap: 10,
+            padding: 8,
+            alignItems: 'center',
+          }}
+        >
+          {/* 좌: 작은 face */}
+          <div
+            style={{
+              width: 80, height: 80, borderRadius: 10, overflow: 'hidden',
+              position: 'relative',
+              backgroundColor: 'rgba(255,255,255,.04)',
+              backgroundImage: `url(${tile('grass')})`,
+              backgroundSize: 'cover', backgroundPosition: 'center',
+              border: '1px solid var(--magu-line)',
+            }}
+          >
+            {faceImage ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={faceImage}
+                alt=""
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'cover', objectPosition: 'center top',
+                  filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))',
+                }}
+                loading="lazy"
+              />
+            ) : null}
+          </div>
+
+          {/* 우: 정보 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  padding: '2px 6px', borderRadius: 4,
+                  background: team?.primaryColor ?? 'var(--magu-kia-red)',
+                  color: '#fff', fontWeight: 900, fontSize: 10, letterSpacing: 0.5,
+                }}
+              >
+                선발 P
+              </span>
+              <span className="font-digit" style={{ color: 'var(--magu-gold)', fontSize: 11 }}>
+                #{player?.uniformNumber ?? '?'}
+              </span>
+              <span style={{ marginLeft: 'auto', color: 'var(--magu-gold)', fontSize: 10, letterSpacing: -1 }}>{stars}</span>
+            </div>
+            <div className="font-brand-magu" style={{ fontSize: 18, color: 'var(--magu-text-1)', lineHeight: 1 }}>
+              {player?.name ?? '미정'}
+            </div>
+            <div
+              className="font-digit"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                fontSize: 11, color: 'var(--magu-text-2)',
+              }}
+            >
+              <span style={{ color: 'var(--magu-text-3)' }}>등급</span>
+              <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>{keyStat ?? '-'}</span>
+            </div>
+          </div>
+        </div>
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -74,7 +170,7 @@ export function PlayerCard({
         `magu-card grade-${tier}`,
         'group relative flex w-full flex-col text-left text-text-primary cursor-pointer',
         'transition-transform duration-150 hover:scale-[1.03] active:scale-100',
-        variant === 'starter' ? 'min-h-[140px]' : 'min-h-[180px]',
+        'min-h-[180px]',
         className,
       )}
       style={{ padding: 0 }}
