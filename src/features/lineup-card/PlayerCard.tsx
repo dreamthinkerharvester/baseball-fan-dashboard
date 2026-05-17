@@ -138,7 +138,7 @@ export function PlayerCard({
         <span style={{ marginLeft: 'auto', color: 'var(--magu-gold)', fontSize: 9, letterSpacing: -1 }}>{stars}</span>
       </div>
 
-      {/* face (정사각형) — 잔디 배경 + SD 일러스트 */}
+      {/* face (정사각형) — 잔디 배경 + SD 일러스트 (전체 보이게 contain) */}
       <div
         style={{
           aspectRatio: '1 / 1',
@@ -146,7 +146,7 @@ export function PlayerCard({
           overflow: 'hidden',
           backgroundColor: 'rgba(255,255,255,.04)',
           backgroundImage: `url(${tile('grass')})`,
-          backgroundSize: '200% 200%',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
@@ -158,11 +158,12 @@ export function PlayerCard({
             className="pointer-events-none"
             style={{
               position: 'absolute',
-              left: '50%',
-              bottom: 0,
-              transform: 'translateX(-50%)',
-              width: '108%',
-              height: 'auto',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center',
+              filter: 'drop-shadow(0 2px 3px rgba(0,0,0,.4))',
             }}
             loading="lazy"
           />
