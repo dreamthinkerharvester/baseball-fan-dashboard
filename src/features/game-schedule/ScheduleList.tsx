@@ -1,22 +1,16 @@
-// Design Ref: §5.4 + m3-comp components.jsx ScheduleList.
-// 더블헤더 + 우천취소 + 마이팀 강조 (primary border-left + surface-container-high).
+// Magu Magu 풍 일정 — 촘촘 한 줄. 좌 컬러바(승/패/예정/취소) + 날짜 + 상대팀 + 결과/시간.
 
 'use client';
 
 import { useState } from 'react';
 
+import { badge, icon, teamEmblem } from '@/lib/assets-magu';
 import { TEAMS } from '@/lib/constants';
-import { formatKoreanShortDate } from '@/lib/date';
 
 import { useGames, type ScheduleRange } from './hooks/useGames';
 import { ScheduleTabs } from './ScheduleTabs';
 
 import type { Game, GameStatus, TeamCode } from '@/types';
-
-export interface ScheduleListProps {
-  myTeam?: TeamCode | null;
-  defaultRange?: ScheduleRange;
-}
 
 const STATUS_LABEL: Record<GameStatus, string> = {
   scheduled: '예정',
@@ -26,38 +20,9 @@ const STATUS_LABEL: Record<GameStatus, string> = {
   postponed: '연기',
 };
 
-function statusStyle(s: GameStatus): React.CSSProperties {
-  switch (s) {
-    case 'in_progress':
-      return {
-        background: 'var(--md-sys-color-error-container)',
-        color: 'var(--md-sys-color-on-error-container)',
-        fontWeight: 700,
-        animation: 'fadein 1.2s ease-in-out infinite alternate',
-      };
-    case 'final':
-      return {
-        background: 'var(--md-sys-color-secondary-container)',
-        color: 'var(--md-sys-color-on-secondary-container)',
-      };
-    case 'cancelled':
-      return {
-        background: 'transparent',
-        color: 'var(--md-sys-color-on-surface-variant)',
-        textDecoration: 'line-through',
-        border: '1px solid var(--md-sys-color-outline)',
-      };
-    case 'postponed':
-      return {
-        background: 'var(--md-sys-color-tertiary-container)',
-        color: 'var(--md-sys-color-on-tertiary-container)',
-      };
-    default:
-      return {
-        background: 'var(--md-sys-color-surface-container-high)',
-        color: 'var(--md-sys-color-on-surface-variant)',
-      };
-  }
+export interface ScheduleListProps {
+  myTeam?: TeamCode | null;
+  defaultRange?: ScheduleRange;
 }
 
 export function ScheduleList({ myTeam, defaultRange = 'day' }: ScheduleListProps) {
@@ -65,76 +30,82 @@ export function ScheduleList({ myTeam, defaultRange = 'day' }: ScheduleListProps
   const { data: games, error, isLoading, refresh } = useGames(range);
 
   return (
-    <section
-      aria-label="경기 일정"
-      style={{ padding: '12px 16px 24px' }}
-    >
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2
-          className="font-brand"
+    <section aria-label="경기 일정" style={{ padding: '8px 8px 16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <span
           style={{
-            margin: 0,
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: -0.1,
-            color: 'var(--md-sys-color-on-surface)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
+            padding: '3px 8px 3px 4px',
+            borderRadius: 6,
+            background: 'linear-gradient(180deg, var(--magu-gold), var(--magu-gold-deep))',
+            color: '#2A1A00',
+            fontSize: 11,
+            fontWeight: 900,
+            boxShadow: '0 2px 0 #5C3D00',
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={icon('calendar')} alt="" width={16} height={16} className="magu-pixel" />
+          {range === 'day' ? '오늘' : range === 'week' ? '이번 주' : '이번 달'}
+        </span>
+        <h2 className="font-brand-magu" style={{ margin: 0, fontSize: 18, color: 'var(--magu-text-1)' }}>
           경기 일정
         </h2>
-        <ScheduleTabs value={range} onChange={setRange} />
+        <div style={{ marginLeft: 'auto' }}>
+          <ScheduleTabs value={range} onChange={setRange} />
+        </div>
       </div>
 
       {isLoading ? (
-        <p
-          aria-busy="true"
-          className="py-6 text-center"
-          style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: 13 }}
-        >
+        <p aria-busy="true" style={{ padding: '24px 0', textAlign: 'center', color: 'var(--magu-text-3)', fontSize: 12 }}>
           일정 불러오는 중…
         </p>
       ) : null}
 
       {error ? (
         <div
-          className="flex items-center justify-between p-3"
           style={{
-            background: 'var(--md-sys-color-error-container)',
-            color: 'var(--md-sys-color-on-error-container)',
-            borderRadius: 'var(--md-sys-shape-corner-medium)',
-            fontSize: 13,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: 10,
+            background: 'rgba(232,58,63,.15)',
+            border: '1px solid var(--magu-kia-red)',
+            color: 'var(--magu-text-2)',
+            borderRadius: 8,
+            fontSize: 12,
           }}
         >
           <span>일정을 불러오지 못했습니다.</span>
           <button
             type="button"
             onClick={refresh}
-            className="m3-btn"
             style={{
-              height: 36,
-              padding: '0 12px',
-              fontSize: 12,
+              height: 28,
+              padding: '0 10px',
+              fontSize: 11,
               background: 'transparent',
-              border: '1px solid var(--md-sys-color-on-error-container)',
-              color: 'var(--md-sys-color-on-error-container)',
+              border: '1px solid currentColor',
+              color: 'inherit',
+              borderRadius: 6,
+              cursor: 'pointer',
             }}
           >
-            다시 시도
+            다시
           </button>
         </div>
       ) : null}
 
       {games && games.length === 0 ? (
-        <p
-          className="py-6 text-center"
-          style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: 13 }}
-        >
+        <p style={{ padding: '24px 0', textAlign: 'center', color: 'var(--magu-text-3)', fontSize: 12 }}>
           이 기간에 경기가 없습니다.
         </p>
       ) : null}
 
       {games && games.length > 0 ? (
-        <ul role="list" className="flex flex-col gap-1.5" style={{ padding: 0, margin: 0 }}>
+        <ul role="list" style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: 0, margin: 0, listStyle: 'none' }}>
           {games.map((g) => (
             <ScheduleRow key={g.id} game={g} myTeam={myTeam ?? null} />
           ))}
@@ -151,162 +122,166 @@ interface RowProps {
 
 function ScheduleRow({ game, myTeam }: RowProps) {
   const isMyTeam = Boolean(myTeam && (game.homeTeam === myTeam || game.awayTeam === myTeam));
-  const home = TEAMS[game.homeTeam];
-  const away = TEAMS[game.awayTeam];
-  const dh = game.doubleHeader ? `DH${game.doubleHeader}` : null;
-  const score = game.homeScore != null && game.awayScore != null
-    ? `${game.awayScore} : ${game.homeScore}`
+
+  // 마이팀 시점 상대팀 + 홈/원정 + 승패
+  const myIsHome = isMyTeam && myTeam ? game.homeTeam === myTeam : false;
+  const opponentCode: TeamCode = isMyTeam
+    ? myIsHome
+      ? game.awayTeam
+      : game.homeTeam
+    : game.awayTeam; // 마이팀 무관 시 away 표시
+  const displayHome = isMyTeam ? myIsHome : false;
+  const opponent = TEAMS[opponentCode];
+
+  const myScore = isMyTeam
+    ? myIsHome
+      ? game.homeScore
+      : game.awayScore
     : null;
-  const showScore = (game.status === 'final' || game.status === 'in_progress') && score;
+  const oppScore = isMyTeam
+    ? myIsHome
+      ? game.awayScore
+      : game.homeScore
+    : null;
+
+  const isFinal = game.status === 'final';
+  const won = isFinal && myScore != null && oppScore != null && myScore > oppScore;
+  const lost = isFinal && myScore != null && oppScore != null && myScore < oppScore;
+  const tied = isFinal && myScore != null && oppScore != null && myScore === oppScore;
+
+  // 좌측 컬러 바
+  let stripeColor: string = 'var(--magu-line)';
+  if (isMyTeam) {
+    if (won) stripeColor = 'var(--magu-field-green)';
+    else if (lost) stripeColor = 'var(--magu-kia-red)';
+    else if (tied) stripeColor = 'var(--magu-gold)';
+    else if (game.status === 'scheduled' || game.status === 'in_progress') stripeColor = 'var(--magu-sky)';
+    else if (game.status === 'cancelled' || game.status === 'postponed') stripeColor = 'var(--magu-text-dim, #5D6786)';
+  } else if (game.status === 'scheduled') stripeColor = 'var(--magu-line)';
+
+  const d = game.date.slice(5).replace('-', '/'); // MM/DD
+  const wd = weekdayKo(game.date);
+
+  // 비-마이팀 게임도 양 팀 표시 (away → home)
+  const showBothTeams = !isMyTeam;
 
   return (
     <li
       aria-current={isMyTeam ? 'true' : undefined}
-      className="flex items-center gap-2 sm:gap-3"
       style={{
-        padding: '10px 10px 10px 12px',
-        borderRadius: 'var(--md-sys-shape-corner-medium)',
+        display: 'grid',
+        gridTemplateColumns: '32px 1fr auto',
+        alignItems: 'center',
+        gap: 6,
+        padding: '5px 8px 5px 6px',
         background: isMyTeam
-          ? 'var(--md-sys-color-surface-container-high)'
-          : 'var(--md-sys-color-surface-container)',
-        borderLeft: isMyTeam ? '2px solid var(--md-sys-color-primary)' : '2px solid transparent',
+          ? 'linear-gradient(90deg, rgba(232,58,63,.15), rgba(36,49,82,.6) 60%)'
+          : 'linear-gradient(180deg, var(--magu-panel), var(--magu-panel-deep))',
+        border: '1px solid var(--magu-line)',
+        borderLeft: `3px solid ${stripeColor}`,
+        borderRadius: 8,
+        boxShadow: '0 1px 0 #0A0F1C',
         listStyle: 'none',
       }}
     >
-      <div className="flex flex-col items-start" style={{ width: 44, flexShrink: 0 }}>
-        <span
-          className="tabular"
-          style={{
-            fontSize: 12,
-            fontWeight: 600,
-            color: isMyTeam
-              ? 'var(--md-sys-color-primary)'
-              : 'var(--md-sys-color-on-surface-variant)',
-          }}
-        >
-          {formatKoreanShortDate(game.date)}
+      {/* 날짜 */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
+        <span className="font-digit" style={{ fontSize: 13, color: isMyTeam ? 'var(--magu-kia-red)' : 'var(--magu-text-1)', fontWeight: 900 }}>
+          {d}
         </span>
-        <span
-          className="tabular"
-          style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
-        >
-          {game.startTime}
-        </span>
+        <span style={{ fontSize: 8, color: 'var(--magu-text-3)', marginTop: 1 }}>{wd} {game.startTime?.slice(0, 5) ?? ''}</span>
       </div>
 
-      <div className="flex flex-1 items-center gap-1.5 min-w-0">
-        <TeamCell team={away} highlight={isMyTeam && game.awayTeam === myTeam} />
-        <span style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)', flexShrink: 0 }}>@</span>
-        <TeamCell team={home} highlight={isMyTeam && game.homeTeam === myTeam} />
+      {/* 상대팀 (마이팀 시점) 또는 양 팀 (그 외) */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, minWidth: 0, overflow: 'hidden' }}>
+        {isMyTeam ? (
+          <>
+            <span style={{ color: 'var(--magu-text-3)', fontSize: 9 }}>{myIsHome ? 'vs' : '@'}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={teamEmblem(opponentCode)} alt="" width={18} height={18} className="magu-pixel" />
+            <span style={{ fontWeight: 700, color: 'var(--magu-text-1)', whiteSpace: 'nowrap' }}>{opponent.shortName}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={badge(displayHome ? 'home' : 'away')}
+              alt={displayHome ? '홈' : '원정'}
+              height={14}
+              className="magu-pixel"
+              style={{ height: 14, width: 'auto' }}
+            />
+          </>
+        ) : showBothTeams ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={teamEmblem(game.awayTeam)} alt="" width={16} height={16} className="magu-pixel" />
+            <span style={{ color: 'var(--magu-text-2)' }}>{TEAMS[game.awayTeam].shortName}</span>
+            <span style={{ color: 'var(--magu-text-3)', fontSize: 9 }}>@</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={teamEmblem(game.homeTeam)} alt="" width={16} height={16} className="magu-pixel" />
+            <span style={{ color: 'var(--magu-text-2)' }}>{TEAMS[game.homeTeam].shortName}</span>
+          </>
+        ) : null}
+        <span style={{ fontSize: 9, color: 'var(--magu-text-3)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>{game.stadium}</span>
       </div>
 
-      <div
-        className="flex flex-col items-end gap-0.5"
-        style={{ width: 64, flexShrink: 0 }}
-      >
-        <span
-          style={{
-            ...statusStyle(game.status),
-            padding: '3px 8px',
-            borderRadius: 'var(--md-sys-shape-corner-small)',
-            fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: 0.4,
-            fontFamily: 'var(--md-ref-typeface-mono)',
-          }}
-        >
-          {STATUS_LABEL[game.status]}
-          {dh ? ` ${dh}` : ''}
-        </span>
-        {showScore && (
+      {/* 결과 / 시간 / 상태 */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+        {game.status === 'final' && game.homeScore != null && game.awayScore != null ? (
+          <>
+            {isMyTeam ? (
+              <span
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 4,
+                  display: 'grid',
+                  placeItems: 'center',
+                  fontSize: 9,
+                  fontWeight: 900,
+                  color: won || tied ? (tied ? '#2A1A00' : '#fff') : '#fff',
+                  background: won
+                    ? 'var(--magu-field-green)'
+                    : lost
+                      ? 'var(--magu-kia-red)'
+                      : 'var(--magu-gold)',
+                }}
+              >
+                {won ? '승' : lost ? '패' : '무'}
+              </span>
+            ) : null}
+            <span className="font-digit" style={{ fontSize: 13, color: 'var(--magu-gold)', fontWeight: 700 }}>
+              {isMyTeam ? `${myScore ?? '-'}:${oppScore ?? '-'}` : `${game.awayScore}:${game.homeScore}`}
+            </span>
+          </>
+        ) : game.status === 'in_progress' ? (
           <span
-            className="tabular"
             style={{
-              fontFamily: 'var(--md-ref-typeface-mono)',
-              fontSize: 13,
-              fontWeight: 700,
-              color: 'var(--md-sys-color-on-surface)',
+              padding: '2px 6px',
+              borderRadius: 4,
+              fontSize: 9,
+              fontWeight: 900,
+              background: 'var(--magu-kia-red)',
+              color: '#fff',
+              letterSpacing: 0.5,
             }}
           >
-            {score}
+            LIVE
+          </span>
+        ) : game.status === 'cancelled' || game.status === 'postponed' ? (
+          <span style={{ fontSize: 11, color: 'var(--magu-text-3)' }}>{STATUS_LABEL[game.status]}</span>
+        ) : (
+          <span className="font-digit" style={{ fontSize: 11, color: 'var(--magu-text-2)' }}>
+            {game.startTime?.slice(0, 5) ?? '-'}
           </span>
         )}
-        {game.status === 'cancelled' && game.cancelReason ? (
-          <span
-            style={{
-              fontSize: 10,
-              color: 'var(--md-sys-color-on-surface-variant)',
-              maxWidth: 64,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {game.cancelReason}
-          </span>
-        ) : null}
-        <span
-          style={{
-            fontSize: 10,
-            color: 'var(--md-sys-color-on-surface-variant)',
-            maxWidth: 64,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-          title={game.stadium}
-        >
-          {game.stadium}
-        </span>
       </div>
     </li>
   );
 }
 
-function TeamCell({
-  team,
-  highlight,
-}: {
-  team: { shortName: string; primaryColor: string; name: string };
-  highlight?: boolean;
-}) {
-  return (
-    <span
-      className="flex items-center gap-1.5"
-      style={{ minWidth: 0, flex: 1 }}
-    >
-      <span
-        style={{
-          width: 22,
-          height: 22,
-          borderRadius: 9999,
-          flexShrink: 0,
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: team.primaryColor,
-          color: '#fff',
-          fontSize: 9,
-          fontWeight: 800,
-        }}
-      >
-        {team.shortName.slice(0, 2)}
-      </span>
-      <span
-        style={{
-          fontSize: 12,
-          fontWeight: highlight ? 700 : 500,
-          color: highlight
-            ? 'var(--md-sys-color-primary)'
-            : 'var(--md-sys-color-on-surface)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          minWidth: 0,
-        }}
-      >
-        {team.shortName}
-      </span>
-    </span>
-  );
+const WD_KO: readonly string[] = ['일', '월', '화', '수', '목', '금', '토'];
+function weekdayKo(date: string): string {
+  // date: 'YYYY-MM-DD' (KST 기준) — Date 객체 timezone 영향 없이 인덱싱
+  const d = new Date(`${date}T00:00:00+09:00`);
+  const wd = WD_KO[d.getDay()];
+  return wd ?? '';
 }
