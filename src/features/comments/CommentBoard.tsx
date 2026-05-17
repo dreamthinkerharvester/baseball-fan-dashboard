@@ -1,52 +1,31 @@
-// Magu Magu 익명 한줄 코멘트 게시판.
-// MVP: localStorage 단일 기기 저장. 선호 KIA 선수 SD 아이콘 + 60자 텍스트.
-// 추후 서버 API/BaaS 연결 시 동일 인터페이스 유지.
+// 공유 익명 한줄 코멘트 게시판 — Vercel KV backed.
+// GET /api/comments → list / POST → 게시 / DELETE?id=... → 본인 코멘트 삭제
 
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import useSWR from 'swr';
+
+import { fetcher } from '@/lib/api-client';
 import { icon, playerByLineupSlot } from '@/lib/assets-magu';
 
-const STORAGE_KEY = 'bfd:comments:v1';
 const DEVICE_ID_KEY = 'bfd:comments:device-id';
 const MAX_TEXT = 60;
 const MAX_ITEMS = 30;
 
 interface Comment {
   id: string;
-  playerSlot: number; // 0-based (1~9번 라인업 → 0~8)
+  playerSlot: number; // 0~8 KIA 라인업, -1 = 미선택
   text: string;
-  ts: number; // epoch ms
-  deviceId: string; // 본 디바이스 식별 (삭제 권한)
+  ts: number;
+  deviceId: string;
 }
 
 const KIA_LINEUP_NAMES: readonly string[] = [
   '김도영', '박찬호', '최형우', '최정', '변우혁',
   '소크라테스', '나성범', '한승택', '윤도현',
 ];
-
-function readAll(): Comment[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const arr = JSON.parse(raw) as Comment[];
-    return Array.isArray(arr) ? arr : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeAll(list: Comment[]): void {
-  if (typeof window === 'undefined') return;
-  try {
-    const trimmed = list.slice(0, MAX_ITEMS);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
-  } catch {
-    /* quota or private mode — silently fail */
-  }
-}
 
 function getDeviceId(): string {
   if (typeof window === 'undefined') return 'srv';
@@ -71,45 +50,74 @@ function timeAgo(ts: number): string {
 }
 
 export function CommentBoard() {
-  const [comments, setComments] = useState<Comment[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
   const [text, setText] = useState('');
   const [deviceId, setDeviceId] = useState<string>('');
+  const [posting, setPosting] = useState(false);
+  const [postError, setPostError] = useState<string | null>(null);
+
+  const { data: comments = [], mutate, isLoading, error: loadError } = useSWR<Comment[]>(
+    '/api/comments',
+    fetcher,
+    {
+      refreshInterval: 30_000, // 30초마다 자동 갱신
+      revalidateOnFocus: true,
+    },
+  );
 
   useEffect(() => {
-    setComments(readAll());
     setDeviceId(getDeviceId());
   }, []);
 
-  const submit = useCallback(() => {
+  const submit = useCallback(async () => {
     const trimmed = text.trim();
     if (!trimmed) return;
     if (trimmed.length > MAX_TEXT) return;
-    const next: Comment = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      playerSlot: selectedSlot ?? -1, // -1 = 선수 미선택 (응원 일반)
-      text: trimmed,
-      ts: Date.now(),
-      deviceId,
-    };
-    const list = [next, ...readAll()];
-    writeAll(list);
-    setComments(list.slice(0, MAX_ITEMS));
-    setText('');
-    setSelectedSlot(null);
-  }, [text, selectedSlot, deviceId]);
+    setPosting(true);
+    setPostError(null);
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          playerSlot: selectedSlot ?? -1,
+          text: trimmed,
+          deviceId,
+        }),
+        cache: 'no-store',
+      });
+      const body = (await res.json()) as { data?: Comment[]; error?: { message?: string } };
+      if (body.error) throw new Error(body.error.message ?? '게시 실패');
+      if (body.data) await mutate(body.data, { revalidate: false });
+      setText('');
+      setSelectedSlot(null);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : '게시 실패';
+      setPostError(msg);
+    } finally {
+      setPosting(false);
+    }
+  }, [text, selectedSlot, deviceId, mutate]);
 
   const handleDelete = useCallback(
-    (id: string) => {
-      const list = readAll().filter((c) => c.id !== id);
-      writeAll(list);
-      setComments(list);
+    async (id: string) => {
+      try {
+        const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+          headers: { 'x-device-id': deviceId },
+          cache: 'no-store',
+        });
+        const body = (await res.json()) as { data?: Comment[]; error?: { message?: string } };
+        if (body.error) throw new Error(body.error.message ?? '삭제 실패');
+        if (body.data) await mutate(body.data, { revalidate: false });
+      } catch {
+        /* show toast in future */
+      }
     },
-    [],
+    [deviceId, mutate],
   );
 
-  const canSubmit = text.trim().length > 0 && text.length <= MAX_TEXT;
-
+  const canSubmit = text.trim().length > 0 && text.length <= MAX_TEXT && !posting;
   const sortedComments = useMemo(() => [...comments].sort((a, b) => b.ts - a.ts), [comments]);
 
   return (
@@ -134,7 +142,7 @@ export function CommentBoard() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={icon('fire')} alt="" width={16} height={16} className="magu-pixel" />
-          익명
+          익명 · 공유
         </span>
         <h2 className="font-brand-magu" style={{ margin: 0, fontSize: 18, color: 'var(--magu-text-1)' }}>
           팬 한줄 보드
@@ -144,11 +152,25 @@ export function CommentBoard() {
         </span>
       </div>
 
+      {/* KV 미설정 시 에러 안내 */}
+      {loadError && (loadError as Error)?.message?.includes('KV') ? (
+        <div
+          style={{
+            padding: '8px 10px',
+            background: 'rgba(232,58,63,.1)',
+            border: '1px solid var(--magu-kia-red)',
+            borderRadius: 8,
+            fontSize: 11,
+            color: 'var(--magu-text-2)',
+            marginBottom: 8,
+          }}
+        >
+          ⚠ 공유 게시판이 아직 활성화되지 않았습니다. Vercel 대시보드에서 KV를 활성화해주세요.
+        </div>
+      ) : null}
+
       {/* 입력 영역 */}
-      <div
-        className="magu-panel"
-        style={{ padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}
-      >
+      <div className="magu-panel" style={{ padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
         {/* 선수 아이콘 선택 (선택사항) */}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -159,22 +181,13 @@ export function CommentBoard() {
               <button
                 type="button"
                 onClick={() => setSelectedSlot(null)}
-                style={{
-                  fontSize: 10, color: 'var(--magu-text-3)',
-                  background: 'transparent', border: 'none', cursor: 'pointer', padding: 0,
-                }}
+                style={{ fontSize: 10, color: 'var(--magu-text-3)', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
               >
                 해제
               </button>
             ) : null}
           </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(5, 1fr)',
-              gap: 4,
-            }}
-          >
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 4 }}>
             {KIA_LINEUP_NAMES.map((name, idx) => {
               const src = playerByLineupSlot(idx);
               if (!src) return null;
@@ -199,7 +212,6 @@ export function CommentBoard() {
                     overflow: 'hidden',
                     boxShadow: active ? '0 0 8px rgba(255,201,60,.5)' : 'none',
                     position: 'relative',
-                    transition: 'transform .08s',
                     minHeight: 44,
                   }}
                 >
@@ -207,20 +219,14 @@ export function CommentBoard() {
                   <img
                     src={src}
                     alt=""
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center top',
-                    }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
                   />
                   <span
                     style={{
                       position: 'absolute', left: 0, right: 0, bottom: 0,
                       fontSize: 9, fontWeight: 900,
                       background: 'rgba(0,0,0,.7)', color: '#fff',
-                      padding: '1px 0',
-                      letterSpacing: -0.3,
+                      padding: '1px 0', letterSpacing: -0.3,
                     }}
                   >
                     {name}
@@ -237,59 +243,53 @@ export function CommentBoard() {
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value.slice(0, MAX_TEXT))}
-            placeholder="응원의 한 마디… (익명)"
+            placeholder="응원의 한 마디… (익명 공유)"
             maxLength={MAX_TEXT}
+            disabled={posting}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && canSubmit) {
                 e.preventDefault();
-                submit();
+                void submit();
               }
             }}
             style={{
-              flex: 1,
-              minWidth: 0,
-              height: 36,
-              padding: '0 10px',
-              fontSize: 13,
-              color: 'var(--magu-text-1)',
-              background: 'rgba(0,0,0,.3)',
-              border: '1px solid var(--magu-line)',
-              borderRadius: 8,
-              outline: 'none',
-              fontFamily: 'inherit',
+              flex: 1, minWidth: 0, height: 36, padding: '0 10px',
+              fontSize: 13, color: 'var(--magu-text-1)',
+              background: 'rgba(0,0,0,.3)', border: '1px solid var(--magu-line)',
+              borderRadius: 8, outline: 'none', fontFamily: 'inherit',
             }}
           />
           <button
             type="button"
-            onClick={submit}
+            onClick={() => { void submit(); }}
             disabled={!canSubmit}
             style={{
-              height: 36,
-              padding: '0 14px',
-              fontSize: 12,
-              fontWeight: 900,
+              height: 36, padding: '0 14px', fontSize: 12, fontWeight: 900,
               color: canSubmit ? '#fff' : 'var(--magu-text-3)',
               background: canSubmit
                 ? 'linear-gradient(180deg, var(--magu-kia-red), var(--magu-kia-red-deep))'
                 : 'var(--magu-panel-deep)',
-              border: 'none',
-              borderRadius: 8,
+              border: 'none', borderRadius: 8,
               cursor: canSubmit ? 'pointer' : 'not-allowed',
-              boxShadow: canSubmit ? '0 2px 0 #5A0F12' : 'none',
-              flexShrink: 0,
+              boxShadow: canSubmit ? '0 2px 0 #5A0F12' : 'none', flexShrink: 0,
             }}
           >
-            게시
+            {posting ? '게시중…' : '게시'}
           </button>
         </div>
-        <div style={{ fontSize: 9, color: 'var(--magu-text-3)', textAlign: 'right' }}>
-          {text.length} / {MAX_TEXT}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 9 }}>
+          <span style={{ color: postError ? 'var(--magu-kia-red)' : 'transparent' }}>{postError ?? '·'}</span>
+          <span style={{ color: 'var(--magu-text-3)' }}>{text.length} / {MAX_TEXT}</span>
         </div>
       </div>
 
       {/* 코멘트 리스트 */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 8 }}>
-        {sortedComments.length === 0 ? (
+        {isLoading ? (
+          <p style={{ padding: '16px 0', textAlign: 'center', color: 'var(--magu-text-3)', fontSize: 11 }}>
+            불러오는 중…
+          </p>
+        ) : sortedComments.length === 0 ? (
           <p style={{ padding: '16px 0', textAlign: 'center', color: 'var(--magu-text-3)', fontSize: 11 }}>
             아직 코멘트가 없어요. 첫 응원 메시지를 남겨주세요 ⚾
           </p>
@@ -299,16 +299,14 @@ export function CommentBoard() {
               key={c.id}
               comment={c}
               isMine={c.deviceId === deviceId}
-              onDelete={() => handleDelete(c.id)}
+              onDelete={() => { void handleDelete(c.id); }}
             />
           ))
         )}
       </div>
 
       <p style={{ marginTop: 8, fontSize: 9, color: 'var(--magu-text-dim, #5D6786)', textAlign: 'center', lineHeight: 1.4 }}>
-        ⓘ 이 기기에만 저장됩니다. 다른 기기/사용자에게는 보이지 않아요.
-        <br />
-        욕설·개인 정보·도배는 자제해주세요.
+        ⓘ 모든 방문자가 함께 보는 공유 게시판입니다. 욕설·개인 정보·도배는 자제해주세요.
       </p>
     </section>
   );
@@ -342,14 +340,10 @@ function CommentRow({
     >
       <div
         style={{
-          width: 28,
-          height: 28,
-          borderRadius: 6,
-          overflow: 'hidden',
+          width: 28, height: 28, borderRadius: 6, overflow: 'hidden',
           background: hasPlayer ? 'rgba(0,0,0,.3)' : 'var(--magu-kia-red)',
           border: '1px solid var(--magu-line-light)',
-          display: 'grid',
-          placeItems: 'center',
+          display: 'grid', placeItems: 'center',
         }}
       >
         {src ? (
@@ -357,12 +351,7 @@ function CommentRow({
           <img
             src={src}
             alt={name}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center top',
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
           />
         ) : (
           <span style={{ fontSize: 14, color: '#fff' }} aria-hidden>📣</span>
@@ -389,16 +378,10 @@ function CommentRow({
           aria-label="내 코멘트 삭제"
           title="내 코멘트 삭제"
           style={{
-            width: 22,
-            height: 22,
-            borderRadius: 4,
-            background: 'transparent',
-            border: '1px solid var(--magu-line)',
-            color: 'var(--magu-text-3)',
-            fontSize: 12,
-            cursor: 'pointer',
-            display: 'grid',
-            placeItems: 'center',
+            width: 22, height: 22, borderRadius: 4,
+            background: 'transparent', border: '1px solid var(--magu-line)',
+            color: 'var(--magu-text-3)', fontSize: 12, cursor: 'pointer',
+            display: 'grid', placeItems: 'center',
           }}
         >
           ×
