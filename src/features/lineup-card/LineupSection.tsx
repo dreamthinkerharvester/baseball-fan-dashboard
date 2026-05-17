@@ -9,6 +9,7 @@ import useSWR from 'swr';
 
 import { PlayerModal } from '@/features/player-modal/PlayerModal';
 import { fetcher } from '@/lib/api-client';
+import { icon } from '@/lib/assets-magu';
 import { TEAMS } from '@/lib/constants';
 
 import { useLineup } from './hooks/useLineup';
@@ -52,30 +53,30 @@ export function LineupSection({ team, date }: LineupSectionProps) {
       aria-busy={isLoading || refreshing}
       className="space-y-3 px-4 py-4"
     >
-      <header className="flex items-baseline justify-between gap-2">
-        <h2
-          id="lineup-section-heading"
-          className="font-brand"
-          style={{
-            margin: 0,
-            fontSize: 18,
-            fontWeight: 700,
-            letterSpacing: -0.2,
-            color: 'var(--md-sys-color-on-surface)',
-          }}
-        >
-          선발 라인업
+      <header className="flex items-center justify-between gap-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span
             style={{
-              marginLeft: 8,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '3px 8px 3px 4px',
+              borderRadius: 6,
+              background: 'linear-gradient(180deg, var(--magu-gold), var(--magu-gold-deep))',
+              color: '#2A1A00',
               fontSize: 11,
-              fontWeight: 500,
-              color: 'var(--md-sys-color-on-surface-variant)',
+              fontWeight: 900,
+              boxShadow: '0 2px 0 #5C3D00',
             }}
           >
-            {teamMeta.name}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={icon('bat')} alt="" width={16} height={16} className="magu-pixel" />
+            오늘의 라인업
           </span>
-        </h2>
+          <h2 id="lineup-section-heading" className="font-brand-magu" style={{ margin: 0, fontSize: 18, color: 'var(--magu-text-1)' }}>
+            {teamMeta.shortName} 선발 9인
+          </h2>
+        </div>
         {lineup?.fetchedAt ? (
           <span
             className="tabular"

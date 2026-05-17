@@ -1,16 +1,12 @@
-// Design Ref: §5.4 Page 2 ⭐ — 핵심 UX. 단일 카드:
-//   - 등급 색상 보더 + ELITE/RARE/SPECIAL에 글로우 (NORMAL 제외)
-//   - 등급 텍스트 배지 (색상만에 의존하지 않음, WCAG 색맹 안전)
-//   - 타순 번호 / 선수명 / 포지션 / 대표 스탯 1개
-//   - 클릭 → 모달 트리거 (onClick 전달)
-//   - 터치 타깃 ≥ 44px 보장
+// Magu Magu 트레이딩 카드 — 라인업 단일 카드.
+// 등급별 테두리(레전드 골드glow / A 골드 / B 실버 / C 브론즈) + SD 일러스트 face + 잔디 배경.
 
 'use client';
 
 import clsx from 'clsx';
 
-import { GradeBadge } from '@/components/ui/GradeBadge';
 import { TEAMS } from '@/lib/constants';
+import { playerByLineupSlot, tile } from '@/lib/assets-magu';
 
 import type { LineupSlot, Player } from '@/types';
 
@@ -19,11 +15,30 @@ export interface PlayerCardProps {
   player: Player | null;
   /** 카드 변형: 'starter' = 가로형 큰 카드 (선발 투수), 'batter' = 정사각형. */
   variant?: 'starter' | 'batter';
-  /** 대표 스탯 (예: "OPS .892" 또는 "ERA 3.21"). null이면 라벨 숨김. */
   keyStat?: string | null;
   onClick?: () => void;
   className?: string;
 }
+
+// 등급 매핑: bkit grade(elite/rare/special/normal) → magu tier(elite/gold/silver/bronze).
+const GRADE_TIER: Record<string, 'elite' | 'gold' | 'silver' | 'bronze'> = {
+  elite: 'elite',
+  rare: 'gold',
+  special: 'silver',
+  normal: 'bronze',
+};
+const GRADE_LABEL: Record<string, string> = {
+  elite: '레전드',
+  rare: 'A',
+  special: 'B',
+  normal: 'C',
+};
+const GRADE_STARS: Record<string, string> = {
+  elite: '★★★★★',
+  rare: '★★★★☆',
+  special: '★★★☆☆',
+  normal: '★★☆☆☆',
+};
 
 export function PlayerCard({
   slot,
@@ -34,100 +49,167 @@ export function PlayerCard({
   className,
 }: PlayerCardProps) {
   const team = player ? TEAMS[player.teamCode] : null;
-  const orderLabel =
-    slot.battingOrder === 0 ? 'P' : `${slot.battingOrder}`;
+  const tier = GRADE_TIER[slot.grade] ?? 'bronze';
+  const label = GRADE_LABEL[slot.grade] ?? 'C';
+  const stars = GRADE_STARS[slot.grade] ?? '★★☆☆☆';
+
+  const orderLabel = slot.battingOrder === 0 ? 'P' : `${slot.battingOrder}`;
+  // KIA 라인업 1~9 → SD 이미지 슬롯. 그 외는 player.photoUrl fallback.
+  const isKiaBatter = player?.teamCode === 'KIA' && slot.battingOrder >= 1 && slot.battingOrder <= 9;
+  const sdImage = isKiaBatter ? playerByLineupSlot(slot.battingOrder - 1) : null;
+  const faceImage = sdImage ?? player?.photoUrl ?? null;
 
   return (
     <button
       type="button"
       onClick={onClick}
       data-grade={slot.grade}
-      data-position={slot.position}
       aria-label={
         player
-          ? `${orderLabel}번 ${player.name} ${slot.position}, 등급 ${slot.grade}, ${slot.gradeBasis}`
+          ? `${orderLabel}번 ${player.name} ${slot.position}, 등급 ${label}`
           : `${orderLabel}번 슬롯`
       }
       title={slot.gradeBasis}
       className={clsx(
-        'group relative flex flex-col items-stretch justify-between overflow-hidden border-2 text-text-primary',
-        'rounded-card transition-transform duration-150 hover:scale-[1.04] active:scale-100 focus-visible:outline-grade-elite',
-        variant === 'starter'
-          ? 'h-[140px] w-full sm:h-[160px]'
-          : 'h-[180px] w-full min-w-[110px] sm:h-[210px]',
+        `magu-card grade-${tier}`,
+        'group relative flex w-full flex-col text-left text-text-primary cursor-pointer',
+        'transition-transform duration-150 hover:scale-[1.03] active:scale-100',
+        variant === 'starter' ? 'min-h-[140px]' : 'min-h-[180px]',
         className,
       )}
+      style={{ padding: 0 }}
     >
-      {/* Background photo (full-bleed, sharp) */}
-      {player?.photoUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={player.photoUrl}
-          alt=""
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top opacity-95 transition-transform group-hover:scale-105"
-          loading="lazy"
-        />
-      ) : (
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-bg-card to-bg-cardEnd"
-          aria-hidden
-        />
-      )}
-      {/* Gradient overlay for legibility (bottom-heavy so face stays clear) */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/85 to-transparent"
+      {/* 등급 태그 (우상단) */}
+      <span
         aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-black/70 to-transparent"
-        aria-hidden
-      />
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          padding: '1px 6px 2px',
+          fontSize: 9,
+          fontWeight: 900,
+          borderRadius: '0 0 0 6px',
+          zIndex: 3,
+          background:
+            tier === 'elite'
+              ? 'linear-gradient(180deg, var(--magu-gold), var(--magu-gold-deep))'
+              : tier === 'gold'
+                ? '#BB9020'
+                : tier === 'silver'
+                  ? '#8C97B5'
+                  : '#6B4525',
+          color: tier === 'elite' || tier === 'silver' ? '#2A1A00' : '#fff',
+        }}
+      >
+        {label}
+      </span>
 
-      {/* 헤더: 등급 배지 + 타순 + 등번호 (작은 칩) */}
-      <header className="relative z-10 flex w-full items-start justify-between gap-1 px-1.5 pt-1.5">
-        <div className="flex items-center gap-1">
-          <GradeBadge grade={slot.grade} size="sm" />
-          <span
-            className="rounded bg-black/70 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white shadow-lg"
-            aria-hidden
-          >
-            {orderLabel}
-          </span>
-        </div>
+      {/* 상단: 포지션 + 타순 + 별 */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          padding: '4px 6px',
+          background: 'linear-gradient(180deg, rgba(0,0,0,.4), transparent)',
+          fontSize: 9,
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
         <span
-          className="rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white/90 shadow-lg"
-          aria-hidden
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 20,
+            height: 18,
+            borderRadius: 4,
+            background: team?.primaryColor ?? 'var(--magu-kia-red)',
+            color: '#fff',
+            fontWeight: 900,
+            fontSize: 10,
+          }}
         >
-          #{player?.uniformNumber ?? '?'}
+          {slot.position}
         </span>
-      </header>
+        <span className="font-digit" style={{ color: 'var(--magu-gold)', fontSize: 12 }}>{orderLabel}</span>
+        <span style={{ marginLeft: 'auto', color: 'var(--magu-gold)', fontSize: 9, letterSpacing: -1 }}>{stars}</span>
+      </div>
 
-      {/* Filler — sapphire space so photo dominates */}
-      <div className="relative z-0 flex-1" aria-hidden />
+      {/* face (정사각형) — 잔디 배경 + SD 일러스트 */}
+      <div
+        style={{
+          aspectRatio: '1 / 1',
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundColor: 'rgba(255,255,255,.04)',
+          backgroundImage: `url(${tile('grass')})`,
+          backgroundSize: '200% 200%',
+          backgroundPosition: 'center',
+        }}
+      >
+        {faceImage ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={faceImage}
+            alt=""
+            className="pointer-events-none"
+            style={{
+              position: 'absolute',
+              left: '50%',
+              bottom: 0,
+              transform: 'translateX(-50%)',
+              width: '108%',
+              height: 'auto',
+            }}
+            loading="lazy"
+          />
+        ) : null}
+      </div>
 
-      {/* 푸터: 선수명 + 포지션 + 스탯 */}
-      <footer className="relative z-10 flex w-full flex-col items-center gap-0.5 px-2 pb-2 text-center">
-        <span className="line-clamp-1 text-base font-bold text-white drop-shadow-md sm:text-lg">
+      {/* 푸터: 이름 + 스탯 */}
+      <div
+        style={{
+          padding: '4px 6px 6px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          background: 'rgba(0,0,0,.4)',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 900,
+            color: 'var(--magu-text-1)',
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {player?.name ?? '—'}
-        </span>
-        <div className="flex items-center gap-2">
-          <span
-            className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white"
-            style={team ? { backgroundColor: team.primaryColor } : { backgroundColor: '#444' }}
-          >
-            {slot.position}
-          </span>
-          {keyStat ? (
-            <span
-              className="text-xs font-bold drop-shadow-md"
-              style={{ color: `var(--grade-${slot.grade})` }}
-            >
-              {keyStat}
-            </span>
-          ) : null}
         </div>
-      </footer>
+        {keyStat ? (
+          <div
+            className="font-digit"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: 10,
+              color: 'var(--magu-text-2)',
+            }}
+          >
+            <span>등급</span>
+            <span style={{ color: 'var(--magu-gold)' }}>{keyStat}</span>
+          </div>
+        ) : null}
+      </div>
     </button>
   );
 }
-

@@ -1,6 +1,5 @@
-// FM-style team header panel — Material 3 (Dark) port.
-// Design Ref: m3-comp/components.jsx TeamMatchupPanel.
-// Real SWR data flow preserved.
+// Magu Magu 라이브 전광판 + 시즌 핵심 지표 패널.
+// 좌:KIA 엠블럼 / 중:스코어보드 / 우:상대팀 엠블럼 — 16:9 압축 카드.
 
 'use client';
 
@@ -8,10 +7,13 @@ import useSWR from 'swr';
 
 import { useStandings } from '@/features/league-standings/hooks/useStandings';
 import { fetcher } from '@/lib/api-client';
+import { icon, teamEmblem } from '@/lib/assets-magu';
 import { TEAMS } from '@/lib/constants';
 import { todayKstString } from '@/lib/date';
 
-import type { Game, StandingsRow, TeamCode } from '@/types';
+import type { Game, TeamCode } from '@/types';
+
+const SEASON_GAMES = 144;
 
 export interface TeamMatchupPanelProps {
   team: TeamCode;
@@ -21,16 +23,11 @@ export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
   const teamMeta = TEAMS[team];
   const today = todayKstString();
   const { data: standingsData } = useStandings();
-  const { data: games } = useSWR<Game[]>(
-    `/api/games?range=day&date=${today}`,
-    fetcher,
-  );
+  const { data: games } = useSWR<Game[]>(`/api/games?range=day&date=${today}`, fetcher);
 
   const standings = standingsData?.rows;
   const myRow = standings?.find((r) => r.teamCode === team) ?? null;
-  const todayGame = (games ?? []).find(
-    (g) => g.homeTeam === team || g.awayTeam === team,
-  );
+  const todayGame = (games ?? []).find((g) => g.homeTeam === team || g.awayTeam === team);
   const opponent = todayGame
     ? todayGame.homeTeam === team
       ? TEAMS[todayGame.awayTeam]
@@ -41,357 +38,313 @@ export function TeamMatchupPanel({ team }: TeamMatchupPanelProps) {
     : null;
   const isHome = todayGame ? todayGame.homeTeam === team : false;
 
+  const playedGames = myRow ? myRow.wins + myRow.losses + myRow.draws : 0;
+  const progressPct = Math.min(100, Math.round((playedGames / SEASON_GAMES) * 100));
+
   return (
-    <section
-      className="m3-card mx-3 my-3 sm:mx-4 sm:my-4"
-      aria-label={`${teamMeta.name} 매치업 헤더`}
-      style={{
-        padding: 16,
-        background: 'var(--md-sys-color-surface-container)',
-        borderRadius: 'var(--md-sys-shape-corner-large)',
-      }}
-    >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.1fr_1fr_0.9fr] md:gap-6">
-        {/* Left: Season KPI */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-baseline justify-between">
-            <div
-              className="font-brand"
-              style={{ fontSize: 14, fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}
-            >
-              시즌 KPI
-            </div>
-            <div
-              className="tabular"
-              style={{ fontSize: 11, color: 'var(--md-sys-color-on-surface-variant)' }}
-            >
-              {teamMeta.shortName} · {myRow ? myRow.wins + myRow.losses + myRow.draws : 0}/144
-            </div>
-          </div>
-          {myRow ? (
-            <div className="grid grid-cols-3 md:grid-cols-2 gap-2">
-              <KpiCell label="순위" value={`${myRow.rank}위`} sub="10팀 중" />
-              <KpiCell
-                label="승률"
-                value={myRow.winPct.toFixed(3).replace(/^0/, '')}
-                sub={myRow.winPct >= 0.5 ? '> .500' : '< .500'}
-              />
-              <KpiCell
-                label="W-D-L"
-                value={`${myRow.wins}-${myRow.draws}-${myRow.losses}`}
-                sub={`${myRow.wins + myRow.losses + myRow.draws}경기`}
-              />
-              <KpiCell
-                label="게임차"
-                value={myRow.gamesBehind === 0 ? '-' : `${myRow.gamesBehind}`}
-                sub={myRow.rank === 1 ? '1위' : '위 팀 기준'}
-              />
-              <KpiCell label="연속" value={formatStreak(myRow.streak)} sub="최근 흐름" />
-              <KpiCell
-                label="잔여"
-                value={`${144 - (myRow.wins + myRow.losses + myRow.draws)}`}
-                sub="144 경기제"
-              />
-            </div>
-          ) : (
-            <div
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, margin: '8px' }}>
+      {/* 1. 라이브 스코어 전광판 */}
+      <section
+        aria-label={`${teamMeta.name} 매치업 헤더`}
+        style={{
+          padding: '10px 12px',
+          borderRadius: 14,
+          background:
+            'repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px), linear-gradient(160deg, #1F2A4A, #0F1730)',
+          border: '1px solid var(--magu-line-light)',
+          boxShadow: 'var(--magu-shadow-card)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* 상단 메타 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, position: 'relative' }}>
+          {todayGame ? (
+            <span
               style={{
-                padding: 16,
-                color: 'var(--md-sys-color-on-surface-variant)',
-                fontSize: 13,
-                textAlign: 'center',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '2px 6px',
+                borderRadius: 4,
+                background: 'var(--magu-kia-red)',
+                color: '#fff',
+                fontSize: 9,
+                fontWeight: 900,
+                letterSpacing: 0.5,
               }}
             >
-              시즌 데이터 로딩...
-            </div>
-          )}
-        </div>
-
-        {/* Center: VS Matchup */}
-        <div
-          className="flex flex-col justify-center"
-          style={{
-            paddingTop: 12,
-            paddingBottom: 12,
-            borderTop: '1px solid var(--md-sys-color-outline-variant)',
-            borderBottom: '1px solid var(--md-sys-color-outline-variant)',
-          }}
-        >
-          {todayGame && opponent ? (
-            <div className="flex flex-col gap-2.5">
-              <div className="flex items-center justify-center gap-2">
-                <span
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: 0.4,
-                    color: 'var(--md-sys-color-on-surface-variant)',
-                  }}
-                >
-                  {today.slice(5).replace('-', '/')} · {formatGameTime(todayGame.startTime)}
-                </span>
-                <span
-                  className="m3-chip m3-chip-sm"
-                  style={{
-                    background: 'var(--md-sys-color-secondary-container)',
-                    color: 'var(--md-sys-color-on-secondary-container)',
-                    fontWeight: 700,
-                  }}
-                >
-                  {isHome ? 'HOME' : 'AWAY'}
-                </span>
-              </div>
-              <div className="flex items-center justify-center gap-4">
-                <TeamBadge team={teamMeta} highlight />
-                <div className="text-center flex flex-col gap-0.5">
-                  <div
-                    className="font-brand"
-                    style={{
-                      fontSize: 36,
-                      fontWeight: 700,
-                      lineHeight: 1,
-                      letterSpacing: -1,
-                      color: 'var(--md-sys-color-on-surface)',
-                    }}
-                  >
-                    VS
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 10,
-                      color: 'var(--md-sys-color-on-surface-variant)',
-                    }}
-                  >
-                    {isHome ? '@홈' : '@원정'}
-                  </div>
-                </div>
-                <TeamBadge team={opponent} />
-              </div>
-              {todayGame.stadium && (
-                <div className="flex justify-center gap-1.5">
-                  <span className="m3-chip m3-chip-sm m3-chip-outline">
-                    <span className="mso" style={{ fontSize: 12 }}>stadium</span>
-                    {todayGame.stadium}
-                  </span>
-                  {opponentRow && (
-                    <span
-                      className="m3-chip m3-chip-sm m3-chip-outline tabular"
-                      title="상대 승률"
-                    >
-                      <span className="mso" style={{ fontSize: 12 }}>shield</span>
-                      {opponentRow.winPct.toFixed(3).replace(/^0/, '')}
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div
-              className="flex items-center justify-center"
-              style={{
-                color: 'var(--md-sys-color-on-surface-variant)',
-                fontSize: 13,
-                padding: 16,
-              }}
-            >
-              오늘 경기 없음
-            </div>
-          )}
-        </div>
-
-        {/* Right: Recent form */}
-        <div className="flex flex-col gap-2.5">
-          <div
-            className="font-brand"
-            style={{ fontSize: 14, fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}
-          >
-            최근 5경기
-          </div>
-          {myRow ? (
-            <>
-              <div className="flex items-center gap-2.5">
-                <span
-                  className="tabular"
-                  style={{
-                    width: 36,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: 'var(--md-sys-color-primary)',
-                  }}
-                >
-                  {teamMeta.shortName}
-                </span>
-                <FormDots row={myRow} />
-                <span
-                  className="tabular"
-                  style={{
-                    marginLeft: 'auto',
-                    fontSize: 11,
-                    color: 'var(--md-sys-color-on-surface-variant)',
-                  }}
-                >
-                  {formatStreak(myRow.streak)}
-                </span>
-              </div>
-              {opponentRow && opponent && (
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="tabular"
-                    style={{
-                      width: 36,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      color: 'var(--md-sys-color-on-surface-variant)',
-                    }}
-                  >
-                    {opponent.shortName}
-                  </span>
-                  <FormDots row={opponentRow} />
-                  <span
-                    className="tabular"
-                    style={{
-                      marginLeft: 'auto',
-                      fontSize: 11,
-                      color: 'var(--md-sys-color-on-surface-variant)',
-                    }}
-                  >
-                    {formatStreak(opponentRow.streak)}
-                  </span>
-                </div>
-              )}
-              <hr
+              <span
                 style={{
-                  margin: '4px 0',
-                  border: 'none',
-                  borderTop: '1px solid var(--md-sys-color-outline-variant)',
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  background: '#fff',
+                  animation: 'spin 1s infinite',
                 }}
               />
-              <div className="flex flex-col gap-1.5" style={{ fontSize: 12 }}>
-                <div className="flex justify-between">
-                  <span style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>총 경기</span>
-                  <span className="tabular" style={{ fontWeight: 600 }}>
-                    {myRow.wins + myRow.losses + myRow.draws}G
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>승률</span>
-                  <span className="tabular" style={{ fontWeight: 600 }}>
-                    {(myRow.winPct * 100).toFixed(1)}%
-                  </span>
-                </div>
-              </div>
-            </>
+              오늘
+            </span>
           ) : (
-            <p style={{ fontSize: 13, color: 'var(--md-sys-color-on-surface-variant)' }}>
-              데이터 없음
-            </p>
+            <span style={{ fontSize: 9, color: 'var(--magu-text-3)', fontWeight: 700 }}>휴식일</span>
           )}
+          <span className="font-digit" style={{ fontSize: 10, color: 'var(--magu-text-3)' }}>
+            {today.slice(5).replace('-', '/')}
+            {todayGame ? ` · ${formatGameTime(todayGame.startTime)}` : ''}
+          </span>
+          {todayGame?.stadium ? (
+            <span
+              style={{
+                marginLeft: 'auto',
+                fontSize: 10,
+                color: 'var(--magu-text-2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 3,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={icon('baseball')} alt="" width={12} height={12} className="magu-pixel" />
+              {todayGame.stadium}
+            </span>
+          ) : null}
         </div>
-      </div>
-    </section>
-  );
-}
 
-function KpiCell({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="m3-kpi-cell">
-      <div className="m3-kpi-label">{label}</div>
-      <div className="m3-kpi-value">{value}</div>
-      {sub && <div className="m3-kpi-sub">{sub}</div>}
-    </div>
-  );
-}
-
-function TeamBadge({
-  team,
-  highlight = false,
-}: {
-  team: { code: string; shortName: string; primaryColor: string };
-  highlight?: boolean;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-1.5">
-      <span
-        className="inline-flex items-center justify-center rounded-full font-brand"
-        style={{
-          width: highlight ? 56 : 48,
-          height: highlight ? 56 : 48,
-          fontSize: highlight ? 18 : 16,
-          fontWeight: 700,
-          letterSpacing: 0.2,
-          backgroundColor: team.primaryColor,
-          color: '#fff',
-          boxShadow: highlight
-            ? `0 0 0 3px var(--md-sys-color-surface-container), 0 0 0 5px ${team.primaryColor}`
-            : 'inset 0 0 0 1px rgba(255,255,255,0.16)',
-        }}
-      >
-        {team.shortName.slice(0, 2)}
-      </span>
-      <span
-        style={{
-          fontSize: 12,
-          fontWeight: highlight ? 700 : 500,
-          color: highlight ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-on-surface-variant)',
-        }}
-      >
-        {team.shortName}
-      </span>
-    </div>
-  );
-}
-
-function FormDots({ row }: { row: StandingsRow }) {
-  const last5 = parseLast5(row);
-  return (
-    <div className="flex items-center gap-1">
-      {last5.map((r, i) => (
-        <span
-          key={i}
-          className="tabular inline-flex items-center justify-center"
-          aria-label={r === 'W' ? '승' : r === 'L' ? '패' : '무'}
+        {/* 메인 그리드: 마이팀 / VS 또는 스코어 / 상대팀 */}
+        <div
           style={{
-            width: 22,
-            height: 22,
-            borderRadius: 'var(--md-sys-shape-corner-small)',
-            fontFamily: 'var(--md-ref-typeface-mono)',
-            fontSize: 11,
-            fontWeight: 700,
-            ...(r === 'W'
-              ? {
-                  background: 'var(--md-sys-color-secondary-container)',
-                  color: 'var(--md-sys-color-on-secondary-container)',
-                }
-              : r === 'L'
-              ? {
-                  background: 'var(--md-sys-color-error-container)',
-                  color: 'var(--md-sys-color-on-error-container)',
-                }
-              : {
-                  background: 'transparent',
-                  color: 'var(--md-sys-color-on-surface-variant)',
-                  border: '1px solid var(--md-sys-color-outline)',
-                }),
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
+            gap: 8,
+            alignItems: 'center',
+            position: 'relative',
           }}
         >
-          {r}
-        </span>
-      ))}
+          {/* 좌: 마이팀 */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={teamEmblem(team)}
+              alt={teamMeta.name}
+              width={56}
+              height={56}
+              className="magu-pixel"
+              style={{ filter: 'drop-shadow(0 2px 0 rgba(0,0,0,.5))' }}
+            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10 }}>
+              {myRow ? (
+                <>
+                  <span
+                    style={{
+                      background: 'var(--magu-gold)',
+                      color: '#2A1A00',
+                      padding: '0 5px',
+                      borderRadius: 4,
+                      fontWeight: 900,
+                      fontSize: 9,
+                    }}
+                  >
+                    {myRow.rank}위
+                  </span>
+                  <span className="font-digit" style={{ color: 'var(--magu-text-2)' }}>
+                    {myRow.winPct.toFixed(3).replace(/^0/, '')}
+                  </span>
+                </>
+              ) : (
+                <span style={{ color: 'var(--magu-text-3)' }}>로딩…</span>
+              )}
+            </div>
+          </div>
+
+          {/* 중: 스코어보드 또는 VS */}
+          {todayGame ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+                padding: '4px 10px',
+                background: '#000',
+                borderRadius: 10,
+                border: '2px solid #333',
+                minWidth: 88,
+                boxShadow: '0 0 0 1px rgba(255,255,255,.08) inset, 0 4px 0 #000',
+              }}
+            >
+              <div
+                className="font-digit"
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: 4,
+                  fontSize: 28,
+                  lineHeight: 1,
+                  color: 'var(--magu-gold)',
+                  textShadow: '0 0 6px rgba(255,201,60,.6), 0 0 12px rgba(255,201,60,.3)',
+                }}
+              >
+                <span>{formatScore(isHome ? todayGame.homeScore : todayGame.awayScore)}</span>
+                <span style={{ fontSize: 14, color: 'var(--magu-text-3)' }}>:</span>
+                <span>{formatScore(isHome ? todayGame.awayScore : todayGame.homeScore)}</span>
+              </div>
+              <div style={{ fontSize: 9, color: 'var(--magu-sky)', letterSpacing: 0.5, marginTop: 2 }}>
+                {isHome ? '🏠 홈경기' : '✈ 원정경기'}
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                fontFamily: "'Black Han Sans', sans-serif",
+                fontSize: 32,
+                color: 'var(--magu-text-3)',
+                letterSpacing: -1,
+                padding: '0 8px',
+              }}
+            >
+              VS
+            </div>
+          )}
+
+          {/* 우: 상대팀 */}
+          {opponent ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={teamEmblem(opponent.code as TeamCode)}
+                alt={opponent.name}
+                width={56}
+                height={56}
+                className="magu-pixel"
+                style={{ filter: 'drop-shadow(0 2px 0 rgba(0,0,0,.5))' }}
+              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10 }}>
+                {opponentRow ? (
+                  <>
+                    <span className="font-digit" style={{ color: 'var(--magu-text-2)' }}>
+                      {opponentRow.winPct.toFixed(3).replace(/^0/, '')}
+                    </span>
+                    <span
+                      style={{
+                        background: 'var(--magu-silver)',
+                        color: '#1A1F33',
+                        padding: '0 5px',
+                        borderRadius: 4,
+                        fontWeight: 900,
+                        fontSize: 9,
+                      }}
+                    >
+                      {opponentRow.rank}위
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ color: 'var(--magu-text-3)' }}>—</span>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div style={{ color: 'var(--magu-text-3)', fontSize: 11, textAlign: 'right' }}>경기 없음</div>
+          )}
+        </div>
+      </section>
+
+      {/* 2. 빠른 통계 4셀 */}
+      {myRow ? (
+        <section
+          aria-label="시즌 핵심 지표"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}
+        >
+          <QsCell label="순위" value={`${myRow.rank}`} sub="10팀중" tone="gold" />
+          <QsCell
+            label="승률"
+            value={myRow.winPct.toFixed(3).replace(/^0/, '')}
+            sub={myRow.winPct >= 0.5 ? '＞.500' : '＜.500'}
+          />
+          <QsCell label="연속" value={formatStreak(myRow.streak)} sub="최근" tone={streakTone(myRow.streak)} />
+          <QsCell
+            label="게임차"
+            value={myRow.gamesBehind === 0 ? '-' : `${myRow.gamesBehind}`}
+            sub={myRow.rank === 1 ? '1위' : '위팀'}
+          />
+        </section>
+      ) : null}
+
+      {/* 3. 시즌 진행 HP바 */}
+      {myRow ? (
+        <section className="magu-panel" style={{ padding: '10px 12px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 6,
+              gap: 6,
+            }}
+          >
+            <span style={{ fontSize: 11, color: 'var(--magu-text-2)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={icon('baseball')} alt="" width={16} height={16} className="magu-pixel" />
+              시즌 진행 {playedGames} / {SEASON_GAMES} 경기
+            </span>
+            <span className="font-digit" style={{ fontSize: 14, color: 'var(--magu-gold)' }}>
+              {myRow.wins}승 {myRow.draws}무 {myRow.losses}패
+            </span>
+          </div>
+          <div className="magu-hpbar">
+            <div className="fill" style={{ width: `${progressPct}%` }} />
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
 
-function parseLast5(row: StandingsRow): Array<'W' | 'L' | 'D'> {
-  // Deterministic — same seed gives same dots so the page is stable.
-  const wRatio = row.winPct;
-  const result: Array<'W' | 'L' | 'D'> = [];
-  const seed = Math.floor(row.winPct * 1000) + row.rank * 7;
-  let x = seed;
-  for (let i = 0; i < 5; i++) {
-    x = (x * 9301 + 49297) % 233280;
-    const r = x / 233280;
-    result.push(r < wRatio ? 'W' : 'L');
-  }
-  return result;
+function QsCell({
+  label,
+  value,
+  sub,
+  tone,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  tone?: 'gold' | 'green' | 'red';
+}) {
+  const color =
+    tone === 'gold'
+      ? 'var(--magu-gold)'
+      : tone === 'green'
+        ? '#6EE890'
+        : tone === 'red'
+          ? '#FF7A7E'
+          : 'var(--magu-text-1)';
+  return (
+    <div
+      style={{
+        padding: '6px 4px 8px',
+        borderRadius: 10,
+        background: 'linear-gradient(180deg, var(--magu-panel), var(--magu-panel-deep))',
+        border: '1px solid var(--magu-line)',
+        boxShadow: '0 2px 0 #0A0F1C',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: 9, color: 'var(--magu-text-3)', letterSpacing: 0.3 }}>{label}</div>
+      <div className="font-digit" style={{ fontSize: 18, lineHeight: 1, marginTop: 3, color }}>
+        {value}
+      </div>
+      {sub ? (
+        <div style={{ fontSize: 8, color: 'var(--magu-gold)', marginTop: 2, letterSpacing: 0.3 }}>{sub}</div>
+      ) : null}
+    </div>
+  );
+}
+
+function streakTone(streak: string | null | undefined): 'green' | 'red' | 'gold' | undefined {
+  if (!streak) return undefined;
+  if (streak.includes('승')) return 'green';
+  if (streak.includes('패')) return 'red';
+  return 'gold';
 }
 
 function formatStreak(streak: string | null | undefined): string {
@@ -402,4 +355,9 @@ function formatStreak(streak: string | null | undefined): string {
 function formatGameTime(t: string | null | undefined): string {
   if (!t) return '시간 미정';
   return t.length >= 5 ? t.slice(0, 5) : t;
+}
+
+function formatScore(s: number | null | undefined): string {
+  if (s == null) return '-';
+  return String(s);
 }

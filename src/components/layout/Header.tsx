@@ -1,5 +1,5 @@
-// Design Ref: §5.1 + m3-comp Screen1 MobileHeader.
-// Mobile-first: 375px 폭에 맞춰 아이콘 40px + 자동 truncate.
+// Magu Magu HUD header — 마구마구/메이플 풍 게임 HUD.
+// Mobile-first 56px. 마이팀 엠블럼 + 브랜드 + 검색/스토리북 + 새로고침/설정.
 
 'use client';
 
@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { TEAMS } from '@/lib/constants';
+import { teamEmblem } from '@/lib/assets-magu';
 import { useGlobalRefresh } from '@/lib/refresh';
 import { getMyTeam } from '@/lib/storage';
 
@@ -28,107 +29,88 @@ export function Header({ onOpenSettings }: HeaderProps) {
   const refreshLabel = isRefreshing
     ? '최신 데이터 갱신 중'
     : lastRefreshAt
-      ? `최신 데이터 갱신 (마지막: ${formatTimeShort(lastRefreshAt)})`
+      ? `갱신 (마지막 ${formatTimeShort(lastRefreshAt)})`
       : '최신 데이터 갱신';
+
+  const logoStyle: React.CSSProperties = {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    flexShrink: 0,
+    boxShadow: 'var(--magu-shadow-out)',
+    backgroundImage: myTeam
+      ? `url(${teamEmblem(myTeam)}), linear-gradient(160deg, #1A2440, #0F1730)`
+      : 'linear-gradient(160deg, var(--magu-kia-red), var(--magu-kia-red-deep))',
+    backgroundSize: 'contain, cover',
+    backgroundRepeat: 'no-repeat, no-repeat',
+    backgroundPosition: 'center, center',
+    imageRendering: 'pixelated',
+  };
 
   return (
     <header
-      className="m3-sticky-header"
       style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
         display: 'flex',
         alignItems: 'center',
-        gap: 4,
-        padding: '8px 10px',
-        minHeight: 56,
+        gap: 6,
+        padding: '6px 8px',
+        background:
+          'linear-gradient(180deg, rgba(15,20,33,.92), rgba(15,20,33,.7))',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        borderBottom: '1px solid rgba(255,255,255,.05)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-        <span
-          aria-hidden
-          className="mso filled"
-          style={{ fontSize: 22, color: 'var(--md-sys-color-primary)', flexShrink: 0 }}
-        >
-          sports_baseball
-        </span>
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0 }}>
+        <div aria-hidden style={logoStyle} />
+        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, minWidth: 0 }}>
           <h1
-            className="font-brand"
+            className="font-brand-magu"
             style={{
               margin: 0,
-              fontSize: 15,
-              fontWeight: 700,
-              letterSpacing: -0.2,
-              color: 'var(--md-sys-color-on-surface)',
+              fontSize: 16,
+              color: 'var(--magu-text-1)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             }}
           >
-            KBO 카드 대시보드
+            마구마구 카드
           </h1>
           <span
-            className="hidden sm:inline"
             style={{
-              fontSize: 11,
-              color: 'var(--md-sys-color-on-surface-variant)',
+              marginTop: 3,
+              fontSize: 9,
+              letterSpacing: 0.5,
+              color: 'var(--magu-gold)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             }}
           >
-            Material 3 · KIA Seed
+            {myTeam ? `${TEAMS[myTeam].shortName} · 2026 시즌` : '2026 시즌'}
           </span>
         </div>
       </div>
 
       <Link
-        href="/storybook"
-        aria-label="스토리북"
-        className="m3-btn m3-btn-icon hidden sm:inline-flex"
-        style={{ width: 40, height: 40, flexShrink: 0 }}
-      >
-        <span className="mso filled" style={{ fontSize: 22, color: 'var(--md-sys-color-tertiary)' }}>
-          auto_stories
-        </span>
-      </Link>
-      <Link
         href="/players"
         aria-label="선수 검색"
-        className="m3-btn m3-btn-icon"
-        style={{ width: 40, height: 40, flexShrink: 0 }}
+        style={hudBtnStyle}
       >
-        <span className="mso" style={{ fontSize: 22 }}>search</span>
+        <span className="mso" style={{ fontSize: 18, color: 'var(--magu-text-1)' }}>search</span>
       </Link>
-
-      {myTeam ? (
-        <span
-          className="m3-chip m3-chip-sm"
-          style={{
-            background: 'var(--md-sys-color-primary-container)',
-            color: 'var(--md-sys-color-on-primary-container)',
-            fontWeight: 700,
-            height: 28,
-            padding: '0 8px',
-            flexShrink: 0,
-            maxWidth: 80,
-            overflow: 'hidden',
-          }}
-          aria-label={`마이팀: ${TEAMS[myTeam].name}`}
-        >
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: 99,
-              background: TEAMS[myTeam].primaryColor,
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {TEAMS[myTeam].shortName}
-          </span>
-        </span>
-      ) : null}
+      <Link
+        href="/storybook"
+        aria-label="스토리북"
+        className="hidden sm:inline-flex"
+        style={hudBtnStyle}
+      >
+        <span className="mso filled" style={{ fontSize: 18, color: 'var(--magu-gold)' }}>auto_stories</span>
+      </Link>
 
       <button
         type="button"
@@ -136,13 +118,13 @@ export function Header({ onOpenSettings }: HeaderProps) {
         title={refreshLabel}
         onClick={() => { void refresh(); }}
         disabled={isRefreshing}
-        className="m3-btn m3-btn-icon"
-        style={{ width: 40, height: 40, flexShrink: 0, opacity: isRefreshing ? 0.6 : 1 }}
+        style={{ ...hudBtnStyle, opacity: isRefreshing ? 0.6 : 1 }}
       >
         <span
           className="mso"
           style={{
-            fontSize: 22,
+            fontSize: 18,
+            color: 'var(--magu-text-1)',
             animation: isRefreshing ? 'spin 800ms linear infinite' : undefined,
             display: 'inline-block',
           }}
@@ -150,19 +132,31 @@ export function Header({ onOpenSettings }: HeaderProps) {
           refresh
         </span>
       </button>
-
       <button
         type="button"
         aria-label="설정"
         onClick={onOpenSettings}
-        className="m3-btn m3-btn-icon"
-        style={{ width: 40, height: 40, flexShrink: 0 }}
+        style={hudBtnStyle}
       >
-        <span className="mso" style={{ fontSize: 22 }}>settings</span>
+        <span className="mso" style={{ fontSize: 18, color: 'var(--magu-text-1)' }}>settings</span>
       </button>
     </header>
   );
 }
+
+const hudBtnStyle: React.CSSProperties = {
+  width: 32,
+  height: 32,
+  borderRadius: 8,
+  background: 'linear-gradient(180deg, var(--magu-panel-light), var(--magu-panel))',
+  border: 'none',
+  cursor: 'pointer',
+  flexShrink: 0,
+  display: 'grid',
+  placeItems: 'center',
+  boxShadow: 'var(--magu-shadow-out)',
+  textDecoration: 'none',
+};
 
 function formatTimeShort(ts: number): string {
   const d = new Date(ts);
