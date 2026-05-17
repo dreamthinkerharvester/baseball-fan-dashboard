@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 
+import { CommentBoard } from '@/features/comments/CommentBoard';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { OfflineBanner } from '@/components/layout/OfflineBanner';
@@ -61,6 +62,7 @@ export default function HomePage() {
       <RecentTenSection myTeam={myTeam} />
       <LineupSectionMaybe myTeam={myTeam} />
       <GameSchedule myTeam={myTeam} />
+      <CommentBoard />
       <Footer />
       <MyTeamSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </main>

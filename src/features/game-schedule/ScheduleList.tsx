@@ -27,7 +27,12 @@ export interface ScheduleListProps {
 
 export function ScheduleList({ myTeam, defaultRange = 'day' }: ScheduleListProps) {
   const [range, setRange] = useState<ScheduleRange>(defaultRange);
-  const { data: games, error, isLoading, refresh } = useGames(range);
+  const { data: rawGames, error, isLoading, refresh } = useGames(range);
+
+  // 마이팀 설정 시 마이팀 경기만. 마이팀 없으면 전체.
+  const games = myTeam && rawGames
+    ? rawGames.filter((g) => g.homeTeam === myTeam || g.awayTeam === myTeam)
+    : rawGames;
 
   return (
     <section aria-label="경기 일정" style={{ padding: '8px 8px 16px' }}>
