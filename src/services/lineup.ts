@@ -192,40 +192,6 @@ function rankByFrequency(
   });
 }
 
-/** 후보 슬롯 배열 중 playerId 빈도 최다인 것을 반환. tie-break: 가장 최근(앞쪽). */
-function pickMostFrequentSlot(
-  candidates: ReadonlyArray<LineupSlot | null | undefined>,
-): LineupSlot | null {
-  const valid = candidates.filter((s): s is LineupSlot => Boolean(s));
-  if (valid.length === 0) return null;
-
-  const counts = new Map<string, { count: number; latestIndex: number; slot: LineupSlot }>();
-  valid.forEach((slot, i) => {
-    const existing = counts.get(slot.playerId);
-    if (existing) {
-      existing.count += 1;
-    } else {
-      counts.set(slot.playerId, { count: 1, latestIndex: i, slot });
-    }
-  });
-
-  let best: { count: number; latestIndex: number; slot: LineupSlot } | null = null;
-  for (const entry of counts.values()) {
-    if (!best) {
-      best = entry;
-      continue;
-    }
-    if (entry.count > best.count) {
-      best = entry;
-    } else if (entry.count === best.count && entry.latestIndex < best.latestIndex) {
-      // tie-break: 더 최근(인덱스 작은 쪽 = collected 앞쪽 = 더 최근 날짜)
-      best = entry;
-    }
-  }
-
-  return best ? best.slot : null;
-}
-
 /** 최근 windowDays 일 이내 가장 최신 confirmed 라인업 (단일). */
 async function getLineupFallback(team: TeamCode, todayIso: string): Promise<ApiResponse<Lineup>> {
   const today = new Date(todayIso);
