@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { TEAMS } from '@/lib/constants';
+import { useGlobalRefresh } from '@/lib/refresh';
 import { getMyTeam } from '@/lib/storage';
 
 import type { TeamCode } from '@/types';
@@ -18,10 +19,17 @@ export interface HeaderProps {
 
 export function Header({ onOpenSettings }: HeaderProps) {
   const [myTeam, setMyTeam] = useState<TeamCode | null>(null);
+  const { refresh, isRefreshing, lastRefreshAt } = useGlobalRefresh();
 
   useEffect(() => {
     setMyTeam(getMyTeam());
   }, []);
+
+  const refreshLabel = isRefreshing
+    ? '최신 데이터 갱신 중'
+    : lastRefreshAt
+      ? `최신 데이터 갱신 (마지막: ${formatTimeShort(lastRefreshAt)})`
+      : '최신 데이터 갱신';
 
   return (
     <header
@@ -124,6 +132,27 @@ export function Header({ onOpenSettings }: HeaderProps) {
 
       <button
         type="button"
+        aria-label={refreshLabel}
+        title={refreshLabel}
+        onClick={() => { void refresh(); }}
+        disabled={isRefreshing}
+        className="m3-btn m3-btn-icon"
+        style={{ width: 40, height: 40, flexShrink: 0, opacity: isRefreshing ? 0.6 : 1 }}
+      >
+        <span
+          className="mso"
+          style={{
+            fontSize: 22,
+            animation: isRefreshing ? 'spin 800ms linear infinite' : undefined,
+            display: 'inline-block',
+          }}
+        >
+          refresh
+        </span>
+      </button>
+
+      <button
+        type="button"
         aria-label="설정"
         onClick={onOpenSettings}
         className="m3-btn m3-btn-icon"
@@ -133,4 +162,11 @@ export function Header({ onOpenSettings }: HeaderProps) {
       </button>
     </header>
   );
+}
+
+function formatTimeShort(ts: number): string {
+  const d = new Date(ts);
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
 }

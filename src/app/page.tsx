@@ -16,6 +16,7 @@ import { StandingsBanner } from '@/features/league-standings/StandingsBanner';
 import { useMyTeam } from '@/features/team-selection/hooks/useMyTeam';
 import { MyTeamSettings } from '@/features/team-selection/MyTeamSettings';
 import { TeamSelectionScreen } from '@/features/team-selection/TeamSelectionScreen';
+import { useFirstVisitRefresh } from '@/lib/refresh';
 
 import {
   GameSchedule,
@@ -30,6 +31,7 @@ export default function HomePage() {
   const { myTeam, ready, setTeam } = useMyTeam();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [skipMyTeam, setSkipMyTeam] = useState(false);
+  useFirstVisitRefresh();
 
   // Initial onboarding: localStorage 비어있고 skip 누르지 않은 상태 → 팀 선택 화면
   if (ready && !myTeam && !skipMyTeam) {
