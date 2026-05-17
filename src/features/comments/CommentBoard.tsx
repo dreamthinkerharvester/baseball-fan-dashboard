@@ -83,12 +83,11 @@ export function CommentBoard() {
 
   const submit = useCallback(() => {
     const trimmed = text.trim();
-    if (selectedSlot === null) return;
     if (!trimmed) return;
     if (trimmed.length > MAX_TEXT) return;
     const next: Comment = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      playerSlot: selectedSlot,
+      playerSlot: selectedSlot ?? -1, // -1 = 선수 미선택 (응원 일반)
       text: trimmed,
       ts: Date.now(),
       deviceId,
@@ -97,6 +96,7 @@ export function CommentBoard() {
     writeAll(list);
     setComments(list.slice(0, MAX_ITEMS));
     setText('');
+    setSelectedSlot(null);
   }, [text, selectedSlot, deviceId]);
 
   const handleDelete = useCallback(
@@ -108,7 +108,7 @@ export function CommentBoard() {
     [],
   );
 
-  const canSubmit = selectedSlot !== null && text.trim().length > 0 && text.length <= MAX_TEXT;
+  const canSubmit = text.trim().length > 0 && text.length <= MAX_TEXT;
 
   const sortedComments = useMemo(() => [...comments].sort((a, b) => b.ts - a.ts), [comments]);
 
@@ -149,16 +149,30 @@ export function CommentBoard() {
         className="magu-panel"
         style={{ padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}
       >
-        {/* 선수 아이콘 선택 */}
+        {/* 선수 아이콘 선택 (선택사항) */}
         <div>
-          <div style={{ fontSize: 10, color: 'var(--magu-text-3)', marginBottom: 4, fontWeight: 700 }}>
-            선호 선수
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 10, color: 'var(--magu-text-3)', fontWeight: 700 }}>
+              선호 선수 <span style={{ color: 'var(--magu-text-dim, #5D6786)', fontWeight: 400 }}>(선택)</span>
+            </span>
+            {selectedSlot !== null ? (
+              <button
+                type="button"
+                onClick={() => setSelectedSlot(null)}
+                style={{
+                  fontSize: 10, color: 'var(--magu-text-3)',
+                  background: 'transparent', border: 'none', cursor: 'pointer', padding: 0,
+                }}
+              >
+                해제
+              </button>
+            ) : null}
           </div>
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(9, 1fr)',
-              gap: 3,
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              gap: 4,
             }}
           >
             {KIA_LINEUP_NAMES.map((name, idx) => {
@@ -169,7 +183,7 @@ export function CommentBoard() {
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => setSelectedSlot(idx)}
+                  onClick={() => setSelectedSlot(active ? null : idx)}
                   aria-label={`${name} 선택`}
                   aria-pressed={active}
                   title={name}
@@ -178,14 +192,15 @@ export function CommentBoard() {
                     border: active ? '2px solid var(--magu-gold)' : '2px solid var(--magu-line)',
                     borderRadius: 8,
                     background: active
-                      ? 'linear-gradient(180deg, rgba(255,201,60,.2), rgba(184,144,32,.2))'
+                      ? 'linear-gradient(180deg, rgba(255,201,60,.25), rgba(184,144,32,.15))'
                       : 'rgba(0,0,0,.2)',
                     padding: 0,
                     cursor: 'pointer',
                     overflow: 'hidden',
-                    boxShadow: active ? '0 0 8px rgba(255,201,60,.4)' : 'none',
+                    boxShadow: active ? '0 0 8px rgba(255,201,60,.5)' : 'none',
                     position: 'relative',
                     transition: 'transform .08s',
+                    minHeight: 44,
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -199,15 +214,21 @@ export function CommentBoard() {
                       objectPosition: 'center top',
                     }}
                   />
+                  <span
+                    style={{
+                      position: 'absolute', left: 0, right: 0, bottom: 0,
+                      fontSize: 9, fontWeight: 900,
+                      background: 'rgba(0,0,0,.7)', color: '#fff',
+                      padding: '1px 0',
+                      letterSpacing: -0.3,
+                    }}
+                  >
+                    {name}
+                  </span>
                 </button>
               );
             })}
           </div>
-          {selectedSlot !== null ? (
-            <div style={{ fontSize: 10, color: 'var(--magu-gold)', marginTop: 4, fontWeight: 700 }}>
-              ⚾ {KIA_LINEUP_NAMES[selectedSlot]} 선택됨
-            </div>
-          ) : null}
         </div>
 
         {/* 텍스트 입력 */}
@@ -302,8 +323,9 @@ function CommentRow({
   isMine: boolean;
   onDelete: () => void;
 }) {
-  const src = playerByLineupSlot(comment.playerSlot);
-  const name = KIA_LINEUP_NAMES[comment.playerSlot] ?? '?';
+  const hasPlayer = comment.playerSlot >= 0;
+  const src = hasPlayer ? playerByLineupSlot(comment.playerSlot) : null;
+  const name = hasPlayer ? (KIA_LINEUP_NAMES[comment.playerSlot] ?? '?') : '응원';
   return (
     <article
       style={{
@@ -324,8 +346,10 @@ function CommentRow({
           height: 28,
           borderRadius: 6,
           overflow: 'hidden',
-          background: 'rgba(0,0,0,.3)',
+          background: hasPlayer ? 'rgba(0,0,0,.3)' : 'var(--magu-kia-red)',
           border: '1px solid var(--magu-line-light)',
+          display: 'grid',
+          placeItems: 'center',
         }}
       >
         {src ? (
@@ -340,14 +364,20 @@ function CommentRow({
               objectPosition: 'center top',
             }}
           />
-        ) : null}
+        ) : (
+          <span style={{ fontSize: 14, color: '#fff' }} aria-hidden>📣</span>
+        )}
       </div>
       <div style={{ minWidth: 0 }}>
         <div style={{ fontSize: 12, color: 'var(--magu-text-1)', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {comment.text}
         </div>
         <div style={{ fontSize: 9, color: 'var(--magu-text-3)', marginTop: 2 }}>
-          <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>{name}</span>
+          {hasPlayer ? (
+            <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>{name}</span>
+          ) : (
+            <span style={{ color: 'var(--magu-text-2)', fontWeight: 700 }}>전체 응원</span>
+          )}
           {' · '}익명 {comment.deviceId.slice(1, 5)}
           {' · '}{timeAgo(comment.ts)}
         </div>
