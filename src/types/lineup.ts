@@ -17,6 +17,26 @@ export interface LineupSlot {
 
 export type LineupStatus = 'confirmed' | 'pending' | 'fallback' | 'frequency';
 
+/** frequency 모드에서 슬롯의 등장 통계 */
+export interface FrequencyMeta {
+  /** 이 슬롯에서 출전한 횟수 */
+  appearances: number;
+  /** 마지막 출전 날짜 (ISO YYYY-MM-DD) */
+  lastAppearance: string;
+}
+
+export interface FrequencyBackup extends LineupSlot {
+  freq: FrequencyMeta;
+}
+
+export interface PitcherPoolEntry {
+  playerId: string;
+  grade: Grade;
+  gradePercentile: number;
+  gradeBasis: string;
+  freq: FrequencyMeta;
+}
+
 export interface Lineup {
   gameId: string;
   teamCode: TeamCode;
@@ -31,4 +51,8 @@ export interface Lineup {
   frequencySourceDates?: string[];
   /** frequency 상태일 때 합성 기간 (일) */
   frequencyWindowDays?: number;
+  /** frequency 모드 — 주전 9명 외 백업 후보 (자리별 2~N순위, 빈도 내림차순) */
+  backups?: FrequencyBackup[];
+  /** frequency 모드 — 최근 N일 선발 등판한 모든 투수 (선발 빈도 내림차순) */
+  pitcherPool?: PitcherPoolEntry[];
 }

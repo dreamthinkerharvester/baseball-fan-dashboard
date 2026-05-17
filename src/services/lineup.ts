@@ -5,7 +5,14 @@ import { loadGames, loadLineup } from '@/lib/data/cache';
 import { todayKstString } from '@/lib/date';
 import { err, ok } from '@/types';
 
-import type { ApiResponse, Lineup, LineupSlot, TeamCode } from '@/types';
+import type {
+  ApiResponse,
+  FrequencyBackup,
+  Lineup,
+  LineupSlot,
+  PitcherPoolEntry,
+  TeamCode,
+} from '@/types';
 
 const FREQ_WINDOW_DAYS = 7;
 const FREQ_MIN_SAMPLES = 2; // 최소 2일치 라인업이 있어야 빈도 합성
@@ -85,19 +92,53 @@ async function getLineupFrequency(
     return err('NO_GAME', '빈도 분석에 충분한 라인업이 없습니다.');
   }
 
-  // 타순별 (1~9) 빈출 선수 추출.
+  // 타순별 (1~9) 빈출 선수 추출 + 자리별 백업.
   const battingOrder: LineupSlot[] = [];
+  const backups: FrequencyBackup[] = [];
+  const starterPlayerIds = new Set<string>();
+
   for (let order = 1; order <= 9; order++) {
-    const slot = pickMostFrequentSlot(
-      collected.map((c) => c.lineup.battingOrder.find((s) => s.battingOrder === order)),
-    );
-    if (slot) battingOrder.push({ ...slot, battingOrder: order });
+    const candidates = collected
+      .map((c) => ({
+        slot: c.lineup.battingOrder.find((s) => s.battingOrder === order),
+        date: c.date,
+      }))
+      .filter((x): x is { slot: LineupSlot; date: string } => Boolean(x.slot));
+
+    const ranked = rankByFrequency(candidates);
+    if (ranked.length === 0) continue;
+
+    const top = ranked[0];
+    if (!top) continue;
+    const starterSlot: LineupSlot = { ...top.slot, battingOrder: order };
+    battingOrder.push(starterSlot);
+    starterPlayerIds.add(top.slot.playerId);
+
+    // 같은 자리(taysun)의 2~N순위 → 백업
+    for (let i = 1; i < ranked.length; i++) {
+      const r = ranked[i];
+      if (!r) continue;
+      backups.push({
+        ...r.slot,
+        battingOrder: order,
+        freq: { appearances: r.count, lastAppearance: r.lastDate },
+      });
+    }
   }
 
-  // 선발 투수 빈출
-  const startingPitcher = pickMostFrequentSlot(
-    collected.map((c) => c.lineup.startingPitcher),
-  );
+  // 선발 투수 풀 — 최근 N일 모든 선발투수 등판 기록
+  const pitcherCandidates = collected
+    .map((c) => ({ slot: c.lineup.startingPitcher, date: c.date }))
+    .filter((x): x is { slot: LineupSlot; date: string } => Boolean(x.slot));
+  const pitcherRanked = rankByFrequency(pitcherCandidates);
+  const pitcherPool: PitcherPoolEntry[] = pitcherRanked.map((p) => ({
+    playerId: p.slot.playerId,
+    grade: p.slot.grade,
+    gradePercentile: p.slot.gradePercentile,
+    gradeBasis: p.slot.gradeBasis,
+    freq: { appearances: p.count, lastAppearance: p.lastDate },
+  }));
+  const startingPitcher = pitcherRanked[0]?.slot ?? null;
 
   if (battingOrder.length === 0) {
     return err('NO_GAME', '빈도 분석 결과 라인업이 비어있습니다.');
@@ -117,9 +158,38 @@ async function getLineupFrequency(
     source: sample.lineup.source,
     frequencyWindowDays: windowDays,
     frequencySourceDates: collected.map((c) => c.date),
+    backups,
+    pitcherPool,
   };
 
   return ok(synth, { source: 'cache' });
+}
+
+/**
+ * (slot, date) 후보 배열을 playerId 빈도 내림차순으로 정렬.
+ * 동률 시 더 최근 날짜 우선. 반환: count + lastDate 포함.
+ */
+function rankByFrequency(
+  candidates: ReadonlyArray<{ slot: LineupSlot; date: string }>,
+): Array<{ slot: LineupSlot; count: number; lastDate: string }> {
+  const map = new Map<
+    string,
+    { slot: LineupSlot; count: number; lastDate: string }
+  >();
+  for (const c of candidates) {
+    const existing = map.get(c.slot.playerId);
+    if (existing) {
+      existing.count += 1;
+      // collected가 가장 최근부터라 c.date가 더 클 수 있음 → 비교
+      if (c.date > existing.lastDate) existing.lastDate = c.date;
+    } else {
+      map.set(c.slot.playerId, { slot: c.slot, count: 1, lastDate: c.date });
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count;
+    return b.lastDate.localeCompare(a.lastDate); // 더 최근 우선
+  });
 }
 
 /** 후보 슬롯 배열 중 playerId 빈도 최다인 것을 반환. tie-break: 가장 최근(앞쪽). */

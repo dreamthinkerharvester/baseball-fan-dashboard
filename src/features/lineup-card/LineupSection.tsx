@@ -182,23 +182,12 @@ export function LineupSection({ team, date }: LineupSectionProps) {
         </div>
       ) : null}
 
-      {lineup && (lineup.status === 'confirmed' || lineup.status === 'fallback') ? (
+      {lineup && (lineup.status === 'confirmed' || lineup.status === 'fallback' || lineup.status === 'frequency') ? (
         <div className="space-y-4">
           {/* 선발 투수 — full width 카드 */}
           {lineup.startingPitcher ? (
             <div>
-              <h3
-                style={{
-                  margin: '0 0 8px',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  letterSpacing: 0.5,
-                  textTransform: 'uppercase',
-                  color: 'var(--md-sys-color-on-surface-variant)',
-                }}
-              >
-                선발 투수
-              </h3>
+              <SectionLabel>선발 투수</SectionLabel>
               <PlayerCard
                 variant="starter"
                 slot={lineup.startingPitcher}
@@ -214,24 +203,130 @@ export function LineupSection({ team, date }: LineupSectionProps) {
           {/* 타순 9~10장 */}
           {lineup.battingOrder.length > 0 ? (
             <div>
-              <h3
-                style={{
-                  margin: '0 0 8px',
-                  fontSize: 11,
-                  fontWeight: 500,
-                  letterSpacing: 0.5,
-                  textTransform: 'uppercase',
-                  color: 'var(--md-sys-color-on-surface-variant)',
-                }}
-              >
-                타순
-              </h3>
+              <SectionLabel>주전 타순 (자주 나옴)</SectionLabel>
               <LineupGrid
                 slots={lineup.battingOrder}
                 playerLookup={playerLookup}
                 keyStatFor={keyStatForBatter}
                 onPlayerClick={(id) => setOpenPlayerId(id)}
               />
+            </div>
+          ) : null}
+
+          {/* 백업 후보 — frequency 모드에서만 */}
+          {lineup.backups && lineup.backups.length > 0 ? (
+            <div>
+              <SectionLabel>백업 후보 ({lineup.backups.length}명)</SectionLabel>
+              <ul role="list" style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: 0, margin: 0, listStyle: 'none' }}>
+                {lineup.backups.map((b, i) => {
+                  const p = playerLookup.get(b.playerId);
+                  return (
+                    <li
+                      key={`${b.battingOrder}-${b.playerId}-${i}`}
+                      onClick={() => setOpenPlayerId(b.playerId)}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '22px 28px 1fr auto auto',
+                        gap: 6,
+                        alignItems: 'center',
+                        padding: '4px 8px',
+                        background: 'linear-gradient(180deg, var(--magu-panel-deep), #141B30)',
+                        border: '1px solid var(--magu-line)',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        fontSize: 11,
+                      }}
+                    >
+                      <span className="font-digit" style={{ color: 'var(--magu-text-3)', fontSize: 10 }}>
+                        {b.battingOrder}
+                      </span>
+                      <span
+                        style={{
+                          padding: '1px 4px',
+                          borderRadius: 3,
+                          background: 'var(--magu-panel-light)',
+                          color: 'var(--magu-text-2)',
+                          fontSize: 9,
+                          fontWeight: 900,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {b.position}
+                      </span>
+                      <span style={{ color: 'var(--magu-text-1)', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {p?.name ?? `#${b.playerId}`}
+                        {p?.uniformNumber ? <span className="font-digit" style={{ color: 'var(--magu-text-3)', fontWeight: 400, marginLeft: 4, fontSize: 10 }}>#{p.uniformNumber}</span> : null}
+                      </span>
+                      <span className="font-digit" style={{ color: 'var(--magu-gold)', fontSize: 10 }}>
+                        {b.gradePercentile}%
+                      </span>
+                      <span className="font-digit" style={{ color: 'var(--magu-sky)', fontSize: 10, fontWeight: 700 }}>
+                        {b.freq.appearances}회
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
+
+          {/* 선발 투수 풀 — frequency 모드에서 등판 기록 */}
+          {lineup.pitcherPool && lineup.pitcherPool.length > 0 ? (
+            <div>
+              <SectionLabel>최근 선발 투수 ({lineup.pitcherPool.length}명)</SectionLabel>
+              <ul role="list" style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: 0, margin: 0, listStyle: 'none' }}>
+                {lineup.pitcherPool.map((p, i) => {
+                  const player = playerLookup.get(p.playerId);
+                  const isCurrent = i === 0;
+                  return (
+                    <li
+                      key={`${p.playerId}-${i}`}
+                      onClick={() => setOpenPlayerId(p.playerId)}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '22px 1fr auto auto auto',
+                        gap: 6,
+                        alignItems: 'center',
+                        padding: '4px 8px',
+                        background: isCurrent
+                          ? 'linear-gradient(90deg, rgba(255,201,60,.18), rgba(36,49,82,.6))'
+                          : 'linear-gradient(180deg, var(--magu-panel-deep), #141B30)',
+                        border: isCurrent ? '1px solid var(--magu-gold)' : '1px solid var(--magu-line)',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        fontSize: 11,
+                      }}
+                    >
+                      <span
+                        style={{
+                          padding: '1px 4px',
+                          borderRadius: 3,
+                          background: isCurrent ? 'var(--magu-gold)' : 'var(--magu-panel-light)',
+                          color: isCurrent ? '#2A1A00' : 'var(--magu-text-2)',
+                          fontSize: 9,
+                          fontWeight: 900,
+                          textAlign: 'center',
+                        }}
+                      >
+                        P
+                      </span>
+                      <span style={{ color: 'var(--magu-text-1)', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {player?.name ?? `#${p.playerId}`}
+                        {player?.uniformNumber ? <span className="font-digit" style={{ color: 'var(--magu-text-3)', fontWeight: 400, marginLeft: 4, fontSize: 10 }}>#{player.uniformNumber}</span> : null}
+                      </span>
+                      <span className="font-digit" style={{ color: 'var(--magu-gold)', fontSize: 10 }}>
+                        {p.gradePercentile}%
+                      </span>
+                      <span className="font-digit" style={{ color: 'var(--magu-sky)', fontSize: 10, fontWeight: 700 }}>
+                        {p.freq.appearances}선발
+                      </span>
+                      <span className="font-digit" style={{ color: 'var(--magu-text-3)', fontSize: 9 }}>
+                        {p.freq.lastAppearance.slice(5).replace('-', '/')}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           ) : null}
         </div>
@@ -246,6 +341,26 @@ export function LineupSection({ team, date }: LineupSectionProps) {
         />
       ) : null}
     </section>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h3
+      style={{
+        margin: '12px 0 6px',
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: 0.3,
+        color: 'var(--magu-text-3)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+      }}
+    >
+      <span style={{ width: 3, height: 12, borderRadius: 2, background: 'var(--magu-gold)' }} aria-hidden />
+      {children}
+    </h3>
   );
 }
 

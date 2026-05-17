@@ -8,7 +8,14 @@ export type {
   PitcherSeasonStat,
   RecentGameStat,
 } from './stat';
-export type { Lineup, LineupSlot, LineupStatus } from './lineup';
+export type {
+  Lineup,
+  LineupSlot,
+  LineupStatus,
+  FrequencyMeta,
+  FrequencyBackup,
+  PitcherPoolEntry,
+} from './lineup';
 export type { ApiError, ApiMeta, ApiResponse, ErrorCode } from './api';
 export { ok, err } from './api';
 export type { PlayerSearchResult, SearchFilters } from './search';
