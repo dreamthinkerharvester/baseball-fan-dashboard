@@ -15,7 +15,7 @@ export interface LineupSlot {
   gradeBasis: string;
 }
 
-export type LineupStatus = 'confirmed' | 'pending' | 'fallback';
+export type LineupStatus = 'confirmed' | 'pending' | 'fallback' | 'frequency';
 
 export interface Lineup {
   gameId: string;
@@ -27,4 +27,8 @@ export interface Lineup {
   source: 'kbo' | 'statiz' | 'cache';
   /** fallback 상태일 때 실제 라인업 날짜 */
   fallbackDate?: string;
+  /** frequency 상태일 때 합성에 사용된 라인업 날짜 목록 (가장 최근부터) */
+  frequencySourceDates?: string[];
+  /** frequency 상태일 때 합성 기간 (일) */
+  frequencyWindowDays?: number;
 }

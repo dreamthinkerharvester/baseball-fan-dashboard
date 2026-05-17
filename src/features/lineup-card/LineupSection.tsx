@@ -143,18 +143,41 @@ export function LineupSection({ team, date }: LineupSectionProps) {
           style={{
             margin: '0 0 8px',
             padding: '6px 10px',
-            borderRadius: 'var(--md-sys-shape-corner-small)',
-            background: 'var(--md-sys-color-tertiary-container)',
-            color: 'var(--md-sys-color-on-tertiary-container)',
+            borderRadius: 8,
+            background: 'rgba(255,201,60,.12)',
+            border: '1px solid var(--magu-gold)',
+            color: 'var(--magu-text-2)',
             fontSize: 11,
             display: 'flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 6,
           }}
         >
-          <span className="mso" style={{ fontSize: 16 }}>history</span>
+          <span className="mso" style={{ fontSize: 14, color: 'var(--magu-gold)' }}>history</span>
           <span>
-            {lineup.fallbackDate.slice(5).replace('-', '/')} 라인업 — 오늘 라인업은 경기 2시간 전 공개 예정
+            <b style={{ color: 'var(--magu-gold)' }}>{lineup.fallbackDate.slice(5).replace('-', '/')}</b> 라인업 — 오늘 라인업은 경기 2시간 전 공개 예정
+          </span>
+        </div>
+      ) : null}
+
+      {lineup && lineup.status === 'frequency' && lineup.frequencySourceDates ? (
+        <div
+          style={{
+            margin: '0 0 8px',
+            padding: '6px 10px',
+            borderRadius: 8,
+            background: 'rgba(86,170,255,.1)',
+            border: '1px solid var(--magu-sky)',
+            color: 'var(--magu-text-2)',
+            fontSize: 11,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+          }}
+        >
+          <span className="mso" style={{ fontSize: 14, color: 'var(--magu-sky)' }}>insights</span>
+          <span>
+            최근 <b style={{ color: 'var(--magu-sky)' }}>{lineup.frequencyWindowDays}일 · {lineup.frequencySourceDates.length}경기</b> 빈출 라인업 — 실제 오늘 라인업은 경기 2시간 전 공개
           </span>
         </div>
       ) : null}
