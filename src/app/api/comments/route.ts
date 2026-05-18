@@ -40,9 +40,23 @@ async function writeAll(list: Comment[]): Promise<void> {
   await kv.set(KV_KEY, list.slice(0, MAX_ITEMS));
 }
 
-function jsonResp<T>(body: ApiResponse<T>, status = 200): NextResponse<ApiResponse<T>> {
+function jsonResp<T>(
+  body: ApiResponse<T>,
+  status = 200,
+  cache: 'list' | 'no-store' = 'no-store',
+): NextResponse<ApiResponse<T>> {
   const res = NextResponse.json(body, { status });
-  res.headers.set('Cache-Control', 'no-store');
+  if (cache === 'list' && status === 200) {
+    // 목록 GET — Edge cache 10s + SWR 20s 로 KV 호출 감소.
+    // 게시한 사용자는 mutate로 즉시 자기 화면에 반영됨.
+    // 다른 사용자에게는 최대 ~30초 지연. 무료 한도 보수화.
+    res.headers.set(
+      'Cache-Control',
+      'public, max-age=0, s-maxage=10, stale-while-revalidate=20',
+    );
+  } else {
+    res.headers.set('Cache-Control', 'no-store');
+  }
   return res;
 }
 
@@ -52,7 +66,7 @@ export async function GET() {
   }
   try {
     const list = await readAll();
-    return jsonResp(ok(list, { source: 'cache' }));
+    return jsonResp(ok(list, { source: 'cache' }), 200, 'list');
   } catch {
     return jsonResp(err('INTERNAL', '코멘트 로드 실패'), 500);
   }

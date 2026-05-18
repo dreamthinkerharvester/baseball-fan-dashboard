@@ -60,8 +60,9 @@ export function CommentBoard() {
     '/api/comments',
     fetcher,
     {
-      refreshInterval: 30_000, // 30초마다 자동 갱신
+      refreshInterval: 60_000, // 60초마다 자동 갱신 (KV 무료 한도 보수)
       revalidateOnFocus: true,
+      dedupingInterval: 10_000, // 10초 내 중복 GET 합치기
     },
   );
 
