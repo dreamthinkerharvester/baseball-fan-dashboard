@@ -39,9 +39,9 @@
     "homeTeam": "HANWHA",
     "awayTeam": "LOTTE",
     "stadium": "대전",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260519-SAMSUNG-KT-1",
