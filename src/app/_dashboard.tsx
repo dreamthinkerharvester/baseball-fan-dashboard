@@ -5,6 +5,7 @@
 
 import { ScheduleList } from '@/features/game-schedule/ScheduleList';
 import { LineupSection } from '@/features/lineup-card/LineupSection';
+import { ManagerFortuneSection as ManagerFortune } from '@/features/manager-fortune/ManagerFortuneSection';
 import { KiaRecent10 } from '@/features/recent-games/KiaRecent10';
 import { MetroGameAlert } from '@/features/recent-games/MetroGameAlert';
 import { TeamMatchupPanel } from '@/features/team-header/TeamMatchupPanel';
@@ -39,6 +40,10 @@ export function LineupSectionMaybe({ myTeam }: { myTeam: TeamCode | null }) {
     );
   }
   return <LineupSection team={myTeam} />;
+}
+
+export function ManagerFortuneSection({ myTeam }: { myTeam: TeamCode | null }) {
+  return <ManagerFortune myTeam={myTeam} />;
 }
 
 export function TeamSelectionEntry() {
