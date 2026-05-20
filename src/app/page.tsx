@@ -22,6 +22,7 @@ import { useFirstVisitRefresh } from '@/lib/refresh';
 import {
   GameSchedule,
   LineupSectionMaybe,
+  ManagerFortuneSection,
   MatchupHeader,
   MetroAlertSection,
   RecentTenSection,
@@ -60,6 +61,7 @@ export default function HomePage() {
       <MetroAlertSection myTeam={myTeam} />
       <MatchupHeader myTeam={myTeam} />
       <RecentTenSection myTeam={myTeam} />
+      <ManagerFortuneSection myTeam={myTeam} />
       <LineupSectionMaybe myTeam={myTeam} />
       <GameSchedule myTeam={myTeam} />
       <CommentBoard />
