@@ -11,6 +11,17 @@
     "awayScore": 6
   },
   {
+    "id": "20260515-SAMSUNG-KIA-1",
+    "date": "2026-05-15",
+    "startTime": "18:30",
+    "homeTeam": "SAMSUNG",
+    "awayTeam": "KIA",
+    "stadium": "대구",
+    "status": "final",
+    "homeScore": 4,
+    "awayScore": 5
+  },
+  {
     "id": "20260515-SSG-LG-1",
     "date": "2026-05-15",
     "startTime": "18:30",
@@ -22,14 +33,14 @@
     "awayScore": 8
   },
   {
-    "id": "20260515-SAMSUNG-KIA-1",
+    "id": "20260515-KT-HANWHA-1",
     "date": "2026-05-15",
     "startTime": "18:30",
-    "homeTeam": "SAMSUNG",
-    "awayTeam": "KIA",
-    "stadium": "대구",
+    "homeTeam": "KT",
+    "awayTeam": "HANWHA",
+    "stadium": "수원",
     "status": "final",
-    "homeScore": 4,
+    "homeScore": 3,
     "awayScore": 5
   },
   {
@@ -42,16 +53,5 @@
     "status": "final",
     "homeScore": 1,
     "awayScore": 4
-  },
-  {
-    "id": "20260515-KT-HANWHA-1",
-    "date": "2026-05-15",
-    "startTime": "18:30",
-    "homeTeam": "KT",
-    "awayTeam": "HANWHA",
-    "stadium": "수원",
-    "status": "final",
-    "homeScore": 3,
-    "awayScore": 5
   }
 ]

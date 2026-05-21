@@ -22,17 +22,6 @@
     "awayScore": 9
   },
   {
-    "id": "20260516-SSG-LG-1",
-    "date": "2026-05-16",
-    "startTime": "17:00",
-    "homeTeam": "SSG",
-    "awayTeam": "LG",
-    "stadium": "문학",
-    "status": "final",
-    "homeScore": 4,
-    "awayScore": 3
-  },
-  {
     "id": "20260516-SAMSUNG-KIA-1",
     "date": "2026-05-16",
     "startTime": "17:00",
@@ -42,6 +31,17 @@
     "status": "final",
     "homeScore": 5,
     "awayScore": 2
+  },
+  {
+    "id": "20260516-SSG-LG-1",
+    "date": "2026-05-16",
+    "startTime": "17:00",
+    "homeTeam": "SSG",
+    "awayTeam": "LG",
+    "stadium": "문학",
+    "status": "final",
+    "homeScore": 4,
+    "awayScore": 3
   },
   {
     "id": "20260516-NC-KIWOOM-1",

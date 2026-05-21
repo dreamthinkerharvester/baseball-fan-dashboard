@@ -22,17 +22,6 @@
     "awayScore": 5
   },
   {
-    "id": "20260513-KT-SSG-1",
-    "date": "2026-05-13",
-    "startTime": "18:30",
-    "homeTeam": "KT",
-    "awayTeam": "SSG",
-    "stadium": "수원",
-    "status": "final",
-    "homeScore": 18,
-    "awayScore": 4
-  },
-  {
     "id": "20260513-KIA-DOOSAN-1",
     "date": "2026-05-13",
     "startTime": "18:30",
@@ -42,6 +31,17 @@
     "status": "final",
     "homeScore": 9,
     "awayScore": 2
+  },
+  {
+    "id": "20260513-KT-SSG-1",
+    "date": "2026-05-13",
+    "startTime": "18:30",
+    "homeTeam": "KT",
+    "awayTeam": "SSG",
+    "stadium": "수원",
+    "status": "final",
+    "homeScore": 18,
+    "awayScore": 4
   },
   {
     "id": "20260513-KIWOOM-HANWHA-1",

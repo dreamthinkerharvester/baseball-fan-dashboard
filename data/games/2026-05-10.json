@@ -33,17 +33,6 @@
     "awayScore": 11
   },
   {
-    "id": "20260510-KIWOOM-KT-1",
-    "date": "2026-05-10",
-    "startTime": "14:00",
-    "homeTeam": "KIWOOM",
-    "awayTeam": "KT",
-    "stadium": "고척",
-    "status": "final",
-    "homeScore": 5,
-    "awayScore": 1
-  },
-  {
     "id": "20260510-HANWHA-LG-1",
     "date": "2026-05-10",
     "startTime": "14:00",
@@ -53,5 +42,16 @@
     "status": "final",
     "homeScore": 9,
     "awayScore": 3
+  },
+  {
+    "id": "20260510-KIWOOM-KT-1",
+    "date": "2026-05-10",
+    "startTime": "14:00",
+    "homeTeam": "KIWOOM",
+    "awayTeam": "KT",
+    "stadium": "고척",
+    "status": "final",
+    "homeScore": 5,
+    "awayScore": 1
   }
 ]

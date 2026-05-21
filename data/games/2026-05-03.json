@@ -11,17 +11,6 @@
     "awayScore": 10
   },
   {
-    "id": "20260503-SSG-LOTTE-1",
-    "date": "2026-05-03",
-    "startTime": "14:00",
-    "homeTeam": "SSG",
-    "awayTeam": "LOTTE",
-    "stadium": "문학",
-    "status": "final",
-    "homeScore": 2,
-    "awayScore": 5
-  },
-  {
     "id": "20260503-SAMSUNG-HANWHA-1",
     "date": "2026-05-03",
     "startTime": "14:00",
@@ -31,6 +20,17 @@
     "status": "final",
     "homeScore": 7,
     "awayScore": 6
+  },
+  {
+    "id": "20260503-SSG-LOTTE-1",
+    "date": "2026-05-03",
+    "startTime": "14:00",
+    "homeTeam": "SSG",
+    "awayTeam": "LOTTE",
+    "stadium": "문학",
+    "status": "final",
+    "homeScore": 2,
+    "awayScore": 5
   },
   {
     "id": "20260503-KIA-KT-1",

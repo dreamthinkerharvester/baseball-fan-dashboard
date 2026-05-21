@@ -22,23 +22,23 @@
     "awayScore": null
   },
   {
-    "id": "20260524-KT-NC-1",
-    "date": "2026-05-24",
-    "startTime": "14:00",
-    "homeTeam": "KT",
-    "awayTeam": "NC",
-    "stadium": "수원",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
-  },
-  {
     "id": "20260524-KIA-SSG-1",
     "date": "2026-05-24",
     "startTime": "14:00",
     "homeTeam": "KIA",
     "awayTeam": "SSG",
     "stadium": "광주",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260524-KT-NC-1",
+    "date": "2026-05-24",
+    "startTime": "14:00",
+    "homeTeam": "KT",
+    "awayTeam": "NC",
+    "stadium": "수원",
     "status": "scheduled",
     "homeScore": null,
     "awayScore": null

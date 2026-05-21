@@ -11,23 +11,23 @@
     "awayScore": null
   },
   {
-    "id": "20260527-SSG-SAMSUNG-1",
-    "date": "2026-05-27",
-    "startTime": "18:30",
-    "homeTeam": "SSG",
-    "awayTeam": "SAMSUNG",
-    "stadium": "문학",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
-  },
-  {
     "id": "20260527-LOTTE-LG-1",
     "date": "2026-05-27",
     "startTime": "18:30",
     "homeTeam": "LOTTE",
     "awayTeam": "LG",
     "stadium": "사직",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260527-SSG-SAMSUNG-1",
+    "date": "2026-05-27",
+    "startTime": "18:30",
+    "homeTeam": "SSG",
+    "awayTeam": "SAMSUNG",
+    "stadium": "문학",
     "status": "scheduled",
     "homeScore": null,
     "awayScore": null

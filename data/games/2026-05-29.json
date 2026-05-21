@@ -33,23 +33,23 @@
     "awayScore": null
   },
   {
-    "id": "20260529-KIWOOM-KT-1",
-    "date": "2026-05-29",
-    "startTime": "18:30",
-    "homeTeam": "KIWOOM",
-    "awayTeam": "KT",
-    "stadium": "고척",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
-  },
-  {
     "id": "20260529-HANWHA-SSG-1",
     "date": "2026-05-29",
     "startTime": "18:30",
     "homeTeam": "HANWHA",
     "awayTeam": "SSG",
     "stadium": "대전",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260529-KIWOOM-KT-1",
+    "date": "2026-05-29",
+    "startTime": "18:30",
+    "homeTeam": "KIWOOM",
+    "awayTeam": "KT",
+    "stadium": "고척",
     "status": "scheduled",
     "homeScore": null,
     "awayScore": null

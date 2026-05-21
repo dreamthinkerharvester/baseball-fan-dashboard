@@ -22,17 +22,6 @@
     "awayScore": 0
   },
   {
-    "id": "20260519-KIWOOM-SSG-1",
-    "date": "2026-05-19",
-    "startTime": "18:30",
-    "homeTeam": "KIWOOM",
-    "awayTeam": "SSG",
-    "stadium": "고척",
-    "status": "final",
-    "homeScore": 7,
-    "awayScore": 6
-  },
-  {
     "id": "20260519-HANWHA-LOTTE-1",
     "date": "2026-05-19",
     "startTime": "18:30",
@@ -41,6 +30,17 @@
     "stadium": "대전",
     "status": "final",
     "homeScore": 4,
+    "awayScore": 6
+  },
+  {
+    "id": "20260519-KIWOOM-SSG-1",
+    "date": "2026-05-19",
+    "startTime": "18:30",
+    "homeTeam": "KIWOOM",
+    "awayTeam": "SSG",
+    "stadium": "고척",
+    "status": "final",
+    "homeScore": 7,
     "awayScore": 6
   },
   {
