@@ -14,34 +14,34 @@
     "rank": 2,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
-    "wins": 28,
+    "wins": 29,
     "losses": 19,
     "draws": 0,
-    "winPct": 0.596,
-    "gamesBehind": 0.5,
-    "streak": "2승"
+    "winPct": 0.604,
+    "gamesBehind": 0,
+    "streak": "3승"
   },
   {
     "rank": 3,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 27,
+    "wins": 28,
     "losses": 19,
     "draws": 1,
-    "winPct": 0.587,
-    "gamesBehind": 1,
-    "streak": "1패"
+    "winPct": 0.596,
+    "gamesBehind": 0.5,
+    "streak": "1승"
   },
   {
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 25,
+    "wins": 26,
     "losses": 22,
     "draws": 1,
-    "winPct": 0.532,
-    "gamesBehind": 3.5,
-    "streak": "3승"
+    "winPct": 0.542,
+    "gamesBehind": 3,
+    "streak": "4승"
   },
   {
     "rank": 5,
@@ -66,40 +66,18 @@
     "streak": "7패"
   },
   {
-    "rank": 6,
+    "rank": 7,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
     "wins": 22,
-    "losses": 25,
+    "losses": 26,
     "draws": 1,
-    "winPct": 0.468,
-    "gamesBehind": 6.5,
-    "streak": "3패"
+    "winPct": 0.458,
+    "gamesBehind": 7,
+    "streak": "4패"
   },
   {
     "rank": 8,
-    "teamCode": "LOTTE",
-    "teamName": "롯데 자이언츠",
-    "wins": 19,
-    "losses": 26,
-    "draws": 1,
-    "winPct": 0.422,
-    "gamesBehind": 8.5,
-    "streak": "1패"
-  },
-  {
-    "rank": 9,
-    "teamCode": "KIWOOM",
-    "teamName": "키움 히어로즈",
-    "wins": 20,
-    "losses": 28,
-    "draws": 1,
-    "winPct": 0.417,
-    "gamesBehind": 9,
-    "streak": "2패"
-  },
-  {
-    "rank": 10,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 19,
@@ -108,5 +86,27 @@
     "winPct": 0.413,
     "gamesBehind": 9,
     "streak": "1승"
+  },
+  {
+    "rank": 8,
+    "teamCode": "LOTTE",
+    "teamName": "롯데 자이언츠",
+    "wins": 19,
+    "losses": 27,
+    "draws": 1,
+    "winPct": 0.413,
+    "gamesBehind": 9,
+    "streak": "2패"
+  },
+  {
+    "rank": 10,
+    "teamCode": "KIWOOM",
+    "teamName": "키움 히어로즈",
+    "wins": 20,
+    "losses": 29,
+    "draws": 1,
+    "winPct": 0.408,
+    "gamesBehind": 9.5,
+    "streak": "3패"
   }
 ]
