@@ -3,12 +3,12 @@
     "rank": 1,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
-    "wins": 31,
+    "wins": 32,
     "losses": 20,
     "draws": 0,
-    "winPct": 0.608,
+    "winPct": 0.615,
     "gamesBehind": 0,
-    "streak": "1승"
+    "streak": "2승"
   },
   {
     "rank": 2,
@@ -18,7 +18,7 @@
     "losses": 20,
     "draws": 1,
     "winPct": 0.6,
-    "gamesBehind": 0.5,
+    "gamesBehind": 1,
     "streak": "2패"
   },
   {
@@ -29,7 +29,7 @@
     "losses": 20,
     "draws": 1,
     "winPct": 0.6,
-    "gamesBehind": 0.5,
+    "gamesBehind": 1,
     "streak": "2승"
   },
   {
@@ -37,22 +37,22 @@
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
     "wins": 28,
-    "losses": 23,
+    "losses": 24,
     "draws": 1,
-    "winPct": 0.549,
-    "gamesBehind": 3,
-    "streak": "1패"
+    "winPct": 0.538,
+    "gamesBehind": 4,
+    "streak": "2패"
   },
   {
     "rank": 5,
     "teamCode": "HANWHA",
     "teamName": "한화 이글스",
-    "wins": 25,
+    "wins": 26,
     "losses": 25,
     "draws": 0,
-    "winPct": 0.5,
+    "winPct": 0.51,
     "gamesBehind": 5.5,
-    "streak": "2승"
+    "streak": "3승"
   },
   {
     "rank": 6,
@@ -62,7 +62,7 @@
     "losses": 27,
     "draws": 1,
     "winPct": 0.481,
-    "gamesBehind": 6.5,
+    "gamesBehind": 7,
     "streak": "2승"
   },
   {
@@ -70,33 +70,33 @@
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
     "wins": 22,
-    "losses": 28,
+    "losses": 29,
     "draws": 1,
-    "winPct": 0.44,
-    "gamesBehind": 8.5,
-    "streak": "10패"
+    "winPct": 0.431,
+    "gamesBehind": 9.5,
+    "streak": "11패"
+  },
+  {
+    "rank": 8,
+    "teamCode": "NC",
+    "teamName": "NC 다이노스",
+    "wins": 21,
+    "losses": 29,
+    "draws": 1,
+    "winPct": 0.42,
+    "gamesBehind": 10,
+    "streak": "1승"
   },
   {
     "rank": 8,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 21,
-    "losses": 28,
-    "draws": 1,
-    "winPct": 0.429,
-    "gamesBehind": 9,
-    "streak": "2승"
-  },
-  {
-    "rank": 9,
-    "teamCode": "NC",
-    "teamName": "NC 다이노스",
-    "wins": 20,
     "losses": 29,
     "draws": 1,
-    "winPct": 0.408,
+    "winPct": 0.42,
     "gamesBehind": 10,
-    "streak": "2패"
+    "streak": "1패"
   },
   {
     "rank": 10,
@@ -106,7 +106,7 @@
     "losses": 32,
     "draws": 1,
     "winPct": 0.385,
-    "gamesBehind": 11.5,
+    "gamesBehind": 12,
     "streak": "6패"
   }
 ]
