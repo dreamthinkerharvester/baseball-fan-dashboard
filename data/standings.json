@@ -1,17 +1,6 @@
 [
   {
     "rank": 1,
-    "teamCode": "SAMSUNG",
-    "teamName": "삼성 라이온즈",
-    "wins": 30,
-    "losses": 19,
-    "draws": 1,
-    "winPct": 0.612,
-    "gamesBehind": 0,
-    "streak": "1패"
-  },
-  {
-    "rank": 2,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 31,
@@ -22,7 +11,18 @@
     "streak": "1승"
   },
   {
-    "rank": 3,
+    "rank": 2,
+    "teamCode": "SAMSUNG",
+    "teamName": "삼성 라이온즈",
+    "wins": 30,
+    "losses": 20,
+    "draws": 1,
+    "winPct": 0.6,
+    "gamesBehind": 0.5,
+    "streak": "2패"
+  },
+  {
+    "rank": 2,
     "teamCode": "KT",
     "teamName": "KT 위즈",
     "wins": 30,
@@ -58,12 +58,12 @@
     "rank": 6,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
-    "wins": 24,
+    "wins": 25,
     "losses": 27,
     "draws": 1,
-    "winPct": 0.471,
-    "gamesBehind": 7,
-    "streak": "1승"
+    "winPct": 0.481,
+    "gamesBehind": 6.5,
+    "streak": "2승"
   },
   {
     "rank": 7,
