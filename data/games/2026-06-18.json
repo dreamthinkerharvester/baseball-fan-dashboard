@@ -1,0 +1,57 @@
+[
+  {
+    "id": "20260618-DOOSAN-KT-1",
+    "date": "2026-06-18",
+    "startTime": "18:30",
+    "homeTeam": "DOOSAN",
+    "awayTeam": "KT",
+    "stadium": "잠실",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260618-SAMSUNG-KIWOOM-1",
+    "date": "2026-06-18",
+    "startTime": "18:30",
+    "homeTeam": "SAMSUNG",
+    "awayTeam": "KIWOOM",
+    "stadium": "대구",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260618-SSG-LOTTE-1",
+    "date": "2026-06-18",
+    "startTime": "18:30",
+    "homeTeam": "SSG",
+    "awayTeam": "LOTTE",
+    "stadium": "문학",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260618-KIA-LG-1",
+    "date": "2026-06-18",
+    "startTime": "18:30",
+    "homeTeam": "KIA",
+    "awayTeam": "LG",
+    "stadium": "광주",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260618-NC-HANWHA-1",
+    "date": "2026-06-18",
+    "startTime": "18:30",
+    "homeTeam": "NC",
+    "awayTeam": "HANWHA",
+    "stadium": "창원",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  }
+]
