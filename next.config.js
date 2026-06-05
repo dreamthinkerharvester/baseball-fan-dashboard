@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Lint runs in CI (.github/workflows/ci.yml), not in the production build.
+  // A stray ESLint error must not take down a Vercel deploy (regression: 2026-05-17).
+  // Type errors still block the build — those are real bugs, not style nits.
+  eslint: { ignoreDuringBuilds: true },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.koreabaseball.com' },

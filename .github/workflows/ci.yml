@@ -1,0 +1,43 @@
+name: CI
+
+# Quality gate that runs BEFORE Vercel builds, so lint/type/test failures
+# surface here instead of breaking a production deployment.
+# Skips the crawl bot's data-only commits (they touch data/ only).
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'data/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: pnpm test
