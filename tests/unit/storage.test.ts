@@ -1,13 +1,14 @@
 // Storage 헬퍼 단위 테스트. JSDOM/Node 환경 모두에서 동작하도록 globalThis.window 모킹.
+// kia-fan-service 피벗: myTeam 저장 → 세이버 온리 모드 토글 저장.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { TEAM_CODES, isTeamCode } from '@/lib/constants';
+import { STORAGE_KEYS, TEAM_CODES, isTeamCode } from '@/lib/constants';
 import {
-  clearMyTeam,
-  getMyTeam,
+  clearLegacyMyTeam,
+  getSaberMode,
   isStorageAvailable,
-  setMyTeam,
+  setSaberMode,
 } from '@/lib/storage';
 
 class MockStorage {
@@ -46,7 +47,7 @@ describe('isTeamCode', () => {
   });
 });
 
-describe('storage helpers', () => {
+describe('saber mode storage', () => {
   beforeEach(() => {
     vi.stubGlobal('window', { localStorage: new MockStorage() });
   });
@@ -58,24 +59,34 @@ describe('storage helpers', () => {
     expect(isStorageAvailable()).toBe(true);
   });
 
-  it('round-trip set/get/clear', () => {
-    expect(getMyTeam()).toBeNull();
-    expect(setMyTeam('LG')).toBe(true);
-    expect(getMyTeam()).toBe('LG');
-    expect(clearMyTeam()).toBe(true);
-    expect(getMyTeam()).toBeNull();
+  it('defaults to true (classic hidden) when unset', () => {
+    expect(getSaberMode()).toBe(true);
   });
 
-  it('returns null for invalid stored value', () => {
+  it('round-trip set/get', () => {
+    expect(setSaberMode(false)).toBe(true);
+    expect(getSaberMode()).toBe(false);
+    expect(setSaberMode(true)).toBe(true);
+    expect(getSaberMode()).toBe(true);
+  });
+
+  it('treats arbitrary stored value as default (hidden)', () => {
     (window as unknown as { localStorage: Storage }).localStorage.setItem(
-      'baseball_myteam',
-      'INVALID_TEAM_CODE',
+      STORAGE_KEYS.saberMode,
+      'INVALID',
     );
-    expect(getMyTeam()).toBeNull();
+    expect(getSaberMode()).toBe(true);
+  });
+
+  it('clearLegacyMyTeam removes old multi-team key', () => {
+    const storage = (window as unknown as { localStorage: Storage }).localStorage;
+    storage.setItem(STORAGE_KEYS.legacyMyTeam, 'LG');
+    clearLegacyMyTeam();
+    expect(storage.getItem(STORAGE_KEYS.legacyMyTeam)).toBeNull();
   });
 });
 
-describe('storage helpers — SSR (no window)', () => {
+describe('saber mode storage — SSR (no window)', () => {
   beforeEach(() => {
     vi.stubGlobal('window', undefined);
   });
@@ -85,13 +96,13 @@ describe('storage helpers — SSR (no window)', () => {
 
   it('all operations safe-fail without window', () => {
     expect(isStorageAvailable()).toBe(false);
-    expect(getMyTeam()).toBeNull();
-    expect(setMyTeam('LG')).toBe(false);
-    expect(clearMyTeam()).toBe(false);
+    expect(getSaberMode()).toBe(true); // 디폴트 고정 (FR-04)
+    expect(setSaberMode(false)).toBe(false);
+    expect(() => clearLegacyMyTeam()).not.toThrow();
   });
 });
 
-describe('storage helpers — private mode (setItem throws)', () => {
+describe('saber mode storage — private mode (setItem throws)', () => {
   beforeEach(() => {
     vi.stubGlobal('window', { localStorage: new FailingStorage() });
   });
@@ -102,7 +113,7 @@ describe('storage helpers — private mode (setItem throws)', () => {
   it('isStorageAvailable returns false', () => {
     expect(isStorageAvailable()).toBe(false);
   });
-  it('getMyTeam returns null without throwing', () => {
-    expect(getMyTeam()).toBeNull();
+  it('getSaberMode returns default without throwing', () => {
+    expect(getSaberMode()).toBe(true);
   });
 });

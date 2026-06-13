@@ -28,3 +28,11 @@ O1(일정) = O2(라인업) > O4(순위) > O7(마이팀 뷰) > O3(선수 컨디�
 
 ## Discovery 산출물 위치
 `docs/00-pm/baseball-fan-dashboard.discovery.md`
+
+## 피벗: kia-fan-service (2026-06-11 결정)
+
+baseball-fan-dashboard를 KIA 타이거즈 단일팀 팬 서비스로 피벗. 핵심 차별점은 세이버메트릭스 온리 모드(클래식 스탯 숨기기). 기존 크롤러/데이터 파이프라인(data/players.json, standings.json, games/, lineups/)과 UI 컴포넌트(lineup-card, league-standings, game-schedule, player-modal, recent-games) 최대 재활용. 공용 에셋(public/assets-magu: KIA 선수 9명 SD사진, 팀 로고 10종) 활용.
+
+**Why:** KIA 팬베이스가 KBO 1위(2025 인기구단 1위, 관여도 최고). 가장 큰 신규 리스크는 "캐주얼 팬이 클래식 스탯 숨김에 거부감을 가질 수 있다" (Impact 5 × Risk 4 = Score 20, 최우선 검증).
+
+**How to apply:** 세이버메트릭스 온리 모드 관련 제안 시 반드시 토글/교육 레이어 함께 제시. 완전 숨김보다 점진적 공개 UX를 우선 검토.

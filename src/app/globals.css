@@ -21,16 +21,17 @@
 @layer base {
   :root {
     /* ============================================================
-       LEGACY tokens — re-aligned to M3 tier-edge hues (Primary↔RARE collision fix)
+       Grade tokens — kia-fan-service §10 (PRD §6) KIA 팔레트 재정의.
+       elite = KIA 레드 + 글로우 / rare = 주황 / special = 노랑 / normal = 회색.
        Affects: PlayerCard border + glow + keyStat text color.
        ============================================================ */
-    --grade-elite: rgb(178, 151, 255);
-    --grade-elite-glow: rgba(178, 151, 255, 0.45);
-    --grade-rare: rgb(255, 148, 200);
-    --grade-rare-glow: rgba(255, 148, 200, 0.4);
-    --grade-special: rgb(245, 201, 97);
-    --grade-special-glow: rgba(245, 201, 97, 0.35);
-    --grade-normal: rgb(126, 200, 255);
+    --grade-elite: rgb(200, 16, 46);
+    --grade-elite-glow: rgba(200, 16, 46, 0.55);
+    --grade-rare: rgb(244, 162, 97);
+    --grade-rare-glow: rgba(244, 162, 97, 0.4);
+    --grade-special: rgb(255, 195, 0);
+    --grade-special-glow: rgba(255, 195, 0, 0.35);
+    --grade-normal: rgb(107, 107, 107);
     --header-h: 48px;
     --footer-h: 40px;
     --card-w-mobile: 100px;
@@ -48,7 +49,7 @@
     --m3-primary-90:  rgb(255,218,213);
 
     /* ============================================================
-       MAGU MAGU 디자인 토큰 (마구마구/메이플 풍)
+       게임 HUD 디자인 토큰 (레트로 게임 카드 풍)
        시안 design-magu/index.html 과 동일.
        ============================================================ */
     --magu-bg-deep:        #0F1421;

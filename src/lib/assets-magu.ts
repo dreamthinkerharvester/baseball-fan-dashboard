@@ -1,4 +1,4 @@
-// 마구마구 카드 대시보드 — 에셋 헬퍼.
+// 타이거즈 카드 대시보드 — 에셋 헬퍼 (레트로 게임 카드 풍 에셋).
 // public/assets-magu/ 하위 PNG 슬롯을 컴포넌트에서 안전하게 참조.
 
 import type { TeamCode } from '@/types';

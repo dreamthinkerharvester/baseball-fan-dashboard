@@ -141,7 +141,7 @@ function Footer() {
       <hr className="divider-h" />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "20px 0", flexWrap: "wrap", gap: 8 }}>
         <span className="md-label-md" style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-          IP 안전: 마구마구·네오위즈·넷마블 로고/문자/픽셀 미사용 · 팀 약어 텍스트 마크만 사용
+          IP 안전: 타사 게임 브랜드 로고/문자/픽셀 미사용 · 팀 약어 텍스트 마크만 사용
         </span>
         <span className="md-label-md tabular" style={{ color: "var(--md-sys-color-on-surface-variant)" }}>v1 · Material 3 Baseline · KIA Seed</span>
       </div>

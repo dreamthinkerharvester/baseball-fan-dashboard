@@ -27,7 +27,7 @@
     "crawl:schedule:browser": "cross-env KBO_SCHEDULE_BROWSER=1 tsx scripts/crawler/index.ts schedule",
     "crawl:standings": "tsx scripts/crawler/index.ts standings",
     "crawl:lineup": "tsx scripts/crawler/index.ts lineup",
-    "crawl:stats": "tsx scripts/crawler/index.ts stats",
+    "crawl:saber": "tsx scripts/crawler/index.ts saber",
     "compute:grades": "tsx scripts/compute-grades.ts",
     "ci": "pnpm typecheck && pnpm lint && pnpm check:forbidden && pnpm test && pnpm build"
   },

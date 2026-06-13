@@ -1,30 +1,21 @@
-// Magu Magu HUD header — 마구마구/메이플 풍 게임 HUD.
-// Mobile-first 56px. 마이팀 엠블럼 + 브랜드 + 검색/스토리북 + 새로고침/설정.
+// KIA 타이거즈 HUD header — 게임 HUD 풍 유지, KIA 전용 피벗.
+// Design Ref: kia-fan-service §5.1 (FR-02) — KIA 엠블럼 + "현재 N위 · X승 Y패" 한 줄.
+// Mobile-first 56px. 검색/스토리북 + 새로고침. (세이버 토글은 module-3에서 추가)
 
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Link from 'next/link';
 
-import { TEAMS } from '@/lib/constants';
+import { SaberToggle } from '@/features/saber-mode/SaberToggle';
 import { teamEmblem } from '@/lib/assets-magu';
+import { MY_TEAM, TEAMS } from '@/lib/constants';
 import { useGlobalRefresh } from '@/lib/refresh';
-import { getMyTeam } from '@/lib/storage';
+import { useStandings } from '@/features/league-standings/hooks/useStandings';
 
-import type { TeamCode } from '@/types';
-
-export interface HeaderProps {
-  onOpenSettings?: () => void;
-}
-
-export function Header({ onOpenSettings }: HeaderProps) {
-  const [myTeam, setMyTeam] = useState<TeamCode | null>(null);
+export function Header() {
   const { refresh, isRefreshing, lastRefreshAt } = useGlobalRefresh();
-
-  useEffect(() => {
-    setMyTeam(getMyTeam());
-  }, []);
+  const { data } = useStandings();
+  const kiaRow = data?.rows.find((r) => r.teamCode === MY_TEAM);
 
   const refreshLabel = isRefreshing
     ? '최신 데이터 갱신 중'
@@ -38,14 +29,17 @@ export function Header({ onOpenSettings }: HeaderProps) {
     borderRadius: 10,
     flexShrink: 0,
     boxShadow: 'var(--magu-shadow-out)',
-    backgroundImage: myTeam
-      ? `url(${teamEmblem(myTeam)}), linear-gradient(160deg, #1A2440, #0F1730)`
-      : 'linear-gradient(160deg, var(--magu-kia-red), var(--magu-kia-red-deep))',
+    backgroundImage: `url(${teamEmblem(MY_TEAM)}), linear-gradient(160deg, var(--magu-kia-red), var(--magu-kia-red-deep))`,
     backgroundSize: 'contain, cover',
     backgroundRepeat: 'no-repeat, no-repeat',
     backgroundPosition: 'center, center',
     imageRendering: 'pixelated',
   };
+
+  // "현재 2위 · 41승 25패" — standings 미로딩 시 시즌 라벨 폴백
+  const rankLine = kiaRow
+    ? `현재 ${kiaRow.rank}위 · ${kiaRow.wins}승 ${kiaRow.losses}패${kiaRow.draws > 0 ? ` ${kiaRow.draws}무` : ''}`
+    : `${TEAMS[MY_TEAM].shortName} · 2026 시즌`;
 
   return (
     <header
@@ -78,7 +72,7 @@ export function Header({ onOpenSettings }: HeaderProps) {
               textOverflow: 'ellipsis',
             }}
           >
-            마구마구 카드
+            타이거즈 카드
           </h1>
           <span
             style={{
@@ -91,10 +85,13 @@ export function Header({ onOpenSettings }: HeaderProps) {
               textOverflow: 'ellipsis',
             }}
           >
-            {myTeam ? `${TEAMS[myTeam].shortName} · 2026 시즌` : '2026 시즌'}
+            {rankLine}
           </span>
         </div>
       </div>
+
+      {/* 클래식 스탯 보기 토글 (FR-04 — 상시 노출) */}
+      <SaberToggle />
 
       <Link
         href="/players"
@@ -131,14 +128,6 @@ export function Header({ onOpenSettings }: HeaderProps) {
         >
           refresh
         </span>
-      </button>
-      <button
-        type="button"
-        aria-label="설정"
-        onClick={onOpenSettings}
-        style={hudBtnStyle}
-      >
-        <span className="mso" style={{ fontSize: 18, color: 'var(--magu-text-1)' }}>settings</span>
       </button>
     </header>
   );

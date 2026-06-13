@@ -17,20 +17,27 @@ const config: Config = {
           muted: 'rgba(247,248,250,0.6)',
           dim: 'rgba(247,248,250,0.4)',
         },
+        // Design Ref: kia-fan-service §10 — KIA 브랜딩 토큰 (FR-02)
+        kia: {
+          red: '#C8102E',
+          redDeep: '#8E0B20',
+          black: '#1A1A1A',
+        },
+        // Design Ref: kia-fan-service §10 — 등급 4색 재정의 (elite = KIA 레드 글로우)
         grade: {
-          elite: '#7B2FBE',
-          rare: '#E63946',
-          special: '#F4A261',
-          normal: '#457B9D',
+          elite: '#C8102E',
+          rare: '#F4A261',
+          special: '#FFC300',
+          normal: '#6B6B6B',
         },
         team: {
           // 팀 컬러는 lib/constants의 TEAMS에서 관리 (CSS 변수로 동적 주입)
         },
       },
       boxShadow: {
-        'glow-elite': '0 0 14px rgba(123,47,190,0.5), inset 0 0 4px rgba(123,47,190,0.3)',
-        'glow-rare': '0 0 12px rgba(230,57,70,0.4)',
-        'glow-special': '0 0 10px rgba(244,162,97,0.4)',
+        'glow-elite': '0 0 14px rgba(200,16,46,0.55), inset 0 0 4px rgba(200,16,46,0.3)',
+        'glow-rare': '0 0 12px rgba(244,162,97,0.4)',
+        'glow-special': '0 0 10px rgba(255,195,0,0.4)',
       },
       fontFamily: {
         sans: [

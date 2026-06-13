@@ -1,4 +1,5 @@
 import { ToastProvider } from '@/components/ui/Toast';
+import { SaberModeProvider } from '@/features/saber-mode/SaberModeContext';
 
 import type { Metadata, Viewport } from 'next';
 
@@ -10,26 +11,26 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'KBO 야구 카드 대시보드',
-    template: '%s · KBO 야구 카드 대시보드',
+    default: '타이거즈 카드 — KIA 팬 세이버 대시보드',
+    template: '%s · 타이거즈 카드',
   },
   description:
-    'KBO 마이팀 라인업을 등급 색상 카드로 30초 안에 판독하는 단일 페이지 대시보드. 일정·순위·선수 기록을 한 화면에서.',
-  keywords: ['KBO', '한국 프로야구', '야구', '라인업', '대시보드', '카드'],
-  applicationName: 'KBO 카드 대시보드',
-  authors: [{ name: 'baseball-fan-dashboard' }],
+    'KIA 타이거즈 팬 전용 세이버메트릭스 대시보드. 타율 대신 wRC+ — 데이터가 말하는 진짜 기여도를 카드로. 일정·순위·라인업을 한 화면에서.',
+  keywords: ['KIA 타이거즈', 'KBO', '세이버메트릭스', 'wRC+', 'FIP', '야구', '라인업', '대시보드'],
+  applicationName: '타이거즈 카드',
+  authors: [{ name: 'kia-fan-service' }],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    siteName: 'KBO 야구 카드 대시보드',
-    title: 'KBO 야구 카드 대시보드',
-    description: '마이팀 라인업을 등급 색상 카드로 30초 판독.',
+    siteName: '타이거즈 카드',
+    title: '타이거즈 카드 — KIA 팬 세이버 대시보드',
+    description: '타율 대신 wRC+. 데이터가 말하는 KIA 선수들의 진짜 기여도.',
     url: SITE_URL,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KBO 야구 카드 대시보드',
-    description: '마이팀 라인업을 등급 색상 카드로 30초 판독.',
+    title: '타이거즈 카드 — KIA 팬 세이버 대시보드',
+    description: '타율 대신 wRC+. 데이터가 말하는 KIA 선수들의 진짜 기여도.',
   },
   robots: { index: true, follow: true },
 };
@@ -53,7 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="magu-bg-stadium min-h-screen text-text-primary antialiased">
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          <SaberModeProvider>{children}</SaberModeProvider>
+        </ToastProvider>
       </body>
     </html>
   );

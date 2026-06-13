@@ -21,10 +21,10 @@ import {
 
 import { crawlSchedule, crawlStandings } from './kbo';
 import { crawlScheduleViaPlaywright } from './kbo-playwright';
-import { crawlBatterSeasonStats, crawlPitcherSeasonStats } from './statiz';
+import { runSaberPipeline } from './saber-rankings';
 import { sendDiscord } from '../notify-discord';
 
-type Action = 'schedule' | 'standings' | 'lineup' | 'stats';
+type Action = 'schedule' | 'standings' | 'lineup' | 'saber';
 
 async function main(): Promise<number> {
   const action = (process.argv[2] ?? '') as Action;
@@ -35,10 +35,10 @@ async function main(): Promise<number> {
       return await runStandings();
     case 'lineup':
       return await runLineup();
-    case 'stats':
-      return await runStats();
+    case 'saber':
+      return await runSaber();
     default:
-      console.error(`Unknown action: ${action}. Use one of: schedule, standings, lineup, stats`);
+      console.error(`Unknown action: ${action}. Use one of: schedule, standings, lineup, saber`);
       return 2;
   }
 }
@@ -97,40 +97,29 @@ async function runLineup(): Promise<number> {
   return 0;
 }
 
-async function runStats(): Promise<number> {
-  // Phase 0 POC 발견 (2026-05-09): statiz 모든 데이터 페이지가 로그인 wall.
-  // 무료 무인증 크롤링 불가능. cron 등록 시 매번 fail → Discord 스팸.
-  // 명시적 skip — 등급 알고리즘은 자동으로 OPS/ERA fallback path 사용.
-  if (process.env.STATIZ_OPT_IN !== '1') {
+// kia-fan-service 피벗: statiz `stats` 액션 제거 (로그인 wall — Phase 0 POC).
+// 세이버 수집은 `saber` 액션(KBO 기록 페이지 + 네이버 API)이 대체.
+
+// Design Ref: kia-fan-service §2.2 — Myth-Buster 세이버 파이프라인 (매일 06:30 KST).
+// KBO 기록 페이지(클래식 순위) + 네이버 API(wRC+ 등) → saber_rankings.json + KIA 캐시 보강.
+async function runSaber(): Promise<number> {
+  const action = 'saber';
+  const season = new Date().getFullYear();
+  const r = await runSaberPipeline(season);
+  if (r.status === 'success' && r.rankings) {
+    await updateLastCrawl('saber', action, { lastSuccess: nowIso(), lastError: null });
     log({
-      source: 'statiz',
-      action: 'stats',
-      result: 'skipped',
-      reason: 'login-wall (set STATIZ_OPT_IN=1 to attempt anyway)',
+      source: 'saber',
+      action,
+      result: 'ok',
+      kiaEntries: r.rankings.entries.length,
+      qualifiedBatters: r.rankings.qualifiedBatters,
+      qualifiedPitchers: r.rankings.qualifiedPitchers,
+      enrichedPlayers: r.enrichedPlayers,
     });
     return 0;
   }
-  const season = new Date().getFullYear();
-  const [batters, pitchers] = await Promise.all([
-    crawlBatterSeasonStats(season),
-    crawlPitcherSeasonStats(season),
-  ]);
-  let exitCode = 0;
-  if (batters.status === 'success' && batters.data) {
-    await writeJsonCache('stats/batters.json', batters.data);
-    log({ source: 'statiz', action: 'batters', result: 'ok', count: batters.data.length });
-  } else {
-    exitCode = await failure('statiz', 'batters', batters.errorMessage ?? 'unknown');
-  }
-  if (pitchers.status === 'success' && pitchers.data) {
-    await writeJsonCache('stats/pitchers.json', pitchers.data);
-    log({ source: 'statiz', action: 'pitchers', result: 'ok', count: pitchers.data.length });
-  } else {
-    const c = await failure('statiz', 'pitchers', pitchers.errorMessage ?? 'unknown');
-    if (c !== 0) exitCode = c;
-  }
-  await updateLastCrawl('statiz', 'stats', { lastSuccess: nowIso() });
-  return exitCode;
+  return await failure('saber', action, r.errorMessage ?? 'unknown');
 }
 
 async function failure(source: string, action: string, message: string): Promise<number> {

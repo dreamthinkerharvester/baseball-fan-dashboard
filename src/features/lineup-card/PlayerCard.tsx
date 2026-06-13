@@ -1,13 +1,19 @@
-// Magu Magu 트레이딩 카드 — 라인업 단일 카드.
+// 레트로 게임 트레이딩 카드 — 라인업 단일 카드.
 // 등급별 테두리(레전드 골드glow / A 골드 / B 실버 / C 브론즈) + SD 일러스트 face + 잔디 배경.
+// Design Ref: kia-fan-service §5.3 (FR-03/04) — 세이버 메인 스탯 + 클래식 블러 셀.
 
 'use client';
 
 import clsx from 'clsx';
 
+import { ClassicStatCell } from '@/features/saber-mode/ClassicStatCell';
+import { PendingBadge } from '@/components/ui/PendingBadge';
+import { SABER_GLOSSARY, formatMetric } from '@/lib/saber-glossary';
 import { TEAMS } from '@/lib/constants';
-import { playerByLineupSlot, tile } from '@/lib/assets-magu';
+import { getLineupFaceImage } from '@/lib/player-image';
+import { tile } from '@/lib/assets-magu';
 
+import type { SaberCardEntry } from '@/services/saber';
 import type { LineupSlot, Player } from '@/types';
 
 export interface PlayerCardProps {
@@ -16,6 +22,8 @@ export interface PlayerCardProps {
   /** 카드 변형: 'starter' = 가로형 큰 카드 (선발 투수), 'batter' = 정사각형. */
   variant?: 'starter' | 'batter';
   keyStat?: string | null;
+  /** 세이버 스냅샷 (FR-03). null = 미수집 → "집계 중". */
+  saber?: SaberCardEntry | null;
   onClick?: () => void;
   className?: string;
 }
@@ -45,6 +53,7 @@ export function PlayerCard({
   player,
   variant = 'batter',
   keyStat = null,
+  saber = null,
   onClick,
   className,
 }: PlayerCardProps) {
@@ -54,10 +63,21 @@ export function PlayerCard({
   const stars = GRADE_STARS[slot.grade] ?? '★★☆☆☆';
 
   const orderLabel = slot.battingOrder === 0 ? 'P' : `${slot.battingOrder}`;
-  // KIA 라인업 1~9 → SD 이미지 슬롯. 그 외는 player.photoUrl fallback.
-  const isKiaBatter = player?.teamCode === 'KIA' && slot.battingOrder >= 1 && slot.battingOrder <= 9;
-  const sdImage = isKiaBatter ? playerByLineupSlot(slot.battingOrder - 1) : null;
-  const faceImage = sdImage ?? player?.photoUrl ?? null;
+  // 사진 소스는 단일 진입점으로 추상화 (FR-08 — IP 재검토 대비)
+  const faceImage = getLineupFaceImage(player, slot.battingOrder);
+
+  // 세이버 메인/클래식 표시값 (FR-03: 타자 wRC+↔타율 / 투수 FIP↔ERA)
+  const isPitcherCard = variant === 'starter' || slot.position === 'P';
+  const saberMain = isPitcherCard ? saber?.fip : saber?.wrcPlus;
+  const saberMainKey = isPitcherCard ? ('fip' as const) : ('wrcPlus' as const);
+  const classicValue = isPitcherCard ? saber?.era : saber?.avg;
+  const classicLabel = isPitcherCard ? 'ERA' : '타율';
+  const classicText =
+    classicValue != null
+      ? isPitcherCard
+        ? classicValue.toFixed(2)
+        : classicValue.toFixed(3).replace(/^0/, '')
+      : null;
 
   // Starter 카드는 가로형 — 작은 face + 풍부한 우측 정보.
   if (variant === 'starter') {
@@ -139,6 +159,7 @@ export function PlayerCard({
             <div className="font-brand-magu" style={{ fontSize: 18, color: 'var(--magu-text-1)', lineHeight: 1 }}>
               {player?.name ?? '미정'}
             </div>
+            {/* 세이버 메인 (FIP) + 클래식 블러 (ERA) */}
             <div
               className="font-digit"
               style={{
@@ -146,9 +167,41 @@ export function PlayerCard({
                 fontSize: 11, color: 'var(--magu-text-2)',
               }}
             >
-              <span style={{ color: 'var(--magu-text-3)' }}>등급</span>
-              <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>{keyStat ?? '-'}</span>
+              <span style={{ color: 'var(--magu-text-3)' }} title={SABER_GLOSSARY[saberMainKey].oneLiner}>
+                {SABER_GLOSSARY[saberMainKey].label}
+              </span>
+              {saberMain != null ? (
+                <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>
+                  {formatMetric(saberMainKey, saberMain)}
+                </span>
+              ) : (
+                <PendingBadge />
+              )}
             </div>
+            <div
+              className="font-digit"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                fontSize: 10, color: 'var(--magu-text-3)',
+              }}
+            >
+              <span>{classicLabel}</span>
+              {classicText ? (
+                <ClassicStatCell>{classicText}</ClassicStatCell>
+              ) : (
+                <span>—</span>
+              )}
+            </div>
+            {/* 보조 세이버 (BABIP · K%-BB%) */}
+            {saber && (saber.babip != null || (saber.kPct != null && saber.bbPct != null)) ? (
+              <div className="font-digit" style={{ fontSize: 9, color: 'var(--magu-text-3)' }}>
+                {saber.babip != null ? `BABIP ${formatMetric('babip', saber.babip)}` : ''}
+                {saber.babip != null && saber.kPct != null && saber.bbPct != null ? ' · ' : ''}
+                {saber.kPct != null && saber.bbPct != null
+                  ? `K-BB% ${(saber.kPct - saber.bbPct).toFixed(1)}`
+                  : ''}
+              </div>
+            ) : null}
           </div>
         </div>
       </button>
@@ -291,21 +344,47 @@ export function PlayerCard({
         >
           {player?.name ?? '—'}
         </div>
-        {keyStat ? (
-          <div
-            className="font-digit"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: 10,
-              color: 'var(--magu-text-2)',
-            }}
-          >
-            <span>등급</span>
+        {/* 세이버 메인 (wRC+) + 클래식 블러 (타율) — FR-03/04 */}
+        <div
+          className="font-digit"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: 10,
+            color: 'var(--magu-text-2)',
+          }}
+        >
+          <span title={SABER_GLOSSARY[saberMainKey].oneLiner}>
+            {SABER_GLOSSARY[saberMainKey].label}
+          </span>
+          {saberMain != null ? (
+            <span style={{ color: 'var(--magu-gold)', fontWeight: 700 }}>
+              {formatMetric(saberMainKey, saberMain)}
+            </span>
+          ) : (
+            <PendingBadge />
+          )}
+        </div>
+        <div
+          className="font-digit"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: 9,
+            color: 'var(--magu-text-3)',
+          }}
+        >
+          <span>{classicLabel}</span>
+          {classicText ? (
+            <ClassicStatCell showLock={false}>{classicText}</ClassicStatCell>
+          ) : keyStat ? (
             <span style={{ color: 'var(--magu-gold)' }}>{keyStat}</span>
-          </div>
-        ) : null}
+          ) : (
+            <span>—</span>
+          )}
+        </div>
       </div>
     </button>
   );

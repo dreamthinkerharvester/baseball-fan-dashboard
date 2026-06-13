@@ -1,5 +1,6 @@
-// Magu Magu 풍 순위 배너 — 가로 스크롤 한 줄.
+// 레트로 게임 풍 순위 배너 — 가로 스크롤 한 줄 + KIA 게임차 진행 바.
 // 1·2·3위: 메달 픽셀. 4위↓: 번호 배지. 각 팀 엠블럼 픽셀.
+// Design Ref: kia-fan-service §5.4 (FR-07) — KIA 행 강조 + 1위와의 게임차 시각화.
 
 'use client';
 
@@ -43,11 +44,51 @@ export function StandingsBanner({ myTeam }: StandingsBannerProps) {
     );
   }
 
+  // KIA 게임차 진행 바 (FR-07): 1위(가득 참) ↔ 최하위(비어 있음) 사이 위치
+  const kiaRow = myTeam ? data.rows.find((r) => r.teamCode === myTeam) : undefined;
+  const maxGb = Math.max(...data.rows.map((r) => r.gamesBehind), 1);
+  const kiaProgress = kiaRow ? Math.max(0, Math.min(1, 1 - kiaRow.gamesBehind / maxGb)) : null;
+
   return (
     <section
       aria-label="리그 순위"
       style={{ borderBottom: '1px solid var(--magu-line)', background: 'rgba(15,20,33,.5)' }}
     >
+      {kiaRow && kiaProgress !== null ? (
+        <div style={{ padding: '6px 12px 0', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="font-digit" style={{ fontSize: 10, color: 'var(--magu-text-2)', whiteSpace: 'nowrap' }}>
+            {kiaRow.rank}위
+          </span>
+          <div
+            role="progressbar"
+            aria-valuenow={Math.round(kiaProgress * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`1위와의 게임차 ${kiaRow.gamesBehind === 0 ? '없음 (선두)' : `${kiaRow.gamesBehind}게임`}`}
+            style={{
+              flex: 1,
+              height: 6,
+              borderRadius: 9999,
+              background: 'var(--magu-panel-deep)',
+              border: '1px solid var(--magu-line)',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                width: `${Math.round(kiaProgress * 100)}%`,
+                height: '100%',
+                borderRadius: 9999,
+                background: 'linear-gradient(90deg, var(--magu-kia-red-deep), var(--magu-kia-red))',
+                transition: 'width 0.4s ease',
+              }}
+            />
+          </div>
+          <span className="font-digit" style={{ fontSize: 10, color: 'var(--magu-text-3)', whiteSpace: 'nowrap' }}>
+            {kiaRow.gamesBehind === 0 ? '선두' : `1위와 ${kiaRow.gamesBehind}G차`}
+          </span>
+        </div>
+      ) : null}
       <div
         className="no-scrollbar flex items-center"
         style={{ gap: 4, padding: '6px 8px', overflowX: 'auto', scrollSnapType: 'x mandatory' }}

@@ -16,6 +16,7 @@ export type {
   FrequencyBackup,
   PitcherPoolEntry,
 } from './lineup';
+export type { SaberRankingEntry, SaberRankings, SaberGlossaryItem } from './saber';
 export type { ApiError, ApiMeta, ApiResponse, ErrorCode } from './api';
 export { ok, err } from './api';
 export type { PlayerSearchResult, SearchFilters } from './search';

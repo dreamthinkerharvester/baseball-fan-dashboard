@@ -35,6 +35,12 @@ export function isTeamCode(value: unknown): value is TeamCode {
 }
 
 /**
+ * Design Ref: kia-fan-service §2 (FR-02) — KIA 전용 피벗.
+ * 팀 선택 온보딩 제거 후 모든 myTeam 소비처는 이 상수를 사용한다.
+ */
+export const MY_TEAM: TeamCode = 'KIA';
+
+/**
  * Design §9 — Grade percentile thresholds.
  * percentile >= threshold → that grade.
  * 평가는 elite → rare → special → normal 순서.
@@ -74,7 +80,10 @@ export const CACHE_TTL_SEC = {
 
 /** localStorage key. */
 export const STORAGE_KEYS = {
-  myTeam: 'baseball_myteam',
+  /** 세이버 온리 모드 (true = 클래식 숨김). Design Ref: kia-fan-service FR-04. */
+  saberMode: 'kia_saber_mode',
+  /** 구 멀티팀 시절 키 — 피벗 후 발견 시 제거만 한다. */
+  legacyMyTeam: 'baseball_myteam',
 } as const;
 
 /** Crawler defaults. .env로 override. */

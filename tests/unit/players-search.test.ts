@@ -79,6 +79,10 @@ describe('formatKeyStat', () => {
       whip: 1.18,
       k9: 8.4,
       bb9: 2.1,
+      war: null,
+      babip: null,
+      kPct: null,
+      bbPct: null,
       updatedAt: '2026-05-09',
     };
     expect(formatKeyStat(PLAYERS[0]!, stat)).toBe('ERA 3.12');
@@ -98,6 +102,11 @@ describe('formatKeyStat', () => {
       slg: 0.473,
       ops: 0.861,
       wrcPlus: 130,
+      woba: null,
+      war: null,
+      babip: null,
+      kPct: null,
+      bbPct: null,
       updatedAt: '2026-05-09',
     };
     expect(formatKeyStat(PLAYERS[1]!, stat)).toBe('OPS .861');
@@ -117,6 +126,11 @@ describe('formatKeyStat', () => {
       slg: 0.65,
       ops: 1.024,
       wrcPlus: 180,
+      woba: null,
+      war: null,
+      babip: null,
+      kPct: null,
+      bbPct: null,
       updatedAt: '2026-05-09',
     };
     expect(formatKeyStat(PLAYERS[2]!, stat)).toBe('OPS 1.024');

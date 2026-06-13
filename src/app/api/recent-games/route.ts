@@ -52,7 +52,10 @@ export async function GET(): Promise<Response> {
       const g = r.data.find(
         (g) => (g.homeTeam === KIA || g.awayTeam === KIA) && g.status === 'final',
       );
-      if (g) kiaGames.push({ date: d, game: g });
+      // KBO 크롤러가 시작 전 경기를 final 0-0으로 파싱하는 케이스 방어 —
+      // 야구에서 0-0 final은 극히 드물고, 당일 재크롤 시 실제 스코어로 덮어써짐.
+      const phantomFinal = g && (g.homeScore ?? 0) === 0 && (g.awayScore ?? 0) === 0;
+      if (g && !phantomFinal) kiaGames.push({ date: d, game: g });
     }
 
     if (kiaGames.length === 0) {

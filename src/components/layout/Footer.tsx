@@ -16,10 +16,11 @@ export function Footer() {
     >
       <div className="mx-auto flex max-w-screen-lg flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
-          <p style={{ margin: 0, fontWeight: 500 }}>© 2026 KBO 카드 대시보드 · 비상업적 팬 프로젝트</p>
+          <p style={{ margin: 0, fontWeight: 500 }}>© 2026 타이거즈 카드 · 비상업적 팬 프로젝트</p>
           {/* forbidden-words-allow:disclaimer */}
           <p style={{ margin: 0, fontSize: 10, color: 'var(--md-sys-color-on-surface-variant)' }}>
-            이 서비스는 KBO 공식 서비스가 아니며, 네오위즈/넷마블의 마구마구와 무관한 독립 프로젝트입니다.
+            이 서비스는 KBO·KIA 타이거즈의 공식 서비스가 아닌 독립 팬 프로젝트이며, 네오위즈/넷마블의
+            마구마구와 무관합니다.
           </p>
         </div>
         <nav className="flex gap-2 flex-wrap" aria-label="푸터 메뉴">

@@ -10,8 +10,9 @@ import { GradeBadge } from '@/components/ui/GradeBadge';
 import { TEAMS } from '@/lib/constants';
 
 import { CareerStatTab } from './CareerStatTab';
+import { ClassicStatTab } from './ClassicStatTab';
 import { usePlayer } from './hooks/usePlayer';
-import { SeasonStatTab } from './SeasonStatTab';
+import { SaberStatTab } from './SaberStatTab';
 
 import type { Grade, TeamCode } from '@/types';
 
@@ -21,10 +22,11 @@ export interface PlayerModalProps {
   onClose: () => void;
 }
 
-type TabValue = 'season' | 'career';
+// Design Ref: kia-fan-service §5.4 — 탭 순서: 세이버(디폴트) → 클래식 → 역대
+type TabValue = 'saber' | 'classic' | 'career';
 
 export function PlayerModal({ playerId, open, onClose }: PlayerModalProps) {
-  const [tab, setTab] = useState<TabValue>('career');
+  const [tab, setTab] = useState<TabValue>('saber');
   const { data, error, isLoading } = usePlayer(open ? playerId : null);
 
   const player = data?.player;
@@ -259,32 +261,42 @@ export function PlayerModal({ playerId, open, onClose }: PlayerModalProps) {
           <div className="m3-tabs" style={{ marginTop: 14 }}>
             <button
               type="button"
-              className={tab === 'season' ? 'active' : ''}
-              onClick={() => setTab('season')}
-              aria-selected={tab === 'season'}
+              className={tab === 'saber' ? 'active' : ''}
+              onClick={() => setTab('saber')}
             >
-              시즌 성적
+              세이버
+            </button>
+            <button
+              type="button"
+              className={tab === 'classic' ? 'active' : ''}
+              onClick={() => setTab('classic')}
+            >
+              클래식
             </button>
             <button
               type="button"
               className={tab === 'career' ? 'active' : ''}
               onClick={() => setTab('career')}
-              aria-selected={tab === 'career'}
             >
               역대 기록
             </button>
           </div>
           <div
             role="tabpanel"
-            aria-label={tab === 'season' ? '시즌 성적' : '역대 기록'}
+            aria-label={tab === 'saber' ? '세이버 지표' : tab === 'classic' ? '클래식 스탯' : '역대 기록'}
             style={{ padding: '16px', maxHeight: '50vh', overflowY: 'auto' }}
           >
-            {tab === 'season' ? (
-              <SeasonStatTab
+            {tab === 'saber' ? (
+              <SaberStatTab
                 isPitcher={player.isPitcher}
                 currentSeason={(data.currentSeason as Record<string, unknown>) ?? {}}
                 recentTen={(data.recentTen as Record<string, unknown>[]) ?? []}
                 grade={grade}
+              />
+            ) : tab === 'classic' ? (
+              <ClassicStatTab
+                isPitcher={player.isPitcher}
+                currentSeason={(data.currentSeason as Record<string, unknown>) ?? {}}
               />
             ) : (
               <CareerStatTab

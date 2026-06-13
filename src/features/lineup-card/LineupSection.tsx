@@ -17,6 +17,7 @@ import { LineupGrid } from './LineupGrid';
 import { LineupPlaceholder } from './LineupPlaceholder';
 import { PlayerCard } from './PlayerCard';
 
+import type { SaberCardEntry } from '@/services/saber';
 import type { LineupSlot, Player, TeamCode } from '@/types';
 
 export interface LineupSectionProps {
@@ -28,6 +29,10 @@ export function LineupSection({ team, date }: LineupSectionProps) {
   const teamMeta = TEAMS[team];
   const { data: lineup, error, isLoading, refresh } = useLineup(team, date);
   const { data: players } = useSWR<Player[]>('/api/players', fetcher);
+  // Design Ref: kia-fan-service §5.3 — 카드용 세이버 스냅샷 (로스터 전체 1회 fetch, FR-03)
+  const { data: saberCards } = useSWR<{ entries: SaberCardEntry[] }>('/api/saber-cards', fetcher, {
+    revalidateOnFocus: false,
+  });
   const [openPlayerId, setOpenPlayerId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -41,6 +46,12 @@ export function LineupSection({ team, date }: LineupSectionProps) {
     for (const p of players) map.set(p.id, p);
     return map;
   }, [players]);
+
+  const saberLookup = useMemo(() => {
+    const map = new Map<string, SaberCardEntry>();
+    for (const e of saberCards?.entries ?? []) map.set(e.playerId, e);
+    return map;
+  }, [saberCards]);
 
   function handleRefresh() {
     setRefreshing(true);
@@ -193,6 +204,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
                 slot={lineup.startingPitcher}
                 player={playerLookup.get(lineup.startingPitcher.playerId) ?? null}
                 keyStat={keyStatForPitcher(lineup.startingPitcher)}
+                saber={saberLookup.get(lineup.startingPitcher.playerId) ?? null}
                 onClick={() =>
                   setOpenPlayerId(lineup.startingPitcher!.playerId)
                 }
@@ -207,6 +219,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
               <LineupGrid
                 slots={lineup.battingOrder}
                 playerLookup={playerLookup}
+                saberLookup={saberLookup}
                 keyStatFor={keyStatForBatter}
                 onPlayerClick={(id) => setOpenPlayerId(id)}
               />

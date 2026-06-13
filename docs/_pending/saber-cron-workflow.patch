@@ -1,0 +1,18 @@
+diff --git a/.github/workflows/crawl.yml b/.github/workflows/crawl.yml
+index 2667b14..5756f21 100644
+--- a/.github/workflows/crawl.yml
++++ b/.github/workflows/crawl.yml
+@@ -45,6 +45,13 @@ jobs:
+         run: pnpm crawl:schedule:browser
+         continue-on-error: true
+ 
++      # 세이버 파이프라인 (Myth-Buster) — 일 1회 06:00 KST 틱에서만 실행
++      # Design Ref: kia-fan-service §2.2 — KBO 기록 페이지 + 네이버 API
++      - name: Crawl saber rankings (daily)
++        if: github.event.schedule == '0 21 * * *' || github.event_name == 'workflow_dispatch'
++        run: pnpm crawl:saber
++        continue-on-error: true
++
+       - name: Commit & push if changed
+         run: |
+           git config user.name "github-actions[bot]"
