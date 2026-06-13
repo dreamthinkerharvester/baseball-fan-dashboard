@@ -1,0 +1,40 @@
+{
+  "player": {
+    "id": "78531",
+    "name": "양현종",
+    "teamCode": "KIA",
+    "position": "P",
+    "uniformNumber": 54,
+    "isPitcher": true
+  },
+  "currentSeason": {
+    "playerId": "78531",
+    "season": 2026,
+    "games": 11,
+    "ip": 66.0,
+    "era": 3.41,
+    "fip": 3.65,
+    "whip": 1.21,
+    "k9": 7.8,
+    "bb9": 2.4,
+    "w": 6,
+    "l": 2,
+    "sv": 0,
+    "hold": 0,
+    "war": 2.0,
+    "babip": 0.298,
+    "kPct": 21.4,
+    "bbPct": 6.5,
+    "recentForm": "05.06 삼성전 7이닝 1자책 8K (W)",
+    "lastGameDate": "05.06",
+    "updatedAt": "2026-05-09T06:00:00+09:00"
+  },
+  "careerSeasons": [
+    { "playerId": "78531", "season": 2025, "games": 28, "ip": 170.0, "era": 3.85, "fip": 4.01, "whip": 1.28, "k9": 7.2, "bb9": 2.6, "updatedAt": "2025-10-30T20:00:00+09:00" }
+  ],
+  "recentTen": [
+    { "playerId": "78531", "date": "2026-05-06", "ip": 7, "er": 1, "k": 8, "bb": 1, "fip": 2.10, "era": 1.29 },
+    { "playerId": "78531", "date": "2026-05-01", "ip": 6, "er": 3, "k": 5, "bb": 2, "fip": 4.50, "era": 4.50 }
+  ],
+  "currentGrade": { "grade": "rare", "percentile": 78, "basis": "최근 10경기 FIP 평균 3.30 (백분위 78)" }
+}

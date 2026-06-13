@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-05-09T06:45:00+09:00",
+  "season": 2026,
+  "qualifiedBatters": 45,
+  "qualifiedPitchers": 20,
+  "entries": [
+    {
+      "playerId": "78529", "name": "김도영", "teamCode": "KIA", "isPitcher": false,
+      "classicMetric": "avg", "classicValue": 0.352, "classicRank": 5,
+      "saberMetric": "wrcPlus", "saberValue": 178, "saberRank": 1,
+      "gapScore": 4, "qualified": true
+    },
+    {
+      "playerId": "78530", "name": "최원준", "teamCode": "KIA", "isPitcher": false,
+      "classicMetric": "avg", "classicValue": 0.280, "classicRank": 18,
+      "saberMetric": "wrcPlus", "saberValue": 105, "saberRank": 30,
+      "gapScore": -12, "qualified": true
+    },
+    {
+      "playerId": "78531", "name": "양현종", "teamCode": "KIA", "isPitcher": true,
+      "classicMetric": "era", "classicValue": 3.41, "classicRank": 8,
+      "saberMetric": "fip", "saberValue": 3.65, "saberRank": 10,
+      "gapScore": -2, "qualified": true
+    }
+  ]
+}

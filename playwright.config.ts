@@ -39,7 +39,8 @@ export default defineConfig({
     : {
         command: 'pnpm dev',
         url: 'http://localhost:3000',
-        timeout: 60_000,
+        // 느린 파일시스템(예: iCloud 동기화 폴더)에서 첫 컴파일 여유 확보
+        timeout: 180_000,
         reuseExistingServer: true,
       },
 });

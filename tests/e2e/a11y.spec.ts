@@ -10,24 +10,20 @@ test.describe('Accessibility smoke', () => {
   });
 
   test('header h1 exists', async ({ page }) => {
-    await page.addInitScript(() => {
-      window.localStorage.removeItem('baseball_myteam');
-    });
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
-  test('focus trap in modal returns focus to trigger card on close', async ({ page }) => {
-    await page.addInitScript(() => {
-      window.localStorage.setItem('baseball_myteam', 'LG');
-    });
+  test('saber toggle is a labelled switch (WCAG)', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('[data-grade]');
-    const trigger = page.locator('[data-grade]').first();
-    await trigger.click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByRole('switch', { name: '클래식 스탯 보기' })).toBeVisible();
+  });
+
+  test('modal opens from roster row and closes with Escape', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('row', { name: /김도영/ }).first().click();
+    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 8_000 });
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toBeHidden();
-    // native <dialog>는 닫힐 때 포커스를 트리거 요소로 복귀
   });
 });

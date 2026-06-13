@@ -1,0 +1,40 @@
+{
+  "player": {
+    "id": "78530",
+    "name": "최원준",
+    "teamCode": "KIA",
+    "position": "CF",
+    "uniformNumber": 34,
+    "isPitcher": false
+  },
+  "currentSeason": {
+    "playerId": "78530",
+    "season": 2026,
+    "games": 40,
+    "ab": 150,
+    "hits": 42,
+    "hr": 3,
+    "rbi": 18,
+    "avg": 0.280,
+    "obp": 0.350,
+    "slg": 0.400,
+    "ops": 0.750,
+    "wrcPlus": 105,
+    "woba": 0.330,
+    "war": 1.1,
+    "babip": 0.312,
+    "kPct": 18.5,
+    "bbPct": 8.2,
+    "recentForm": "최근 5G .250 (5/20) 0HR 2타점",
+    "lastGameDate": "05.08",
+    "updatedAt": "2026-05-09T06:00:00+09:00"
+  },
+  "careerSeasons": [
+    { "playerId": "78530", "season": 2025, "games": 130, "ab": 480, "hits": 138, "hr": 8, "rbi": 55, "avg": 0.288, "obp": 0.355, "slg": 0.420, "ops": 0.775, "wrcPlus": 112, "updatedAt": "2025-10-30T20:00:00+09:00" }
+  ],
+  "recentTen": [
+    { "playerId": "78530", "date": "2026-05-08", "ab": 4, "hits": 1, "hr": 0, "rbi": 0, "ops": 0.500, "wrcPlus": 60 },
+    { "playerId": "78530", "date": "2026-05-07", "ab": 4, "hits": 2, "hr": 0, "rbi": 1, "ops": 0.900, "wrcPlus": 120 }
+  ],
+  "currentGrade": { "grade": "special", "percentile": 55, "basis": "최근 10경기 wRC+ 평균 105 (백분위 55)" }
+}

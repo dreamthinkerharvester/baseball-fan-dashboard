@@ -3,11 +3,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Schedule list', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      window.localStorage.setItem('baseball_myteam', 'LG');
-    });
-  });
+  // 피벗: 팀 선택 온보딩 제거 — KIA 고정이라 별도 setup 불필요.
 
   test('renders default day schedule', async ({ page }) => {
     await page.goto('/');
