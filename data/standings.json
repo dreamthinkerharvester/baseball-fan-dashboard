@@ -81,14 +81,25 @@
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
     "wins": 27,
-    "losses": 37,
+    "losses": 38,
     "draws": 1,
-    "winPct": 0.422,
-    "gamesBehind": 14,
-    "streak": "2패"
+    "winPct": 0.415,
+    "gamesBehind": 14.5,
+    "streak": "3패"
   },
   {
     "rank": 9,
+    "teamCode": "LOTTE",
+    "teamName": "롯데 자이언츠",
+    "wins": 25,
+    "losses": 39,
+    "draws": 1,
+    "winPct": 0.391,
+    "gamesBehind": 16,
+    "streak": "1승"
+  },
+  {
+    "rank": 10,
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
     "wins": 26,
@@ -97,16 +108,5 @@
     "winPct": 0.388,
     "gamesBehind": 16.5,
     "streak": "1패"
-  },
-  {
-    "rank": 10,
-    "teamCode": "LOTTE",
-    "teamName": "롯데 자이언츠",
-    "wins": 24,
-    "losses": 39,
-    "draws": 1,
-    "winPct": 0.381,
-    "gamesBehind": 16.5,
-    "streak": "2패"
   }
 ]
