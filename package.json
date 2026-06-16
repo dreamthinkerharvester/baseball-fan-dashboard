@@ -26,8 +26,9 @@
     "crawl:schedule": "tsx scripts/crawler/index.ts schedule",
     "crawl:schedule:browser": "cross-env KBO_SCHEDULE_BROWSER=1 tsx scripts/crawler/index.ts schedule",
     "crawl:standings": "tsx scripts/crawler/index.ts standings",
-    "crawl:lineup": "tsx scripts/crawler/index.ts lineup",
+    "crawl:lineup": "node scripts/crawler/naver-fetch-lineup.mjs",
     "crawl:saber": "tsx scripts/crawler/index.ts saber",
+    "crawl:stats": "node scripts/crawler/naver-fetch-player-stats.mjs",
     "compute:grades": "tsx scripts/compute-grades.ts",
     "ci": "pnpm typecheck && pnpm lint && pnpm check:forbidden && pnpm test && pnpm build"
   },

@@ -85,10 +85,14 @@ for (const p of target) {
     if (usedFallback) {
       // /record returns current season only (no career, no game-by-game)
       const isPitcher = r.isPitcher === true;
+      // /record(폴백)는 ab를 직접 주지 않음 → 타율로 역산해 "ab:0인데 hits>0" 모순을 방지.
+      const fbHits = n(r.hit);
+      const fbAvg = n(r.hra);
+      const fbAb = fbAvg > 0 ? Math.round(fbHits / fbAvg) : 0;
       const cur = isPitcher
         ? {
             playerId: p.id, season: 2026, year: 2026,
-            games: 0, ip: parseInning(r.inn, undefined),
+            games: n(r.gamenum), ip: parseInning(r.inn, undefined),
             era: n(r.era), fip: n(r.era), whip: 0,
             k: n(r.kk), bb: 0, hr: 0,
             w: n(r.win), l: n(r.lose), sv: 0, hold: 0, war: 0,
@@ -97,9 +101,9 @@ for (const p of target) {
           }
         : {
             playerId: p.id, season: 2026, year: 2026,
-            games: 0, ab: 0, hits: n(r.hit),
+            games: n(r.gamenum), ab: fbAb, hits: fbHits,
             hr: n(r.hr), rbi: n(r.rbi), sb: 0, run: 0,
-            avg: n(r.hra), obp: 0, slg: 0, ops: 0,
+            avg: fbAvg, obp: 0, slg: 0, ops: 0,
             wrcPlus: 100,
             war: 0,
             updatedAt: new Date().toISOString(),

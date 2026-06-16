@@ -13,7 +13,35 @@
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const gameId = process.argv[2] ?? '20260514OBHT02026';
+// gameId 인자 우선. 없으면 오늘(KST) KIA(HT) 경기를 일정 API로 자동 탐지.
+function todayKstString() {
+  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+}
+async function resolveKiaGameId() {
+  const arg = process.argv[2];
+  if (arg) return arg;
+  const d = todayKstString();
+  const url = `https://api-gw.sports.naver.com/schedule/games?fields=gameId,statusCode,homeTeamCode,awayTeamCode&upperCategoryId=kbaseball&fromDate=${d}&toDate=${d}`;
+  const r = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15',
+      'Referer': 'https://m.sports.naver.com/',
+      'Accept': 'application/json',
+    },
+  });
+  if (!r.ok) throw new Error(`schedule API ${r.status}`);
+  const j = await r.json();
+  const games = j?.result?.games ?? [];
+  // 정규 KBO 경기만(팀코드 존재) + KIA(HT) 포함. 더블헤더면 첫 경기.
+  const kia = games.find((g) => g.homeTeamCode === 'HT' || g.awayTeamCode === 'HT');
+  return kia?.gameId ?? null;
+}
+
+const gameId = await resolveKiaGameId();
+if (!gameId) {
+  console.log(`[naver-fetch-lineup] 오늘(${todayKstString()}) KIA 경기 없음 — skip.`);
+  process.exit(0);
+}
 const date = `${gameId.slice(0, 4)}-${gameId.slice(4, 6)}-${gameId.slice(6, 8)}`;
 // gameId format: YYYYMMDD + AA + HH (away+home team codes 2-letter naver) + 02026
 const awayCode = gameId.slice(8, 10);  // OB
@@ -164,8 +192,21 @@ const newKia = homeUnique.map((p) => ({
     ? `/assets/players/${p.playerCode}.png`
     : undefined,
 }));
-await writeFile('data/players.json', JSON.stringify([...nonKia, ...newKia], null, 2) + '\n');
-console.log(`  data/players.json: ${nonKia.length} (other) + ${newKia.length} (${homeTeamCode}) entries`);
+// 로스터 머지(전량 교체 X): 기존 KIA 엔트리 유지 + 오늘 라인업으로 upsert.
+// → 당일 라인업(~10명)만으로 전체 로스터가 축소되는 회귀 방지.
+const kiaById = new Map(
+  masterPlayers.filter((p) => p.teamCode === homeTeamCode).map((p) => [p.id, p]),
+);
+for (const np of newKia) {
+  const prev = kiaById.get(np.id) ?? {};
+  // 새 값 중 undefined는 기존 값 보존.
+  const merged = { ...prev };
+  for (const [k, v] of Object.entries(np)) if (v !== undefined) merged[k] = v;
+  kiaById.set(np.id, merged);
+}
+const mergedKia = [...kiaById.values()];
+await writeFile('data/players.json', JSON.stringify([...nonKia, ...mergedKia], null, 2) + '\n');
+console.log(`  data/players.json: ${nonKia.length} (other) + ${mergedKia.length} (${homeTeamCode}, ${newKia.length} from today) entries`);
 
 // Build lineup file
 const lineupSlots = home.batters.map((p) => {
@@ -206,9 +247,18 @@ await mkdir(`data/lineups/${date}`, { recursive: true });
 await writeFile(`data/lineups/${date}/${homeTeamCode}.json`, JSON.stringify(lineup, null, 2) + '\n');
 console.log(`  data/lineups/${date}/${homeTeamCode}.json: ${lineupSlots.length} batters + ${startingPitcher ? '1' : '0'} pitcher`);
 
-// Generate per-player detail JSON (mock stats — real stats integration is later milestone)
+// 선수 상세 JSON: 신규 선수만 mock placeholder 생성. 기존 파일은 보존(실데이터를 mock으로 덮지 않음).
+// 실데이터(careerSeasons/recentTen/시즌누적)는 crawl:stats(naver-fetch-player-stats) 단계가 채운다.
 await mkdir('data/players', { recursive: true });
+let detailCreated = 0;
 for (const p of homeUnique) {
+  // 이미 상세 파일이 있으면 건너뜀(보존).
+  try {
+    await readFile(`data/players/${p.playerCode}.json`, 'utf8');
+    continue;
+  } catch {
+    /* 파일 없음 → 아래에서 placeholder 생성 */
+  }
   const isPitcher = p.positionName === '선발투수' || /투수/.test(p.hitType ?? '');
   const seed = Number(p.playerCode);
   const rng = mulberry(seed);
@@ -260,7 +310,8 @@ for (const p of homeUnique) {
     })(),
   };
   await writeFile(`data/players/${p.playerCode}.json`, JSON.stringify(detail, null, 2) + '\n');
+  detailCreated++;
 }
-console.log(`  data/players/{code}.json: ${homeUnique.length} files`);
+console.log(`  data/players/{code}.json: ${detailCreated} new placeholder(s), ${homeUnique.length - detailCreated} preserved`);
 
 console.log(`\n[naver-fetch-lineup] ✅ Done. Source: ${API}`);
