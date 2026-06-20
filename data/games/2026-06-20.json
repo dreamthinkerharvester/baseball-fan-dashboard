@@ -39,9 +39,9 @@
     "homeTeam": "HANWHA",
     "awayTeam": "SAMSUNG",
     "stadium": "대전",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260620-KIWOOM-LOTTE-1",
