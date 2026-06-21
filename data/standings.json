@@ -15,11 +15,11 @@
     "teamCode": "KT",
     "teamName": "KT 위즈",
     "wins": 41,
-    "losses": 27,
+    "losses": 28,
     "draws": 1,
-    "winPct": 0.603,
-    "gamesBehind": 2.5,
-    "streak": "1승"
+    "winPct": 0.594,
+    "gamesBehind": 3,
+    "streak": "1패"
   },
   {
     "rank": 3,
@@ -36,12 +36,12 @@
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 37,
+    "wins": 38,
     "losses": 33,
     "draws": 1,
-    "winPct": 0.529,
-    "gamesBehind": 7.5,
-    "streak": "1패"
+    "winPct": 0.535,
+    "gamesBehind": 7,
+    "streak": "1승"
   },
   {
     "rank": 5,
