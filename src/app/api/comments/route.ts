@@ -1,22 +1,28 @@
-// Anonymous comment board API — Vercel KV backed.
+// Anonymous comment board API — Cloudflare KV backed (binding: COMMENTS_KV).
 // GET    /api/comments           → list (newest first, max 30)
 // POST   /api/comments           → append (body: { playerSlot, text, deviceId })
 // DELETE /api/comments?id=...    → delete (requires header x-device-id matching)
 
-import { kv } from '@vercel/kv';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { err, ok } from '@/types';
 
 import type { ApiResponse } from '@/types';
 
-// API route는 KV 환경 변수 런타임 평가 → 정적 prerender 비활성
+// KV binding is resolved per-request → never statically prerendered.
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const KV_KEY = 'comments:v1';
 const MAX_ITEMS = 30;
 const MAX_TEXT = 60;
+
+/** Minimal slice of the Workers KVNamespace we use (avoids workers-types dep). */
+interface KvLike {
+  get(key: string, type: 'json'): Promise<unknown>;
+  put(key: string, value: string): Promise<void>;
+}
 
 interface Comment {
   id: string;
@@ -26,18 +32,23 @@ interface Comment {
   deviceId: string;
 }
 
-function isKvEnabled(): boolean {
-  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+/** The COMMENTS_KV binding, or null when unavailable (local build / misconfig). */
+function getKv(): KvLike | null {
+  try {
+    const { env } = getCloudflareContext();
+    return (env as { COMMENTS_KV?: KvLike }).COMMENTS_KV ?? null;
+  } catch {
+    return null;
+  }
 }
 
-async function readAll(): Promise<Comment[]> {
-  if (!isKvEnabled()) return [];
-  const raw = await kv.get<Comment[]>(KV_KEY);
+async function readAll(kv: KvLike): Promise<Comment[]> {
+  const raw = (await kv.get(KV_KEY, 'json')) as Comment[] | null;
   return Array.isArray(raw) ? raw : [];
 }
 
-async function writeAll(list: Comment[]): Promise<void> {
-  await kv.set(KV_KEY, list.slice(0, MAX_ITEMS));
+async function writeAll(kv: KvLike, list: Comment[]): Promise<void> {
+  await kv.put(KV_KEY, JSON.stringify(list.slice(0, MAX_ITEMS)));
 }
 
 function jsonResp<T>(
@@ -60,12 +71,13 @@ function jsonResp<T>(
   return res;
 }
 
+const KV_MISSING = '댓글 저장소(Cloudflare KV)가 설정되지 않았습니다.';
+
 export async function GET() {
-  if (!isKvEnabled()) {
-    return jsonResp(err('INTERNAL', 'Vercel KV가 설정되지 않았습니다. 환경변수 KV_REST_API_URL / KV_REST_API_TOKEN 확인.'), 503);
-  }
+  const kv = getKv();
+  if (!kv) return jsonResp(err('INTERNAL', KV_MISSING), 503);
   try {
-    const list = await readAll();
+    const list = await readAll(kv);
     return jsonResp(ok(list, { source: 'cache' }), 200, 'list');
   } catch {
     return jsonResp(err('INTERNAL', '코멘트 로드 실패'), 500);
@@ -73,9 +85,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  if (!isKvEnabled()) {
-    return jsonResp(err('INTERNAL', 'Vercel KV가 설정되지 않았습니다.'), 503);
-  }
+  const kv = getKv();
+  if (!kv) return jsonResp(err('INTERNAL', KV_MISSING), 503);
   let body: unknown;
   try {
     body = await req.json();
@@ -104,9 +115,9 @@ export async function POST(req: NextRequest) {
   };
 
   try {
-    const list = await readAll();
+    const list = await readAll(kv);
     const next = [newComment, ...list].slice(0, MAX_ITEMS);
-    await writeAll(next);
+    await writeAll(kv, next);
     return jsonResp(ok(next, { source: 'cache' }));
   } catch {
     return jsonResp(err('INTERNAL', '코멘트 저장 실패'), 500);
@@ -114,23 +125,22 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  if (!isKvEnabled()) {
-    return jsonResp(err('INTERNAL', 'Vercel KV가 설정되지 않았습니다.'), 503);
-  }
+  const kv = getKv();
+  if (!kv) return jsonResp(err('INTERNAL', KV_MISSING), 503);
   const id = req.nextUrl.searchParams.get('id');
   const deviceId = req.headers.get('x-device-id');
   if (!id) return jsonResp(err('INTERNAL', 'id 필요'), 400);
   if (!deviceId) return jsonResp(err('INTERNAL', 'x-device-id 헤더 필요'), 401);
 
   try {
-    const list = await readAll();
+    const list = await readAll(kv);
     const target = list.find((c) => c.id === id);
     if (!target) return jsonResp(err('INTERNAL', '대상 없음'), 404);
     if (target.deviceId !== deviceId) {
       return jsonResp(err('INTERNAL', '본인 디바이스 코멘트만 삭제 가능'), 403);
     }
     const next = list.filter((c) => c.id !== id);
-    await writeAll(next);
+    await writeAll(kv, next);
     return jsonResp(ok(next, { source: 'cache' }));
   } catch {
     return jsonResp(err('INTERNAL', '삭제 실패'), 500);

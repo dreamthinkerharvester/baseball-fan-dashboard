@@ -25,8 +25,53 @@ export interface CacheReadResult<T> {
   ageMs: number;
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+// Runtime split: Node (dev/test/build) reads from the filesystem; Cloudflare
+// Workers has no runtime fs, so it reads data/*.json shipped as static assets
+// under /cfdata via the ASSETS binding (see scripts/gen-cf-data.mjs).
+// ────────────────────────────────────────────────────────────────────────────
+const IS_WORKERS =
+  typeof navigator !== 'undefined' &&
+  (navigator as { userAgent?: string }).userAgent === 'Cloudflare-Workers';
+
+interface CfManifest {
+  files: Record<string, string>; // rel → ISO mtime
+  dirs: Record<string, string[]>; // subdir → [filenames]
+}
+let manifestPromise: Promise<CfManifest | null> | null = null;
+
+async function fetchAsset(assetPath: string): Promise<Response> {
+  const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+  const { env } = getCloudflareContext();
+  const assets = (env as { ASSETS: { fetch: (req: Request | URL) => Promise<Response> } }).ASSETS;
+  return assets.fetch(new URL(assetPath, 'https://assets.local'));
+}
+
+async function loadManifest(): Promise<CfManifest | null> {
+  if (!manifestPromise) {
+    manifestPromise = fetchAsset('/cfdata/_manifest.json')
+      .then((r) => (r.ok ? (r.json() as Promise<CfManifest>) : null))
+      .catch(() => null);
+  }
+  return manifestPromise;
+}
+
+async function readFromAssets<T>(relativePath: string): Promise<CacheReadResult<T>> {
+  const res = await fetchAsset(`/cfdata/${relativePath}`);
+  if (!res.ok) {
+    const e = new Error(`cfdata not found: ${relativePath}`) as NodeJS.ErrnoException;
+    e.code = 'ENOENT';
+    throw e;
+  }
+  const data = (await res.json()) as T;
+  const manifest = await loadManifest();
+  const fetchedAt = manifest?.files?.[relativePath] ?? new Date().toISOString();
+  return { data, fetchedAt, ageMs: Date.now() - Date.parse(fetchedAt) };
+}
+
 /** 파일 단일 read with mtime. 존재하지 않으면 throw. */
 export async function readJsonCache<T>(relativePath: string): Promise<CacheReadResult<T>> {
+  if (IS_WORKERS) return await readFromAssets<T>(relativePath);
   const abs = path.join(getDataDir(), relativePath);
   const [text, stat] = await Promise.all([fs.readFile(abs, 'utf8'), fs.stat(abs)]);
   return {
@@ -34,6 +79,19 @@ export async function readJsonCache<T>(relativePath: string): Promise<CacheReadR
     fetchedAt: stat.mtime.toISOString(),
     ageMs: Date.now() - stat.mtime.getTime(),
   };
+}
+
+/** Directory listing of a data/ subfolder. Workers reads the asset manifest. */
+export async function listDataDir(sub: string): Promise<string[]> {
+  if (IS_WORKERS) {
+    const manifest = await loadManifest();
+    return manifest?.dirs?.[sub] ?? [];
+  }
+  try {
+    return await fs.readdir(path.join(getDataDir(), sub));
+  } catch {
+    return [];
+  }
 }
 
 /** 안전 read: 파일 없으면 null. */

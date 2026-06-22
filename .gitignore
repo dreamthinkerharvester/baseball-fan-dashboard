@@ -13,6 +13,13 @@ dist/
 # Vercel
 .vercel
 
+# Cloudflare / OpenNext
+.open-next/
+.wrangler/
+public/cfdata/
+cloudflare-env.d.ts
+.dev.vars
+
 # Testing
 coverage/
 .nyc_output/

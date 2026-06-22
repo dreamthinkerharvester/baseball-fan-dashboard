@@ -20,7 +20,6 @@ const nextConfig = {
       "'self'",
       "'unsafe-inline'",
       ...(isDev ? ["'unsafe-eval'"] : []),
-      'https://va.vercel-scripts.com',
     ].join(' ');
 
     const csp = [
@@ -29,7 +28,7 @@ const nextConfig = {
       `script-src ${scriptSrc}`,
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self' data:",
-      "connect-src 'self' https://*.sentry.io https://va.vercel-scripts.com ws: wss:",
+      "connect-src 'self' https://*.sentry.io ws: wss:",
       "frame-ancestors 'none'",
       "base-uri 'self'",
     ].join('; ');

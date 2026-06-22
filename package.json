@@ -7,8 +7,12 @@
     "dev": "next dev",
     "dev:seed": "node scripts/seed-dev.mjs && next dev",
     "seed:dev": "node scripts/seed-dev.mjs",
-    "prebuild": "node scripts/copy-baseball-assets.mjs",
+    "prebuild": "node scripts/gen-cf-data.mjs && tsx scripts/gen-recent-games.ts && node scripts/copy-baseball-assets.mjs",
     "build": "next build",
+    "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
+    "cf:preview": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "storybook:assets": "node scripts/copy-baseball-assets.mjs",
     "storybook:roster": "tsx scripts/crawler/kia-roster.ts",
     "start": "next start",
@@ -34,7 +38,6 @@
     "ci": "pnpm typecheck && pnpm lint && pnpm check:forbidden && pnpm test && pnpm build"
   },
   "dependencies": {
-    "@vercel/kv": "^3.0.0",
     "axios": "^1.7.0",
     "cheerio": "^1.0.0",
     "clsx": "^2.1.1",
@@ -47,6 +50,7 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.19.11",
     "@playwright/test": "^1.46.0",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.0",
@@ -64,7 +68,8 @@
     "tailwindcss": "^3.4.7",
     "tsx": "^4.16.0",
     "typescript": "^5.5.0",
-    "vitest": "^2.0.0"
+    "vitest": "^2.0.0",
+    "wrangler": "^4.103.0"
   },
   "engines": {
     "node": ">=20.0.0",

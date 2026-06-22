@@ -5,9 +5,6 @@
 // slots (/assets/players-crayon/{id}_{slot}.png) that fall back to placeholders
 // until the hand-drawn images are supplied (see OUT crayon-portrait prompt MD).
 
-import { existsSync } from 'node:fs';
-import path from 'node:path';
-
 import { type Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -15,6 +12,7 @@ import { notFound } from 'next/navigation';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { GRADE_LABELS, TEAMS } from '@/lib/constants';
+import crayonManifest from '@/lib/data/_generated/crayon-manifest.json';
 import { getPlayerDetail, getKiaRoster } from '@/services/player';
 import { getPlayerNews, naverNewsSearchUrl } from '@/services/news';
 
@@ -85,9 +83,11 @@ function rate(v: number | null, d = 3): string {
   return v.toFixed(d).replace(/^0\./, '.').replace(/^-0\./, '-.');
 }
 
+// Crayon assets are static; existence comes from the build-time manifest
+// (Workers has no fs). `rel` is relative to public/, e.g. assets/players-crayon/x.png
+const CRAYON_FILES = new Set<string>(crayonManifest as string[]);
 function fileSrc(rel: string): string | null {
-  const abs = path.join(process.cwd(), 'public', rel);
-  return existsSync(abs) ? `/${rel}` : null;
+  return CRAYON_FILES.has(rel) ? `/${rel}` : null;
 }
 
 function crayonSrc(id: string, slot: CrayonSlot): string | null {
