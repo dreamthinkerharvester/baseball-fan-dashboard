@@ -37,3 +37,4 @@ export type {
   StorybookPlayer,
   Storybook,
 } from './storybook';
+export type { PlayerNewsCache } from './news';

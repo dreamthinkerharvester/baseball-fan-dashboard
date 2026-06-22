@@ -1,16 +1,16 @@
 // Design Ref: kia-fan-service 레이아웃 재편 (2026-06-12 사용자 요청) — 정보 밀집형 로스터 테이블.
-// KIA 전체 로스터를 출전순(G desc)으로 타자/투수 분리 표. 행 클릭 → PlayerModal.
+// KIA 전체 로스터를 출전순(G desc)으로 타자/투수 분리 표. 행 클릭 → 선수 상세페이지.
 // 세이버 컬럼 = 금색 강조, 클래식 컬럼 = ClassicStatCell 블러 (토글 연동).
 
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
+import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 
 import { PendingBadge } from '@/components/ui/PendingBadge';
 import { ClassicStatCell } from '@/features/saber-mode/ClassicStatCell';
-import { PlayerModal } from '@/features/player-modal/PlayerModal';
 import { fetcher } from '@/lib/api-client';
 import { formatMetric, SABER_GLOSSARY, type SaberMetricKey } from '@/lib/saber-glossary';
 
@@ -20,7 +20,8 @@ export function RosterTables() {
   const { data, isLoading } = useSWR<{ entries: SaberCardEntry[] }>('/api/saber-cards', fetcher, {
     revalidateOnFocus: false,
   });
-  const [openPlayerId, setOpenPlayerId] = useState<string | null>(null);
+  const router = useRouter();
+  const openPlayer = (id: string) => router.push(`/players/${id}`);
 
   const { batters, pitchers } = useMemo(() => {
     const entries = data?.entries ?? [];
@@ -47,22 +48,15 @@ export function RosterTables() {
         sub={`출전순 · ${batters.length}명`}
         entries={batters}
         columns={BATTER_COLUMNS}
-        onRowClick={setOpenPlayerId}
+        onRowClick={openPlayer}
       />
       <RosterSection
         title="⚾ 투수"
         sub={`출전순 · ${pitchers.length}명`}
         entries={pitchers}
         columns={PITCHER_COLUMNS}
-        onRowClick={setOpenPlayerId}
+        onRowClick={openPlayer}
       />
-      {openPlayerId ? (
-        <PlayerModal
-          playerId={openPlayerId}
-          open={openPlayerId !== null}
-          onClose={() => setOpenPlayerId(null)}
-        />
-      ) : null}
     </>
   );
 }

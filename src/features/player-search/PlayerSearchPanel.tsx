@@ -4,7 +4,8 @@
 
 import { useCallback, useState } from 'react';
 
-import { PlayerModal } from '@/features/player-modal/PlayerModal';
+import { useRouter } from 'next/navigation';
+
 import { EMPTY_FILTERS } from '@/types';
 
 import { FilterChips } from './FilterChips';
@@ -15,8 +16,8 @@ import { SearchInput } from './SearchInput';
 import type { SearchFilters } from '@/types';
 
 export function PlayerSearchPanel() {
+  const router = useRouter();
   const [filters, setFilters] = useState<SearchFilters>(EMPTY_FILTERS);
-  const [modalPlayerId, setModalPlayerId] = useState<string | null>(null);
 
   const { results, isLoading } = usePlayerSearch(filters);
 
@@ -24,9 +25,12 @@ export function PlayerSearchPanel() {
     setFilters((prev) => ({ ...prev, q }));
   }, []);
 
-  const handleSelect = useCallback((id: string) => {
-    setModalPlayerId(id);
-  }, []);
+  const handleSelect = useCallback(
+    (id: string) => {
+      router.push(`/players/${id}`);
+    },
+    [router],
+  );
 
   return (
     <section className="flex flex-col gap-4 px-4 py-4">
@@ -48,11 +52,6 @@ export function PlayerSearchPanel() {
         results={results}
         isLoading={isLoading}
         onSelect={handleSelect}
-      />
-      <PlayerModal
-        playerId={modalPlayerId ?? ''}
-        open={modalPlayerId !== null}
-        onClose={() => setModalPlayerId(null)}
       />
     </section>
   );

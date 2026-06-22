@@ -29,6 +29,7 @@
     "crawl:lineup": "node scripts/crawler/naver-fetch-lineup.mjs",
     "crawl:saber": "tsx scripts/crawler/index.ts saber",
     "crawl:stats": "node scripts/crawler/naver-fetch-player-stats.mjs",
+    "crawl:news": "node scripts/crawler/naver-fetch-news.mjs",
     "compute:grades": "tsx scripts/compute-grades.ts",
     "ci": "pnpm typecheck && pnpm lint && pnpm check:forbidden && pnpm test && pnpm build"
   },

@@ -6,7 +6,7 @@ import path from 'node:path';
 
 import { isoKst } from '@/lib/date';
 
-import type { Game, Lineup, Player, StandingsRow, Team } from '@/types';
+import type { Game, Lineup, Player, PlayerNewsCache, StandingsRow, Team } from '@/types';
 
 /**
  * 캐시 루트. 환경 변수로 override 가능 (테스트는 fixtures 경로 주입).
@@ -89,6 +89,7 @@ export const cachePaths = {
   game: (date: string) => `games/${date}.json`,
   lineup: (date: string, team: string) => `lineups/${date}/${team}.json`,
   player: (id: string) => `players/${id}.json`,
+  news: (id: string) => `news/${id}.json`,
 } as const;
 
 export async function loadTeams(): Promise<Team[]> {
@@ -123,6 +124,12 @@ export async function loadPlayerDetail(
   id: string,
 ): Promise<CacheReadResult<PlayerDetailCache> | null> {
   return await tryReadJsonCache<PlayerDetailCache>(cachePaths.player(id));
+}
+
+export async function loadPlayerNews(
+  id: string,
+): Promise<CacheReadResult<PlayerNewsCache> | null> {
+  return await tryReadJsonCache<PlayerNewsCache>(cachePaths.news(id));
 }
 
 export function nowIsoKst(): string {

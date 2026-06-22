@@ -1,0 +1,80 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>크레파스 폴백 프리뷰 · KIA 선수 카드</title>
+<style>
+:root{--red:#ea0029;--ink:#26201d;--cream:#f4eee4;--line:#e3d9c8;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,"Pretendard","Apple SD Gothic Neo",sans-serif;padding:28px}
+.head{max-width:1180px;margin:0 auto 22px}
+.head h1{margin:0 0 6px;font-size:22px}
+.head p{margin:0;color:#6a5f52;font-size:14px;line-height:1.6}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px}
+.legend span{padding:3px 9px;border-radius:999px;font-weight:700}
+.badge-player,.lg-p{background:#0a7d3f;color:#fff}
+.badge-generic,.lg-g{background:#b8932a;color:#fff}
+.badge-dot,.lg-d{background:#9a8;color:#fff}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 14px 16px;box-shadow:0 1px 0 #fff,0 6px 18px rgba(40,30,20,.06)}
+.card header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.card h2{margin:0;font-size:18px;display:flex;align-items:baseline;gap:7px}
+.card h2 .num{font-size:11px;color:#9b8f80;font-weight:600}
+.meta{display:flex;gap:6px;align-items:center}
+.role{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;color:#fff}
+.role.p{background:#1b4f8a} .role.b{background:var(--red)}
+.note{font-size:11px;color:#8a7d6f}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.tile{display:flex;flex-direction:column}
+.imgbox{aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#efe9dd;border:1px solid var(--line)}
+.imgbox img{width:100%;height:100%;object-fit:cover;display:block}
+.dot{width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:9px;color:#a99;border:1px dashed #bbb}
+.cap{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;font-size:10px}
+.cap .badge-player,.cap .badge-generic,.cap .badge-dot{padding:1px 6px;border-radius:999px;font-size:9px;font-weight:700}
+</style></head><body>
+<div class="head">
+  <h1>🎨 크레파스 폴백 프리뷰 — 선수 페이지 적용 결과</h1>
+  <p>실제 페이지 <code>portraitSrc()</code> 로직 그대로: <b>선수 전용</b> 컷 → 없으면 <b>투수/타자 공용</b> → 점선.<br>
+  이름 확인된 6명은 본인 그림(정면), 김태군은 정면+뒷모습. 나머지는 포지션별 공용으로 전부 채워져 점선이 사라집니다.</p>
+  <div class="legend">
+    <span class="lg-p">선수 = 실제 매칭 컷</span>
+    <span class="lg-g">공용 = 투수/타자 폴백</span>
+    <span class="lg-d">점선 = 이미지 없음(이제 0건)</span>
+  </div>
+</div>
+<div class="wrap"><article class="card b">
+      <header><h2>김선빈<span class="num">78603</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">매칭</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="78603_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card b">
+      <header><h2>김호령<span class="num">65653</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">매칭</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="65653_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card b">
+      <header><h2>김태군<span class="num">78122</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">매칭(정면+뒷모습)</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="78122_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="78122_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card b">
+      <header><h2>아데를린<span class="num">56613</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">매칭</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="56613_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card b">
+      <header><h2>한승연<span class="num">52628</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">매칭</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="52628_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card p">
+      <header><h2>올러<span class="num">55633</span></h2>
+      <div class="meta"><span class="role p">투수</span><span class="note">매칭</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="55633_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-player">선수</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card p">
+      <header><h2>장재혁<span class="num">50641</span></h2>
+      <div class="meta"><span class="role p">투수</span><span class="note">미매칭→공용</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="_generic/pitcher_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card b">
+      <header><h2>박민<span class="num">50657</span></h2>
+      <div class="meta"><span class="role b">타자</span><span class="note">미매칭→공용</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="_generic/batter_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/batter_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article><article class="card p">
+      <header><h2>손주영<span class="num">60100</span></h2>
+      <div class="meta"><span class="role p">투수</span><span class="note">미매칭→공용</span></div></header>
+      <div class="grid"><div class="tile"><div class="imgbox"><img src="_generic/pitcher_hero.png" alt="정면" loading="lazy"></div><div class="cap"><span>정면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_side.png" alt="측면" loading="lazy"></div><div class="cap"><span>측면</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_action.png" alt="액션" loading="lazy"></div><div class="cap"><span>액션</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_back.png" alt="뒷모습" loading="lazy"></div><div class="cap"><span>뒷모습</span><span class="badge-generic">공용</span></div></div><div class="tile"><div class="imgbox"><img src="_generic/pitcher_face.png" alt="얼굴" loading="lazy"></div><div class="cap"><span>얼굴</span><span class="badge-generic">공용</span></div></div></div>
+    </article></div>
+</body></html>

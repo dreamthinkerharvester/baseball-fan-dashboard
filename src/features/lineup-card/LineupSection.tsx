@@ -1,13 +1,13 @@
 // Design Ref: §5.4 — 마이팀 라인업 섹션. 헤더 + (Grid OR Placeholder).
-// Player click 상태는 본 컴포넌트가 관리 → PlayerModal 트리거.
+// Player click → 선수 상세페이지(/players/[id])로 이동.
 
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 
-import { PlayerModal } from '@/features/player-modal/PlayerModal';
 import { fetcher } from '@/lib/api-client';
 import { icon } from '@/lib/assets-magu';
 import { TEAMS } from '@/lib/constants';
@@ -33,7 +33,8 @@ export function LineupSection({ team, date }: LineupSectionProps) {
   const { data: saberCards } = useSWR<{ entries: SaberCardEntry[] }>('/api/saber-cards', fetcher, {
     revalidateOnFocus: false,
   });
-  const [openPlayerId, setOpenPlayerId] = useState<string | null>(null);
+  const router = useRouter();
+  const openPlayer = (id: string) => router.push(`/players/${id}`);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -205,9 +206,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
                 player={playerLookup.get(lineup.startingPitcher.playerId) ?? null}
                 keyStat={keyStatForPitcher(lineup.startingPitcher)}
                 saber={saberLookup.get(lineup.startingPitcher.playerId) ?? null}
-                onClick={() =>
-                  setOpenPlayerId(lineup.startingPitcher!.playerId)
-                }
+                onClick={() => openPlayer(lineup.startingPitcher!.playerId)}
               />
             </div>
           ) : null}
@@ -221,7 +220,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
                 playerLookup={playerLookup}
                 saberLookup={saberLookup}
                 keyStatFor={keyStatForBatter}
-                onPlayerClick={(id) => setOpenPlayerId(id)}
+                onPlayerClick={openPlayer}
               />
             </div>
           ) : null}
@@ -236,7 +235,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
                   return (
                     <li
                       key={`${b.battingOrder}-${b.playerId}-${i}`}
-                      onClick={() => setOpenPlayerId(b.playerId)}
+                      onClick={() => openPlayer(b.playerId)}
                       style={{
                         display: 'grid',
                         gridTemplateColumns: '22px 28px 1fr auto auto',
@@ -294,7 +293,7 @@ export function LineupSection({ team, date }: LineupSectionProps) {
                   return (
                     <li
                       key={`${p.playerId}-${i}`}
-                      onClick={() => setOpenPlayerId(p.playerId)}
+                      onClick={() => openPlayer(p.playerId)}
                       style={{
                         display: 'grid',
                         gridTemplateColumns: '22px 1fr auto auto auto',
@@ -343,15 +342,6 @@ export function LineupSection({ team, date }: LineupSectionProps) {
             </div>
           ) : null}
         </div>
-      ) : null}
-
-      {/* 카드 클릭 시 모달 */}
-      {openPlayerId ? (
-        <PlayerModal
-          playerId={openPlayerId}
-          open={openPlayerId !== null}
-          onClose={() => setOpenPlayerId(null)}
-        />
       ) : null}
     </section>
   );
