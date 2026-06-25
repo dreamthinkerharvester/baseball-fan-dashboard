@@ -7,8 +7,8 @@
     "awayTeam": "SAMSUNG",
     "stadium": "잠실",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 6,
+    "awayScore": 13
   },
   {
     "id": "20260625-LOTTE-NC-1",
@@ -18,8 +18,8 @@
     "awayTeam": "NC",
     "stadium": "사직",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 2,
+    "awayScore": 8
   },
   {
     "id": "20260625-KT-SSG-1",
@@ -29,8 +29,8 @@
     "awayTeam": "SSG",
     "stadium": "수원",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 12,
+    "awayScore": 7
   },
   {
     "id": "20260625-HANWHA-DOOSAN-1",
@@ -40,8 +40,8 @@
     "awayTeam": "DOOSAN",
     "stadium": "대전",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 3,
+    "awayScore": 5
   },
   {
     "id": "20260625-KIWOOM-KIA-1",
@@ -51,7 +51,7 @@
     "awayTeam": "KIA",
     "stadium": "고척",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 4,
+    "awayScore": 9
   }
 ]
