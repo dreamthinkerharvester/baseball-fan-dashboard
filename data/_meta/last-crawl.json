@@ -1,12 +1,12 @@
 {
   "kbo": {
     "schedule": {
-      "lastSuccess": "2026-06-27T06:27:43.585Z",
-      "lastError": "2026-06-27T10:14:21.135Z: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.koreabaseball.com/Schedule/Schedule.aspx?seriesId=&teamId=&date=2026-06-27\", waiting until \"networkidle\"\n"
+      "lastSuccess": "2026-06-27T11:56:31.288Z",
+      "lastError": null
     },
     "standings": {
-      "lastSuccess": "2026-06-27T06:27:33.649Z",
-      "lastError": "2026-06-27T10:13:49.438Z: timeout"
+      "lastSuccess": "2026-06-27T11:56:21.930Z",
+      "lastError": null
     }
   }
 }
