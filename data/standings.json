@@ -38,7 +38,7 @@
     "teamName": "KIA 타이거즈",
     "wins": 43,
     "losses": 35,
-    "draws": 1,
+    "draws": 2,
     "winPct": 0.551,
     "gamesBehind": 5.5,
     "streak": "2승"
@@ -93,7 +93,7 @@
     "teamName": "SSG 랜더스",
     "wins": 30,
     "losses": 46,
-    "draws": 2,
+    "draws": 3,
     "winPct": 0.395,
     "gamesBehind": 17.5,
     "streak": "5패"
