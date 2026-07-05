@@ -29,8 +29,8 @@
     "awayTeam": "SAMSUNG",
     "stadium": "문학",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 3,
+    "awayScore": 13
   },
   {
     "id": "20260705-KIA-NC-1",
@@ -51,7 +51,7 @@
     "awayTeam": "LOTTE",
     "stadium": "수원",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 4,
+    "awayScore": 2
   }
 ]
