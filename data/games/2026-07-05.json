@@ -7,8 +7,8 @@
     "awayTeam": "DOOSAN",
     "stadium": "고척",
     "status": "final",
-    "homeScore": 0,
-    "awayScore": 0
+    "homeScore": 1,
+    "awayScore": 8
   },
   {
     "id": "20260705-LG-HANWHA-1",
@@ -28,9 +28,9 @@
     "homeTeam": "SSG",
     "awayTeam": "SAMSUNG",
     "stadium": "문학",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260705-KIA-NC-1",
@@ -50,8 +50,8 @@
     "homeTeam": "KT",
     "awayTeam": "LOTTE",
     "stadium": "수원",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   }
 ]
