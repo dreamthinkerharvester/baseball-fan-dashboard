@@ -15,22 +15,22 @@
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 52,
-    "losses": 34,
+    "losses": 35,
     "draws": 0,
-    "winPct": 0.605,
-    "gamesBehind": 1,
-    "streak": "2패"
+    "winPct": 0.598,
+    "gamesBehind": 1.5,
+    "streak": "3패"
   },
   {
     "rank": 3,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 48,
+    "wins": 49,
     "losses": 35,
     "draws": 1,
-    "winPct": 0.578,
-    "gamesBehind": 3.5,
-    "streak": "4승"
+    "winPct": 0.583,
+    "gamesBehind": 3,
+    "streak": "5승"
   },
   {
     "rank": 4,
