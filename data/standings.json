@@ -4,11 +4,11 @@
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
     "wins": 53,
-    "losses": 32,
+    "losses": 33,
     "draws": 2,
-    "winPct": 0.624,
+    "winPct": 0.616,
     "gamesBehind": 0,
-    "streak": "3승"
+    "streak": "1패"
   },
   {
     "rank": 2,
@@ -18,7 +18,7 @@
     "losses": 35,
     "draws": 1,
     "winPct": 0.593,
-    "gamesBehind": 2.5,
+    "gamesBehind": 2,
     "streak": "7승"
   },
   {
@@ -29,7 +29,7 @@
     "losses": 37,
     "draws": 0,
     "winPct": 0.584,
-    "gamesBehind": 3,
+    "gamesBehind": 2.5,
     "streak": "5패"
   },
   {
@@ -40,7 +40,7 @@
     "losses": 40,
     "draws": 2,
     "winPct": 0.545,
-    "gamesBehind": 6.5,
+    "gamesBehind": 6,
     "streak": "3승"
   },
   {
@@ -51,7 +51,7 @@
     "losses": 42,
     "draws": 2,
     "winPct": 0.528,
-    "gamesBehind": 8,
+    "gamesBehind": 7.5,
     "streak": "3승"
   },
   {
@@ -60,9 +60,9 @@
     "teamName": "한화 이글스",
     "wins": 40,
     "losses": 43,
-    "draws": 2,
+    "draws": 3,
     "winPct": 0.482,
-    "gamesBehind": 12,
+    "gamesBehind": 11.5,
     "streak": "3패"
   },
   {
@@ -73,19 +73,19 @@
     "losses": 45,
     "draws": 1,
     "winPct": 0.471,
-    "gamesBehind": 13,
+    "gamesBehind": 12.5,
     "streak": "3패"
   },
   {
     "rank": 8,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
-    "wins": 38,
+    "wins": 39,
     "losses": 47,
     "draws": 2,
-    "winPct": 0.447,
-    "gamesBehind": 15,
-    "streak": "3패"
+    "winPct": 0.453,
+    "gamesBehind": 14,
+    "streak": "1승"
   },
   {
     "rank": 9,
@@ -95,7 +95,7 @@
     "losses": 55,
     "draws": 3,
     "winPct": 0.368,
-    "gamesBehind": 22,
+    "gamesBehind": 21.5,
     "streak": "3패"
   },
   {
@@ -104,9 +104,9 @@
     "teamName": "키움 히어로즈",
     "wins": 32,
     "losses": 57,
-    "draws": 1,
+    "draws": 2,
     "winPct": 0.36,
-    "gamesBehind": 23,
+    "gamesBehind": 22.5,
     "streak": "3승"
   }
 ]
