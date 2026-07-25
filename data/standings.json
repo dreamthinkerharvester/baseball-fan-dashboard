@@ -3,23 +3,23 @@
     "rank": 1,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
-    "wins": 56,
+    "wins": 57,
     "losses": 34,
     "draws": 2,
-    "winPct": 0.622,
+    "winPct": 0.626,
     "gamesBehind": 0,
-    "streak": "2승"
+    "streak": "3승"
   },
   {
     "rank": 2,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 52,
+    "wins": 53,
     "losses": 35,
     "draws": 2,
-    "winPct": 0.598,
+    "winPct": 0.602,
     "gamesBehind": 2.5,
-    "streak": "8승"
+    "streak": "9승"
   },
   {
     "rank": 3,
@@ -29,30 +29,30 @@
     "losses": 40,
     "draws": 0,
     "winPct": 0.565,
-    "gamesBehind": 5,
+    "gamesBehind": 5.5,
     "streak": "8패"
   },
   {
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 49,
+    "wins": 50,
     "losses": 43,
     "draws": 2,
-    "winPct": 0.533,
+    "winPct": 0.538,
     "gamesBehind": 8,
-    "streak": "3패"
+    "streak": "1승"
   },
   {
     "rank": 5,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
     "wins": 47,
-    "losses": 43,
+    "losses": 44,
     "draws": 3,
-    "winPct": 0.522,
-    "gamesBehind": 9,
-    "streak": "1패"
+    "winPct": 0.516,
+    "gamesBehind": 10,
+    "streak": "2패"
   },
   {
     "rank": 6,
@@ -62,7 +62,7 @@
     "losses": 44,
     "draws": 3,
     "winPct": 0.494,
-    "gamesBehind": 11.5,
+    "gamesBehind": 12,
     "streak": "3승"
   },
   {
@@ -70,43 +70,43 @@
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 42,
-    "losses": 46,
+    "losses": 47,
     "draws": 1,
-    "winPct": 0.477,
-    "gamesBehind": 13,
-    "streak": "1패"
+    "winPct": 0.472,
+    "gamesBehind": 14,
+    "streak": "2패"
   },
   {
     "rank": 8,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 40,
-    "losses": 50,
+    "losses": 51,
     "draws": 2,
-    "winPct": 0.444,
-    "gamesBehind": 16,
-    "streak": "3패"
+    "winPct": 0.44,
+    "gamesBehind": 17,
+    "streak": "4패"
   },
   {
     "rank": 9,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
-    "wins": 35,
+    "wins": 36,
     "losses": 56,
     "draws": 3,
-    "winPct": 0.385,
+    "winPct": 0.391,
     "gamesBehind": 21.5,
-    "streak": "3승"
+    "streak": "4승"
   },
   {
     "rank": 10,
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
     "wins": 34,
-    "losses": 59,
+    "losses": 60,
     "draws": 2,
-    "winPct": 0.366,
-    "gamesBehind": 23.5,
-    "streak": "1승"
+    "winPct": 0.362,
+    "gamesBehind": 24.5,
+    "streak": "1패"
   }
 ]
