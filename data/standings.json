@@ -1,25 +1,25 @@
 [
   {
     "rank": 1,
+    "teamCode": "SAMSUNG",
+    "teamName": "삼성 라이온즈",
+    "wins": 59,
+    "losses": 37,
+    "draws": 2,
+    "winPct": 0.615,
+    "gamesBehind": 0,
+    "streak": "1승"
+  },
+  {
+    "rank": 2,
     "teamCode": "KT",
     "teamName": "KT 위즈",
     "wins": 57,
     "losses": 36,
     "draws": 2,
     "winPct": 0.613,
-    "gamesBehind": 0,
+    "gamesBehind": 0.5,
     "streak": "4승"
-  },
-  {
-    "rank": 2,
-    "teamCode": "SAMSUNG",
-    "teamName": "삼성 라이온즈",
-    "wins": 58,
-    "losses": 37,
-    "draws": 2,
-    "winPct": 0.611,
-    "gamesBehind": 0,
-    "streak": "2패"
   },
   {
     "rank": 3,
@@ -29,7 +29,7 @@
     "losses": 43,
     "draws": 0,
     "winPct": 0.561,
-    "gamesBehind": 4.5,
+    "gamesBehind": 5,
     "streak": "1패"
   },
   {
@@ -40,7 +40,7 @@
     "losses": 45,
     "draws": 3,
     "winPct": 0.531,
-    "gamesBehind": 7.5,
+    "gamesBehind": 8,
     "streak": "2승"
   },
   {
@@ -51,7 +51,7 @@
     "losses": 46,
     "draws": 2,
     "winPct": 0.531,
-    "gamesBehind": 7.5,
+    "gamesBehind": 8,
     "streak": "1패"
   },
   {
@@ -62,7 +62,7 @@
     "losses": 47,
     "draws": 3,
     "winPct": 0.495,
-    "gamesBehind": 11,
+    "gamesBehind": 11.5,
     "streak": "1패"
   },
   {
@@ -73,7 +73,7 @@
     "losses": 50,
     "draws": 2,
     "winPct": 0.462,
-    "gamesBehind": 14,
+    "gamesBehind": 14.5,
     "streak": "1승"
   },
   {
@@ -81,11 +81,11 @@
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 42,
-    "losses": 53,
+    "losses": 54,
     "draws": 2,
-    "winPct": 0.442,
-    "gamesBehind": 16,
-    "streak": "2패"
+    "winPct": 0.438,
+    "gamesBehind": 17,
+    "streak": "3패"
   },
   {
     "rank": 9,
@@ -95,7 +95,7 @@
     "losses": 59,
     "draws": 4,
     "winPct": 0.385,
-    "gamesBehind": 21.5,
+    "gamesBehind": 22,
     "streak": "2패"
   },
   {
@@ -106,7 +106,7 @@
     "losses": 62,
     "draws": 2,
     "winPct": 0.374,
-    "gamesBehind": 23,
+    "gamesBehind": 23.5,
     "streak": "1승"
   }
 ]
