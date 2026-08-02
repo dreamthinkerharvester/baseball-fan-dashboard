@@ -3,12 +3,12 @@
     "rank": 1,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 58,
+    "wins": 59,
     "losses": 36,
     "draws": 2,
-    "winPct": 0.617,
+    "winPct": 0.621,
     "gamesBehind": 0,
-    "streak": "5승"
+    "streak": "6승"
   },
   {
     "rank": 2,
@@ -18,7 +18,7 @@
     "losses": 37,
     "draws": 2,
     "winPct": 0.615,
-    "gamesBehind": 0,
+    "gamesBehind": 0.5,
     "streak": "1승"
   },
   {
@@ -26,22 +26,22 @@
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 55,
-    "losses": 43,
+    "losses": 44,
     "draws": 1,
-    "winPct": 0.561,
-    "gamesBehind": 5,
-    "streak": "1패"
+    "winPct": 0.556,
+    "gamesBehind": 6,
+    "streak": "2패"
   },
   {
     "rank": 4,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
-    "wins": 51,
+    "wins": 52,
     "losses": 45,
     "draws": 4,
-    "winPct": 0.531,
+    "winPct": 0.536,
     "gamesBehind": 8,
-    "streak": "2승"
+    "streak": "3승"
   },
   {
     "rank": 5,
@@ -51,7 +51,7 @@
     "losses": 46,
     "draws": 2,
     "winPct": 0.531,
-    "gamesBehind": 8,
+    "gamesBehind": 8.5,
     "streak": "1패"
   },
   {
@@ -59,11 +59,11 @@
     "teamCode": "HANWHA",
     "teamName": "한화 이글스",
     "wins": 46,
-    "losses": 48,
+    "losses": 49,
     "draws": 3,
-    "winPct": 0.489,
-    "gamesBehind": 12,
-    "streak": "2패"
+    "winPct": 0.484,
+    "gamesBehind": 13,
+    "streak": "3패"
   },
   {
     "rank": 7,
@@ -73,7 +73,7 @@
     "losses": 50,
     "draws": 2,
     "winPct": 0.462,
-    "gamesBehind": 14.5,
+    "gamesBehind": 15,
     "streak": "1승"
   },
   {
@@ -84,7 +84,7 @@
     "losses": 54,
     "draws": 2,
     "winPct": 0.438,
-    "gamesBehind": 17,
+    "gamesBehind": 17.5,
     "streak": "3패"
   },
   {
@@ -95,7 +95,7 @@
     "losses": 60,
     "draws": 4,
     "winPct": 0.388,
-    "gamesBehind": 22,
+    "gamesBehind": 22.5,
     "streak": "1패"
   },
   {
@@ -106,7 +106,7 @@
     "losses": 63,
     "draws": 2,
     "winPct": 0.376,
-    "gamesBehind": 23.5,
+    "gamesBehind": 24,
     "streak": "1승"
   }
 ]
