@@ -92,21 +92,21 @@
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
     "wins": 38,
-    "losses": 59,
+    "losses": 60,
     "draws": 4,
-    "winPct": 0.392,
-    "gamesBehind": 21.5,
-    "streak": "1승"
+    "winPct": 0.388,
+    "gamesBehind": 22,
+    "streak": "1패"
   },
   {
     "rank": 10,
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
-    "wins": 37,
+    "wins": 38,
     "losses": 63,
     "draws": 2,
-    "winPct": 0.37,
-    "gamesBehind": 24,
-    "streak": "1패"
+    "winPct": 0.376,
+    "gamesBehind": 23.5,
+    "streak": "1승"
   }
 ]
