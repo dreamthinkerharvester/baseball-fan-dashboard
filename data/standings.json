@@ -26,11 +26,11 @@
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 55,
-    "losses": 44,
+    "losses": 45,
     "draws": 1,
-    "winPct": 0.556,
-    "gamesBehind": 6,
-    "streak": "2패"
+    "winPct": 0.55,
+    "gamesBehind": 6.5,
+    "streak": "3패"
   },
   {
     "rank": 4,
@@ -91,12 +91,12 @@
     "rank": 9,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
-    "wins": 38,
+    "wins": 39,
     "losses": 60,
     "draws": 4,
-    "winPct": 0.388,
-    "gamesBehind": 22.5,
-    "streak": "1패"
+    "winPct": 0.394,
+    "gamesBehind": 22,
+    "streak": "1승"
   },
   {
     "rank": 10,
