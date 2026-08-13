@@ -4,11 +4,11 @@
     "teamCode": "KT",
     "teamName": "KT 위즈",
     "wins": 60,
-    "losses": 37,
+    "losses": 38,
     "draws": 2,
-    "winPct": 0.619,
+    "winPct": 0.612,
     "gamesBehind": 0,
-    "streak": "1패"
+    "streak": "2패"
   },
   {
     "rank": 2,
@@ -18,7 +18,7 @@
     "losses": 41,
     "draws": 2,
     "winPct": 0.59,
-    "gamesBehind": 2.5,
+    "gamesBehind": 2,
     "streak": "4패"
   },
   {
@@ -29,7 +29,7 @@
     "losses": 46,
     "draws": 1,
     "winPct": 0.549,
-    "gamesBehind": 6.5,
+    "gamesBehind": 6,
     "streak": "1패"
   },
   {
@@ -40,7 +40,7 @@
     "losses": 46,
     "draws": 2,
     "winPct": 0.54,
-    "gamesBehind": 7.5,
+    "gamesBehind": 7,
     "streak": "2승"
   },
   {
@@ -51,7 +51,7 @@
     "losses": 46,
     "draws": 4,
     "winPct": 0.535,
-    "gamesBehind": 8,
+    "gamesBehind": 7.5,
     "streak": "1패"
   },
   {
@@ -62,41 +62,41 @@
     "losses": 50,
     "draws": 3,
     "winPct": 0.49,
-    "gamesBehind": 12.5,
+    "gamesBehind": 12,
     "streak": "1승"
   },
   {
     "rank": 7,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
-    "wins": 44,
+    "wins": 45,
     "losses": 51,
     "draws": 2,
-    "winPct": 0.463,
-    "gamesBehind": 15,
-    "streak": "1승"
+    "winPct": 0.469,
+    "gamesBehind": 14,
+    "streak": "2승"
   },
   {
     "rank": 8,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
-    "wins": 44,
+    "wins": 45,
     "losses": 56,
     "draws": 2,
-    "winPct": 0.44,
-    "gamesBehind": 17.5,
-    "streak": "2패"
+    "winPct": 0.446,
+    "gamesBehind": 16.5,
+    "streak": "1승"
   },
   {
     "rank": 9,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
     "wins": 41,
-    "losses": 60,
+    "losses": 61,
     "draws": 4,
-    "winPct": 0.406,
+    "winPct": 0.402,
     "gamesBehind": 21,
-    "streak": "3승"
+    "streak": "1패"
   },
   {
     "rank": 10,
@@ -106,7 +106,7 @@
     "losses": 65,
     "draws": 2,
     "winPct": 0.375,
-    "gamesBehind": 24.5,
+    "gamesBehind": 24,
     "streak": "1승"
   }
 ]
