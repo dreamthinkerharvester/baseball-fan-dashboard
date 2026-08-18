@@ -2,7 +2,7 @@
   {
     "id": "20260830-DOOSAN-KIWOOM-1",
     "date": "2026-08-30",
-    "startTime": "19:00",
+    "startTime": "18:00",
     "homeTeam": "DOOSAN",
     "awayTeam": "KIWOOM",
     "stadium": "잠실",
@@ -13,7 +13,7 @@
   {
     "id": "20260830-SAMSUNG-KT-1",
     "date": "2026-08-30",
-    "startTime": "19:00",
+    "startTime": "18:00",
     "homeTeam": "SAMSUNG",
     "awayTeam": "KT",
     "stadium": "대구",
@@ -24,7 +24,7 @@
   {
     "id": "20260830-LOTTE-LG-1",
     "date": "2026-08-30",
-    "startTime": "19:00",
+    "startTime": "18:00",
     "homeTeam": "LOTTE",
     "awayTeam": "LG",
     "stadium": "사직",
@@ -35,7 +35,7 @@
   {
     "id": "20260830-KIA-SSG-1",
     "date": "2026-08-30",
-    "startTime": "19:00",
+    "startTime": "18:00",
     "homeTeam": "KIA",
     "awayTeam": "SSG",
     "stadium": "광주",
@@ -46,7 +46,7 @@
   {
     "id": "20260830-HANWHA-NC-1",
     "date": "2026-08-30",
-    "startTime": "19:00",
+    "startTime": "18:00",
     "homeTeam": "HANWHA",
     "awayTeam": "NC",
     "stadium": "대전",
