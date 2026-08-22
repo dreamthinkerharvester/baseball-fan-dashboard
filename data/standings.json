@@ -26,11 +26,11 @@
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
     "wins": 60,
-    "losses": 48,
+    "losses": 49,
     "draws": 2,
-    "winPct": 0.556,
-    "gamesBehind": 5,
-    "streak": "6승"
+    "winPct": 0.55,
+    "gamesBehind": 5.5,
+    "streak": "1패"
   },
   {
     "rank": 4,
@@ -102,11 +102,11 @@
     "rank": 10,
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
-    "wins": 40,
+    "wins": 41,
     "losses": 72,
     "draws": 2,
-    "winPct": 0.357,
-    "gamesBehind": 27,
-    "streak": "5패"
+    "winPct": 0.363,
+    "gamesBehind": 26.5,
+    "streak": "1승"
   }
 ]
