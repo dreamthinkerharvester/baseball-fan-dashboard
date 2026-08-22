@@ -14,12 +14,12 @@
     "rank": 2,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
-    "wins": 63,
+    "wins": 64,
     "losses": 44,
     "draws": 2,
-    "winPct": 0.589,
-    "gamesBehind": 1.5,
-    "streak": "2패"
+    "winPct": 0.593,
+    "gamesBehind": 1,
+    "streak": "1승"
   },
   {
     "rank": 3,
@@ -56,17 +56,6 @@
   },
   {
     "rank": 6,
-    "teamCode": "NC",
-    "teamName": "NC 다이노스",
-    "wins": 48,
-    "losses": 54,
-    "draws": 2,
-    "winPct": 0.471,
-    "gamesBehind": 14,
-    "streak": "2승"
-  },
-  {
-    "rank": 7,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 50,
@@ -77,7 +66,7 @@
     "streak": "5승"
   },
   {
-    "rank": 8,
+    "rank": 7,
     "teamCode": "HANWHA",
     "teamName": "한화 이글스",
     "wins": 49,
@@ -86,6 +75,17 @@
     "winPct": 0.467,
     "gamesBehind": 14.5,
     "streak": "1승"
+  },
+  {
+    "rank": 8,
+    "teamCode": "NC",
+    "teamName": "NC 다이노스",
+    "wins": 48,
+    "losses": 55,
+    "draws": 2,
+    "winPct": 0.466,
+    "gamesBehind": 14.5,
+    "streak": "1패"
   },
   {
     "rank": 9,
