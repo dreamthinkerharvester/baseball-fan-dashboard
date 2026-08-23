@@ -6,9 +6,9 @@
     "homeTeam": "KIWOOM",
     "awayTeam": "KIA",
     "stadium": "고척",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260823-DOOSAN-LOTTE-1",
