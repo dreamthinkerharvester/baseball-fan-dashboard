@@ -3,23 +3,23 @@
     "rank": 1,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 64,
+    "wins": 65,
     "losses": 42,
     "draws": 3,
-    "winPct": 0.604,
+    "winPct": 0.607,
     "gamesBehind": 0,
-    "streak": "1패"
+    "streak": "1승"
   },
   {
     "rank": 2,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
-    "wins": 65,
+    "wins": 66,
     "losses": 44,
     "draws": 3,
-    "winPct": 0.596,
+    "winPct": 0.6,
     "gamesBehind": 0.5,
-    "streak": "2승"
+    "streak": "3승"
   },
   {
     "rank": 3,
@@ -29,41 +29,41 @@
     "losses": 50,
     "draws": 1,
     "winPct": 0.558,
-    "gamesBehind": 4.5,
+    "gamesBehind": 5,
     "streak": "3승"
   },
   {
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 61,
+    "wins": 62,
     "losses": 50,
     "draws": 2,
-    "winPct": 0.55,
+    "winPct": 0.554,
     "gamesBehind": 5.5,
-    "streak": "1승"
+    "streak": "2승"
   },
   {
     "rank": 5,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
     "wins": 59,
-    "losses": 50,
+    "losses": 51,
     "draws": 4,
-    "winPct": 0.541,
-    "gamesBehind": 6.5,
-    "streak": "2승"
+    "winPct": 0.536,
+    "gamesBehind": 7.5,
+    "streak": "1패"
   },
   {
     "rank": 6,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 50,
-    "losses": 59,
+    "losses": 60,
     "draws": 2,
-    "winPct": 0.459,
-    "gamesBehind": 15.5,
-    "streak": "2패"
+    "winPct": 0.455,
+    "gamesBehind": 16.5,
+    "streak": "3패"
   },
   {
     "rank": 7,
@@ -73,7 +73,7 @@
     "losses": 59,
     "draws": 3,
     "winPct": 0.454,
-    "gamesBehind": 16,
+    "gamesBehind": 16.5,
     "streak": "3패"
   },
   {
@@ -84,7 +84,7 @@
     "losses": 58,
     "draws": 2,
     "winPct": 0.453,
-    "gamesBehind": 16,
+    "gamesBehind": 16.5,
     "streak": "4패"
   },
   {
@@ -95,7 +95,7 @@
     "losses": 64,
     "draws": 5,
     "winPct": 0.423,
-    "gamesBehind": 19.5,
+    "gamesBehind": 20,
     "streak": "2승"
   },
   {
@@ -103,10 +103,10 @@
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
     "wins": 42,
-    "losses": 72,
+    "losses": 73,
     "draws": 3,
-    "winPct": 0.368,
-    "gamesBehind": 26,
-    "streak": "2승"
+    "winPct": 0.365,
+    "gamesBehind": 27,
+    "streak": "1패"
   }
 ]
