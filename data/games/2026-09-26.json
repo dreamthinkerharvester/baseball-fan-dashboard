@@ -1,0 +1,35 @@
+[
+  {
+    "id": "20260926-KIA-LG-1",
+    "date": "2026-09-26",
+    "startTime": "17:00",
+    "homeTeam": "KIA",
+    "awayTeam": "LG",
+    "stadium": "광주",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260926-KT-KIWOOM-1",
+    "date": "2026-09-26",
+    "startTime": "17:00",
+    "homeTeam": "KT",
+    "awayTeam": "KIWOOM",
+    "stadium": "수원",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260926-NC-HANWHA-1",
+    "date": "2026-09-26",
+    "startTime": "17:00",
+    "homeTeam": "NC",
+    "awayTeam": "HANWHA",
+    "stadium": "창원",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  }
+]

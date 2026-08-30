@@ -1,0 +1,24 @@
+[
+  {
+    "id": "20260917-KIA-KIWOOM-1",
+    "date": "2026-09-17",
+    "startTime": "18:30",
+    "homeTeam": "KIA",
+    "awayTeam": "KIWOOM",
+    "stadium": "광주",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260917-NC-SSG-1",
+    "date": "2026-09-17",
+    "startTime": "18:30",
+    "homeTeam": "NC",
+    "awayTeam": "SSG",
+    "stadium": "창원",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  }
+]

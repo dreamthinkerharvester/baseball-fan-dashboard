@@ -1,0 +1,35 @@
+[
+  {
+    "id": "20260925-DOOSAN-LOTTE-1",
+    "date": "2026-09-25",
+    "startTime": "17:00",
+    "homeTeam": "DOOSAN",
+    "awayTeam": "LOTTE",
+    "stadium": "잠실",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260925-SSG-SAMSUNG-1",
+    "date": "2026-09-25",
+    "startTime": "17:00",
+    "homeTeam": "SSG",
+    "awayTeam": "SAMSUNG",
+    "stadium": "문학",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20260925-NC-HANWHA-1",
+    "date": "2026-09-25",
+    "startTime": "17:00",
+    "homeTeam": "NC",
+    "awayTeam": "HANWHA",
+    "stadium": "창원",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  }
+]
