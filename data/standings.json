@@ -3,110 +3,110 @@
     "rank": 1,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
-    "wins": 71,
+    "wins": 72,
     "losses": 46,
     "draws": 3,
-    "winPct": 0.607,
+    "winPct": 0.61,
     "gamesBehind": 0,
-    "streak": "1승"
+    "streak": "2승"
   },
   {
     "rank": 2,
     "teamCode": "KT",
     "teamName": "KT 위즈",
     "wins": 69,
-    "losses": 45,
+    "losses": 46,
     "draws": 3,
-    "winPct": 0.605,
-    "gamesBehind": 0.5,
-    "streak": "2패"
+    "winPct": 0.6,
+    "gamesBehind": 1.5,
+    "streak": "3패"
   },
   {
     "rank": 3,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 68,
-    "losses": 52,
+    "losses": 53,
     "draws": 1,
-    "winPct": 0.567,
-    "gamesBehind": 4.5,
-    "streak": "1패"
+    "winPct": 0.562,
+    "gamesBehind": 5.5,
+    "streak": "2패"
   },
   {
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 65,
+    "wins": 66,
     "losses": 52,
     "draws": 2,
-    "winPct": 0.556,
+    "winPct": 0.559,
     "gamesBehind": 6,
-    "streak": "2승"
+    "streak": "3승"
   },
   {
     "rank": 5,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
-    "wins": 61,
+    "wins": 62,
     "losses": 57,
     "draws": 4,
-    "winPct": 0.517,
+    "winPct": 0.521,
     "gamesBehind": 10.5,
-    "streak": "5패"
+    "streak": "1승"
   },
   {
     "rank": 6,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 55,
-    "losses": 58,
+    "losses": 59,
     "draws": 2,
-    "winPct": 0.487,
-    "gamesBehind": 14,
-    "streak": "7승"
+    "winPct": 0.482,
+    "gamesBehind": 15,
+    "streak": "1패"
   },
   {
     "rank": 7,
+    "teamCode": "HANWHA",
+    "teamName": "한화 이글스",
+    "wins": 52,
+    "losses": 65,
+    "draws": 3,
+    "winPct": 0.444,
+    "gamesBehind": 19.5,
+    "streak": "3승"
+  },
+  {
+    "rank": 8,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
     "wins": 52,
-    "losses": 66,
+    "losses": 67,
     "draws": 5,
-    "winPct": 0.441,
-    "gamesBehind": 19.5,
-    "streak": "2승"
+    "winPct": 0.437,
+    "gamesBehind": 20.5,
+    "streak": "1패"
   },
   {
-    "rank": 8,
-    "teamCode": "HANWHA",
-    "teamName": "한화 이글스",
-    "wins": 51,
-    "losses": 65,
-    "draws": 3,
-    "winPct": 0.44,
-    "gamesBehind": 19.5,
-    "streak": "2승"
-  },
-  {
-    "rank": 8,
+    "rank": 9,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 51,
-    "losses": 65,
+    "losses": 66,
     "draws": 2,
-    "winPct": 0.44,
-    "gamesBehind": 19.5,
-    "streak": "2패"
+    "winPct": 0.436,
+    "gamesBehind": 20.5,
+    "streak": "3패"
   },
   {
     "rank": 10,
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
-    "wins": 43,
+    "wins": 44,
     "losses": 80,
     "draws": 3,
-    "winPct": 0.35,
+    "winPct": 0.355,
     "gamesBehind": 31,
-    "streak": "2패"
+    "streak": "1승"
   }
 ]
