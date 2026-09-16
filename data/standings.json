@@ -15,22 +15,22 @@
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
     "wins": 75,
-    "losses": 49,
+    "losses": 50,
     "draws": 3,
-    "winPct": 0.605,
-    "gamesBehind": 2,
-    "streak": "1승"
+    "winPct": 0.6,
+    "gamesBehind": 2.5,
+    "streak": "1패"
   },
   {
     "rank": 3,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
-    "wins": 71,
+    "wins": 72,
     "losses": 55,
     "draws": 1,
-    "winPct": 0.563,
-    "gamesBehind": 7,
-    "streak": "3승"
+    "winPct": 0.567,
+    "gamesBehind": 6.5,
+    "streak": "4승"
   },
   {
     "rank": 4,
@@ -47,34 +47,34 @@
     "rank": 5,
     "teamCode": "DOOSAN",
     "teamName": "두산 베어스",
-    "wins": 64,
+    "wins": 65,
     "losses": 60,
     "draws": 4,
-    "winPct": 0.516,
-    "gamesBehind": 13,
-    "streak": "1승"
+    "winPct": 0.52,
+    "gamesBehind": 12.5,
+    "streak": "2승"
   },
   {
     "rank": 6,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 59,
-    "losses": 62,
+    "losses": 63,
     "draws": 2,
-    "winPct": 0.488,
-    "gamesBehind": 16.5,
-    "streak": "2패"
+    "winPct": 0.484,
+    "gamesBehind": 17,
+    "streak": "3패"
   },
   {
     "rank": 7,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
-    "wins": 55,
+    "wins": 56,
     "losses": 69,
     "draws": 5,
-    "winPct": 0.444,
-    "gamesBehind": 22,
-    "streak": "1승"
+    "winPct": 0.448,
+    "gamesBehind": 21.5,
+    "streak": "2승"
   },
   {
     "rank": 8,
@@ -92,11 +92,11 @@
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
     "wins": 53,
-    "losses": 70,
+    "losses": 71,
     "draws": 2,
-    "winPct": 0.431,
-    "gamesBehind": 23.5,
-    "streak": "2패"
+    "winPct": 0.427,
+    "gamesBehind": 24,
+    "streak": "3패"
   },
   {
     "rank": 10,
