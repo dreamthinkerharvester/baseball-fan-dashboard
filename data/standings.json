@@ -36,12 +36,12 @@
     "rank": 4,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
-    "wins": 68,
+    "wins": 69,
     "losses": 57,
     "draws": 2,
-    "winPct": 0.544,
-    "gamesBehind": 9.5,
-    "streak": "1패"
+    "winPct": 0.548,
+    "gamesBehind": 9,
+    "streak": "1승"
   },
   {
     "rank": 5,
@@ -59,22 +59,22 @@
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 59,
-    "losses": 63,
+    "losses": 64,
     "draws": 2,
-    "winPct": 0.484,
-    "gamesBehind": 17,
-    "streak": "3패"
+    "winPct": 0.48,
+    "gamesBehind": 17.5,
+    "streak": "4패"
   },
   {
     "rank": 7,
     "teamCode": "SSG",
     "teamName": "SSG 랜더스",
-    "wins": 56,
+    "wins": 57,
     "losses": 69,
     "draws": 5,
-    "winPct": 0.448,
-    "gamesBehind": 21.5,
-    "streak": "2승"
+    "winPct": 0.452,
+    "gamesBehind": 21,
+    "streak": "3승"
   },
   {
     "rank": 8,
@@ -103,10 +103,10 @@
     "teamCode": "KIWOOM",
     "teamName": "키움 히어로즈",
     "wins": 45,
-    "losses": 83,
+    "losses": 84,
     "draws": 3,
-    "winPct": 0.352,
-    "gamesBehind": 34,
-    "streak": "3패"
+    "winPct": 0.349,
+    "gamesBehind": 34.5,
+    "streak": "4패"
   }
 ]
