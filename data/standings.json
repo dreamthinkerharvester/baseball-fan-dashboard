@@ -59,11 +59,11 @@
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 59,
-    "losses": 64,
+    "losses": 65,
     "draws": 2,
-    "winPct": 0.48,
-    "gamesBehind": 17.5,
-    "streak": "4패"
+    "winPct": 0.476,
+    "gamesBehind": 18,
+    "streak": "5패"
   },
   {
     "rank": 7,
@@ -91,12 +91,12 @@
     "rank": 9,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
-    "wins": 53,
+    "wins": 54,
     "losses": 71,
     "draws": 2,
-    "winPct": 0.427,
-    "gamesBehind": 24,
-    "streak": "3패"
+    "winPct": 0.432,
+    "gamesBehind": 23.5,
+    "streak": "1승"
   },
   {
     "rank": 10,
