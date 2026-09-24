@@ -3,34 +3,34 @@
     "rank": 1,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 79,
+    "wins": 80,
     "losses": 48,
     "draws": 4,
-    "winPct": 0.622,
+    "winPct": 0.625,
     "gamesBehind": 0,
-    "streak": "1패"
+    "streak": "1승"
   },
   {
     "rank": 2,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
-    "wins": 77,
+    "wins": 78,
     "losses": 52,
     "draws": 3,
-    "winPct": 0.597,
+    "winPct": 0.6,
     "gamesBehind": 3,
-    "streak": "1승"
+    "streak": "2승"
   },
   {
     "rank": 3,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
     "wins": 75,
-    "losses": 55,
+    "losses": 56,
     "draws": 1,
-    "winPct": 0.577,
-    "gamesBehind": 5.5,
-    "streak": "7승"
+    "winPct": 0.573,
+    "gamesBehind": 6.5,
+    "streak": "1패"
   },
   {
     "rank": 4,
@@ -40,7 +40,7 @@
     "losses": 58,
     "draws": 2,
     "winPct": 0.55,
-    "gamesBehind": 9,
+    "gamesBehind": 9.5,
     "streak": "1패"
   },
   {
@@ -51,7 +51,7 @@
     "losses": 62,
     "draws": 5,
     "winPct": 0.519,
-    "gamesBehind": 13,
+    "gamesBehind": 13.5,
     "streak": "2승"
   },
   {
@@ -59,33 +59,33 @@
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 60,
-    "losses": 68,
+    "losses": 69,
     "draws": 2,
-    "winPct": 0.469,
-    "gamesBehind": 19.5,
-    "streak": "1승"
-  },
-  {
-    "rank": 7,
-    "teamCode": "SSG",
-    "teamName": "SSG 랜더스",
-    "wins": 58,
-    "losses": 70,
-    "draws": 5,
-    "winPct": 0.453,
-    "gamesBehind": 21.5,
+    "winPct": 0.465,
+    "gamesBehind": 20.5,
     "streak": "1패"
   },
   {
-    "rank": 8,
+    "rank": 7,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
-    "wins": 58,
+    "wins": 59,
     "losses": 71,
     "draws": 2,
-    "winPct": 0.45,
+    "winPct": 0.454,
     "gamesBehind": 22,
-    "streak": "5승"
+    "streak": "6승"
+  },
+  {
+    "rank": 8,
+    "teamCode": "SSG",
+    "teamName": "SSG 랜더스",
+    "wins": 58,
+    "losses": 71,
+    "draws": 5,
+    "winPct": 0.45,
+    "gamesBehind": 22.5,
+    "streak": "2패"
   },
   {
     "rank": 9,
@@ -95,7 +95,7 @@
     "losses": 74,
     "draws": 4,
     "winPct": 0.422,
-    "gamesBehind": 25.5,
+    "gamesBehind": 26,
     "streak": "9패"
   },
   {
@@ -106,7 +106,7 @@
     "losses": 86,
     "draws": 4,
     "winPct": 0.344,
-    "gamesBehind": 36,
+    "gamesBehind": 36.5,
     "streak": "6패"
   }
 ]
