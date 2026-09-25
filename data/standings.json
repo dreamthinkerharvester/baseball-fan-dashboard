@@ -58,12 +58,12 @@
     "rank": 6,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
-    "wins": 60,
+    "wins": 61,
     "losses": 69,
     "draws": 2,
-    "winPct": 0.465,
-    "gamesBehind": 20.5,
-    "streak": "1패"
+    "winPct": 0.469,
+    "gamesBehind": 20,
+    "streak": "1승"
   },
   {
     "rank": 7,
@@ -92,11 +92,11 @@
     "teamCode": "HANWHA",
     "teamName": "한화 이글스",
     "wins": 54,
-    "losses": 74,
+    "losses": 75,
     "draws": 4,
-    "winPct": 0.422,
-    "gamesBehind": 26,
-    "streak": "9패"
+    "winPct": 0.419,
+    "gamesBehind": 26.5,
+    "streak": "10패"
   },
   {
     "rank": 10,
