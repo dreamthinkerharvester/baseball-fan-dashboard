@@ -6,9 +6,9 @@
     "homeTeam": "KIA",
     "awayTeam": "LG",
     "stadium": "광주",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260926-KT-KIWOOM-1",
@@ -17,9 +17,9 @@
     "homeTeam": "KT",
     "awayTeam": "KIWOOM",
     "stadium": "수원",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   },
   {
     "id": "20260926-NC-HANWHA-1",
@@ -28,8 +28,8 @@
     "homeTeam": "NC",
     "awayTeam": "HANWHA",
     "stadium": "창원",
-    "status": "scheduled",
-    "homeScore": null,
-    "awayScore": null
+    "status": "final",
+    "homeScore": 0,
+    "awayScore": 0
   }
 ]
