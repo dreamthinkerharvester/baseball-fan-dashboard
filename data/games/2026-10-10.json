@@ -1,0 +1,35 @@
+[
+  {
+    "id": "20261010-LOTTE-LG-1",
+    "date": "2026-10-10",
+    "startTime": "17:00",
+    "homeTeam": "LOTTE",
+    "awayTeam": "LG",
+    "stadium": "사직",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20261010-KIA-SSG-1",
+    "date": "2026-10-10",
+    "startTime": "17:00",
+    "homeTeam": "KIA",
+    "awayTeam": "SSG",
+    "stadium": "광주",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "20261010-HANWHA-NC-1",
+    "date": "2026-10-10",
+    "startTime": "17:00",
+    "homeTeam": "HANWHA",
+    "awayTeam": "NC",
+    "stadium": "대전",
+    "status": "scheduled",
+    "homeScore": null,
+    "awayScore": null
+  }
+]
