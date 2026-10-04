@@ -5,7 +5,7 @@
     "teamName": "KT 위즈",
     "wins": 85,
     "losses": 49,
-    "draws": 4,
+    "draws": 5,
     "winPct": 0.634,
     "gamesBehind": 0,
     "streak": "5승"
@@ -82,7 +82,7 @@
     "teamName": "롯데 자이언츠",
     "wins": 61,
     "losses": 73,
-    "draws": 2,
+    "draws": 3,
     "winPct": 0.455,
     "gamesBehind": 24,
     "streak": "1패"
