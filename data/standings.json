@@ -36,12 +36,12 @@
     "rank": 4,
     "teamCode": "LG",
     "teamName": "LG 트윈스",
-    "wins": 77,
+    "wins": 78,
     "losses": 64,
     "draws": 1,
-    "winPct": 0.546,
-    "gamesBehind": 13,
-    "streak": "1패"
+    "winPct": 0.549,
+    "gamesBehind": 12.5,
+    "streak": "1승"
   },
   {
     "rank": 5,
@@ -67,17 +67,6 @@
   },
   {
     "rank": 7,
-    "teamCode": "LOTTE",
-    "teamName": "롯데 자이언츠",
-    "wins": 62,
-    "losses": 76,
-    "draws": 3,
-    "winPct": 0.449,
-    "gamesBehind": 26.5,
-    "streak": "1승"
-  },
-  {
-    "rank": 8,
     "teamCode": "NC",
     "teamName": "NC 다이노스",
     "wins": 63,
@@ -86,6 +75,17 @@
     "winPct": 0.447,
     "gamesBehind": 27,
     "streak": "5패"
+  },
+  {
+    "rank": 8,
+    "teamCode": "LOTTE",
+    "teamName": "롯데 자이언츠",
+    "wins": 62,
+    "losses": 77,
+    "draws": 3,
+    "winPct": 0.446,
+    "gamesBehind": 27,
+    "streak": "1패"
   },
   {
     "rank": 9,
