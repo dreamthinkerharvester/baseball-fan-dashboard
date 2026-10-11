@@ -3,34 +3,34 @@
     "rank": 1,
     "teamCode": "KT",
     "teamName": "KT 위즈",
-    "wins": 88,
+    "wins": 89,
     "losses": 49,
     "draws": 5,
-    "winPct": 0.642,
+    "winPct": 0.645,
     "gamesBehind": 0,
-    "streak": "8승"
+    "streak": "9승"
   },
   {
     "rank": 2,
     "teamCode": "SAMSUNG",
     "teamName": "삼성 라이온즈",
     "wins": 83,
-    "losses": 56,
+    "losses": 57,
     "draws": 3,
-    "winPct": 0.597,
-    "gamesBehind": 6,
-    "streak": "2패"
+    "winPct": 0.593,
+    "gamesBehind": 7,
+    "streak": "3패"
   },
   {
     "rank": 3,
     "teamCode": "KIA",
     "teamName": "KIA 타이거즈",
     "wins": 78,
-    "losses": 62,
+    "losses": 63,
     "draws": 2,
-    "winPct": 0.557,
-    "gamesBehind": 11.5,
-    "streak": "3승"
+    "winPct": 0.553,
+    "gamesBehind": 12.5,
+    "streak": "1패"
   },
   {
     "rank": 4,
@@ -40,7 +40,7 @@
     "losses": 64,
     "draws": 1,
     "winPct": 0.549,
-    "gamesBehind": 12.5,
+    "gamesBehind": 13,
     "streak": "1승"
   },
   {
@@ -51,7 +51,7 @@
     "losses": 65,
     "draws": 5,
     "winPct": 0.529,
-    "gamesBehind": 15.5,
+    "gamesBehind": 16,
     "streak": "1패"
   },
   {
@@ -62,7 +62,7 @@
     "losses": 74,
     "draws": 5,
     "winPct": 0.468,
-    "gamesBehind": 24,
+    "gamesBehind": 24.5,
     "streak": "1패"
   },
   {
@@ -73,19 +73,19 @@
     "losses": 78,
     "draws": 2,
     "winPct": 0.451,
-    "gamesBehind": 26.5,
+    "gamesBehind": 27,
     "streak": "1승"
   },
   {
     "rank": 8,
     "teamCode": "LOTTE",
     "teamName": "롯데 자이언츠",
-    "wins": 62,
+    "wins": 63,
     "losses": 77,
     "draws": 3,
-    "winPct": 0.446,
+    "winPct": 0.45,
     "gamesBehind": 27,
-    "streak": "1패"
+    "streak": "1승"
   },
   {
     "rank": 9,
@@ -95,7 +95,7 @@
     "losses": 83,
     "draws": 4,
     "winPct": 0.407,
-    "gamesBehind": 32.5,
+    "gamesBehind": 33,
     "streak": "2패"
   },
   {
@@ -106,7 +106,7 @@
     "losses": 90,
     "draws": 4,
     "winPct": 0.357,
-    "gamesBehind": 39.5,
+    "gamesBehind": 40,
     "streak": "1승"
   }
 ]
