@@ -1,13 +1,15 @@
 name: Crawl KBO data
 
 on:
-  schedule:
-    # KST 17:00~23:30 (= UTC 08:00~14:30) — KBO 경기시간대 30분마다 standings
-    # KST 06:00 (= UTC 21:00) — 일 1회 schedule + standings
-    # KST 12:00 (= UTC 03:00) — 일 1회 schedule (오전 발표 라인업 대비)
-    - cron: '*/30 8-14 * * *'
-    - cron: '0 21 * * *'
-    - cron: '0 3 * * *'
+  # 프로젝트 휴면 중 — 예약 실행 중지 (2026-10-28). 수동 실행(workflow_dispatch)만 가능.
+  # 재개하려면 아래 schedule 블록의 주석을 해제.
+  # schedule:
+  #   # KST 17:00~23:30 (= UTC 08:00~14:30) — KBO 경기시간대 30분마다 standings
+  #   # KST 06:00 (= UTC 21:00) — 일 1회 schedule + standings
+  #   # KST 12:00 (= UTC 03:00) — 일 1회 schedule (오전 발표 라인업 대비)
+  #   - cron: '*/30 8-14 * * *'
+  #   - cron: '0 21 * * *'
+  #   - cron: '0 3 * * *'
   workflow_dispatch: {}
 
 concurrency:
@@ -16,7 +18,10 @@ concurrency:
 
 jobs:
   crawl:
-    runs-on: ubuntu-latest
+    # ubuntu-latest 가 26.04 로 바뀐 뒤 Playwright 가 chromium 설치를 거부함
+    # ("does not support chromium on ubuntu26.04-x64"). Playwright 가 26.04 를
+    # 지원할 때까지 24.04 로 고정.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write
